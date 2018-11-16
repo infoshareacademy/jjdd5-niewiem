@@ -9,7 +9,17 @@ public class Hall {
 
     // log - id, table, timeStamp, timeSpan
 
+    public void bootup(String name){
+        this.name = name;
+        loadHall();
+    }
+
+    public String getName() {
+        return name;
+    }
+
     private boolean loadHall(){
+        loadTables();
         // load tables
         // load file with currently relevant time logs (like what tables are currently in use)
         return false;
@@ -37,7 +47,24 @@ public class Hall {
         return false;
     }
 
-    private boolean addTable(Table table){
+    private boolean addTable(int id, TableType type){
+        // this addTable is used when booting up from a file, so the ids are already known
+
+        Table newTable = new Table();
+        tableList.add(newTable);
+
+        // adds table to a list
+        // saves it to a file in a currently open hall
+        // check if table doesn't currently exist
+        return false;
+    }
+    private boolean addTable(TableType type){
+        // this addTable is used when adding new table from console, so id is decided by app tableList.size()++
+        Table newTable = new Table();
+        tableList.add(newTable);
+
+        // add table to file
+
         // adds table to a list
         // saves it to a file in a currently open hall
         // check if table doesn't currently exist
