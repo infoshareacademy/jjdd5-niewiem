@@ -22,18 +22,4 @@ public class ConsolePrinter {
         System.out.println("|       | |       | |       | |       |");
         System.out.println("+-------+ +-------+ +-------+ +-------+");
     }
-
-    public void printMessage(String title, String hallName){
-        System.out.println(
-                       "======================\n" +
-                        "Hall: " + hallName.toUpperCase() + "\n" +
-                        "======================\n" +
-                        "1. Choose table\n" +
-                        "2. Add reservation\n" +
-                        "3. Cancel reservation\n" +
-                        "4. Tables queue\n" +
-                        "5. Admin panel\n" +
-                        "0. Exit application\n"
-        );
-    }
 }
