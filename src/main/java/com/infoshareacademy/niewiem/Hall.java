@@ -1,3 +1,5 @@
+package com.infoshareacademy.niewiem;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +11,7 @@ public class Hall {
 
     // log - id, table, timeStamp, timeSpan
 
-    public void bootup(String name){
+    public void bootup(String name) {
         this.name = name;
         loadHall();
     }
@@ -18,7 +20,7 @@ public class Hall {
         return name;
     }
 
-    private boolean loadHall(){
+    private boolean loadHall() {
         loadTables();
         // load tables
         // load file with currently relevant time logs (like what tables are currently in use)
@@ -26,28 +28,28 @@ public class Hall {
     }
 
 
-    private boolean startGame(Table table, LocalDateTime startingTime, int timeSpan){
+    private boolean startGame(Table table, LocalDateTime startingTime, int timeSpan) {
         // first check if active
         // than check if reserved in the timeSpan
         // if table not on a list - return false
         return false;
     }
 
-    private boolean reserveTable(Table table, LocalDateTime startingTime, int timeSpan){
+    private boolean reserveTable(Table table, LocalDateTime startingTime, int timeSpan) {
         // check if one of currently active table is not in conflict
         // check if the table is taken at that time - read reservations from a file,
         //      filter reservations to only possible by only possible conflicts
         return false;
     }
 
-    private boolean loadTables(){
+    private boolean loadTables() {
         // check if tableLIst is empty (if not => ??)
         // loads tables from a file
         // use addTable
         return false;
     }
 
-    private boolean addTable(int id, TableType type){
+    private boolean addTable(int id, TableType type) {
         // this addTable is used when booting up from a file, so the ids are already known
 
         Table newTable = new Table();
@@ -58,7 +60,8 @@ public class Hall {
         // check if table doesn't currently exist
         return false;
     }
-    private boolean addTable(TableType type){
+
+    private boolean addTable(TableType type) {
         // this addTable is used when adding new table from console, so id is decided by app tableList.size()++
         Table newTable = new Table();
         tableList.add(newTable);
@@ -71,7 +74,7 @@ public class Hall {
         return false;
     }
 
-    private boolean rmTable(Table table){
+    private boolean rmTable(Table table) {
         // rm table
         // check if is on the list
         // check if is active, if active => ??
@@ -81,7 +84,7 @@ public class Hall {
         return false;
     }
 
-    private void activeTablesHandler(){
+    private void activeTablesHandler() {
         // if new log, add a table to active map
     }
 

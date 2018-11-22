@@ -1,3 +1,5 @@
+package com.infoshareacademy.niewiem;
+
 public class BSLogs {
     // create logs for testing purposes
     // some tables should be currently active

@@ -1,3 +1,5 @@
+package com.infoshareacademy.niewiem;
+
 import java.util.Scanner;
 
 public class ConsoleReader {

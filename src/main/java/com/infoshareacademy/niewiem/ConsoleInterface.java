@@ -1,3 +1,5 @@
+package com.infoshareacademy.niewiem;
+
 public class ConsoleInterface {
     private ConsoleReader cr;
     private ConsolePrinter cp;
@@ -111,7 +113,7 @@ public class ConsoleInterface {
                 "3. Show frozen tables\n" +
                 "4. Unfreeze table\n" +
                 "5. Delete table\n" +
-                "0. Get back to Main Menu");
+                "0. Get back to App Menu");
     }
 
     private void adminPanelMenu() {

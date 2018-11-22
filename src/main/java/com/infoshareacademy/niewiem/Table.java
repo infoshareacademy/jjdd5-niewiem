@@ -1,3 +1,5 @@
+package com.infoshareacademy.niewiem;
+
 import java.util.Objects;
 
 public class Table implements Comparable<Table> {
