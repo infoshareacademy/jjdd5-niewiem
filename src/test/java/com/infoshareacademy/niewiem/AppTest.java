@@ -1,4 +1,4 @@
-package niewiem;
+package com.infoshareacademy.niewiem;
 
 import static org.junit.Assert.assertTrue;
 

@@ -1,4 +1,4 @@
-package niewiem;
+package com.infoshareacademy.niewiem;
 
 /**
  * Hello world!
