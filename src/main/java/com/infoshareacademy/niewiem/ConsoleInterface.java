@@ -9,14 +9,14 @@ public class ConsoleInterface {
 
     ConsoleInterface() {
         this.cr = new ConsoleReader();
-        this.hall = new Hall();
         this.cp = new ConsolePrinter();
     }
 
     /*********** BOOTUP *************************/
 
     public void bootup() {
-        hall.bootup("Green Club");
+        //TODO: check if Hall exists. If exists use "new Hall(String nameOfExistingHall, List<Table> tableList)", if not use "new Hall(String nameOfNewHall)"
+        hall = new Hall("Green club");
         cp.printTables();
         mainMenu();
 

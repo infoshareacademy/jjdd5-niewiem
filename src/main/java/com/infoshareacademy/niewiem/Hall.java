@@ -1,8 +1,10 @@
 package com.infoshareacademy.niewiem;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Hall {
     private String name;
@@ -11,22 +13,19 @@ public class Hall {
 
     // log - id, table, timeStamp, timeSpan
 
-    public void bootup(String name) {
+    public Hall(String name, List<Table> tableList) {
         this.name = name;
-        loadHall();
+        this.tableList = tableList;
+    }
+
+    public Hall(String name) {
+        this.name = name;
+        this.tableList = new ArrayList<>();
     }
 
     public String getName() {
         return name;
     }
-
-    private boolean loadHall() {
-        loadTables();
-        // load tables
-        // load file with currently relevant time logs (like what tables are currently in use)
-        return false;
-    }
-
 
     private boolean startGame(Table table, LocalDateTime startingTime, int timeSpan) {
         // first check if active
@@ -42,28 +41,9 @@ public class Hall {
         return false;
     }
 
-    private boolean loadTables() {
-        // check if tableLIst is empty (if not => ??)
-        // loads tables from a file
-        // use addTable
-        return false;
-    }
-
-    private boolean addTable(int id, TableType type) {
-        // this addTable is used when booting up from a file, so the ids are already known
-
-        Table newTable = new Table();
-        tableList.add(newTable);
-
-        // adds table to a list
-        // saves it to a file in a currently open hall
-        // check if table doesn't currently exist
-        return false;
-    }
-
     private boolean addTable(TableType type) {
         // this addTable is used when adding new table from console, so id is decided by app tableList.size()++
-        Table newTable = new Table();
+        Table newTable = new Table(tableList.size(), type);
         tableList.add(newTable);
 
         // add table to file
@@ -74,8 +54,12 @@ public class Hall {
         return false;
     }
 
-    private boolean rmTable(Table table) {
+    private boolean removeTable(Table table) {
         // rm table
+        if (existsInTableList(table)) {
+            tableList.remove(table);
+            return true;
+        }
         // check if is on the list
         // check if is active, if active => ??
         //                          - rm with no other action
@@ -84,10 +68,33 @@ public class Hall {
         return false;
     }
 
+    private boolean existsInTableList(Table table) {
+        return tableList.contains(table);
+    }
+
     private void activeTablesHandler() {
         // if new log, add a table to active map
     }
 
+    public List<Table> getTableList() {
+        return tableList;
+    }
+
     // some getter that gives printer data on what to print
     // can't be getTable
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hall hall = (Hall) o;
+        return Objects.equals(name, hall.name) &&
+                Objects.equals(tableList, hall.tableList) &&
+                Objects.equals(activeTables, hall.activeTables);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, tableList, activeTables);
+    }
 }
