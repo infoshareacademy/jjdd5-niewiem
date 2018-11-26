@@ -3,20 +3,19 @@ package com.infoshareacademy.niewiem;
 public class ConsoleInterface {
     private ConsoleReader cr;
     private ConsolePrinter cp;
-    private Hall hall;
+    public Hall hall;
 
     /*********** CONSTRUCTOR *************************/
 
     ConsoleInterface() {
         this.cr = new ConsoleReader();
-        this.hall = new Hall();
         this.cp = new ConsolePrinter();
     }
 
     /*********** BOOTUP *************************/
 
     public void bootup() {
-        hall.bootup("Green Club");
+        hall = new Hall("Green club");
         cp.printTables();
         mainMenu();
 

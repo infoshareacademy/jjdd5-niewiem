@@ -25,4 +25,17 @@ public class Table implements Comparable<Table> {
         // sort table by number
         return 0;
     }
+
+    public Table(int tableID, TableType type) {
+        this.tableID = tableID;
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Table{" +
+                "tableID=" + tableID +
+                ", type=" + type +
+                '}';
+    }
 }
