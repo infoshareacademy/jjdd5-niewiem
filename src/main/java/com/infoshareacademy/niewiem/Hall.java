@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,11 @@ public class Hall {
 
     // log - id, table, timeStamp, timeSpan
 
+
+    public Hall(String name) {
+        this.name = name;
+    }
+
     public void bootup(String name) {
         this.name = name;
         loadHall();
@@ -20,10 +26,15 @@ public class Hall {
         return name;
     }
 
-    private boolean loadHall() {
+    private boolean loadHall(String hallName) {
         loadTables();
-        // load tables
-        // load file with currently relevant time logs (like what tables are currently in use)
+
+        return false;
+    }
+
+    private boolean loadHall() {
+        // create empty hall
+        tableList = new ArrayList<>();
         return false;
     }
 

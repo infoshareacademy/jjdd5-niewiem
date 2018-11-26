@@ -1,6 +1,9 @@
 package com.infoshareacademy.niewiem;
 
 public class ConsoleInterface {
+    private static final String FUNCTIONALITY_UNAVAILABLE = "I'm sorry Dave, I'm afraid I can't do that.";
+    private static final String GOODBYE_MESSAGE = "Bye, bye!";
+
     private ConsoleReader cr;
     private ConsolePrinter cp;
     private Hall hall;
@@ -9,17 +12,49 @@ public class ConsoleInterface {
 
     ConsoleInterface() {
         this.cr = new ConsoleReader();
-        this.hall = new Hall();
         this.cp = new ConsolePrinter();
     }
 
     /*********** BOOTUP *************************/
 
     public void bootup() {
-        hall.bootup("Green Club");
-        cp.printTables();
-        mainMenu();
+        hallMenu();
 
+    }
+
+    /*********** HALL MENU *************************/
+
+    private void printHallMenu(){
+        System.out.println("" +
+                "1. Load existing hall\n" +
+                "2. Create new hall\n" +
+                "0. Exit application");
+    }
+
+    private void hallMenu(){
+        printHallMenu();
+        int choice = cr.readInt();
+        switch (choice) {
+            case 0:
+                System.out.println(GOODBYE_MESSAGE);
+                System.exit(0);
+                break;
+            case 1:
+                System.out.println(FUNCTIONALITY_UNAVAILABLE);
+                break;
+            case 2:
+                this.hall = new Hall(readHallName());
+                mainMenu();
+                break;
+            default:
+                hallMenu();
+                break;
+        }
+    }
+
+    private String readHallName(){
+        System.out.println("Insert hall's name: ");
+        return cr.readString();
     }
 
     /*********** MAIN MENU *************************/
@@ -44,7 +79,7 @@ public class ConsoleInterface {
         switch (choice) {
             case 0:
                 System.out.println("Bye, bye!");
-                //exit application
+                System.exit(0);
                 break;
             case 1:
                 chooseTableMenu();
