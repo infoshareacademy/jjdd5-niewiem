@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Hall {
     private String name;
@@ -22,11 +23,9 @@ public class Hall {
         this.tableList = new ArrayList<>();
     }
 
-
     public String getName() {
         return name;
     }
-
 
     private boolean startGame(Table table, LocalDateTime startingTime, int timeSpan) {
         // first check if active
@@ -44,7 +43,7 @@ public class Hall {
 
     private boolean addTable(TableType type) {
         // this addTable is used when adding new table from console, so id is decided by app tableList.size()++
-        Table newTable = new Table(tableList.size(),type);
+        Table newTable = new Table(tableList.size(), type);
         tableList.add(newTable);
 
         // add table to file
@@ -55,9 +54,9 @@ public class Hall {
         return false;
     }
 
-    private boolean rmTable(Table table) {
+    private boolean removeTable(Table table) {
         // rm table
-        if(existsInTableList(table)){
+        if (existsInTableList(table)) {
             tableList.remove(table);
             return true;
         }
@@ -69,17 +68,33 @@ public class Hall {
         return false;
     }
 
+    private boolean existsInTableList(Table table) {
+        return tableList.contains(table);
+    }
+
     private void activeTablesHandler() {
         // if new log, add a table to active map
-    }
-    private boolean existsInTableList(Table table){
-        return tableList.contains(table);
     }
 
     public List<Table> getTableList() {
         return tableList;
     }
+
     // some getter that gives printer data on what to print
     // can't be getTable
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hall hall = (Hall) o;
+        return Objects.equals(name, hall.name) &&
+                Objects.equals(tableList, hall.tableList) &&
+                Objects.equals(activeTables, hall.activeTables);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, tableList, activeTables);
+    }
 }

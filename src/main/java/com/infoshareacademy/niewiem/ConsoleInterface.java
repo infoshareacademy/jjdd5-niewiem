@@ -15,6 +15,7 @@ public class ConsoleInterface {
     /*********** BOOTUP *************************/
 
     public void bootup() {
+        //TODO: check if Hall exists. If exists use "new Hall(String nameOfExistingHall, List<Table> tableList)", if not use "new Hall(String nameOfNewHall)"
         hall = new Hall("Green club");
         cp.printTables();
         mainMenu();
