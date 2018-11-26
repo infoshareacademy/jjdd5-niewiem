@@ -3,7 +3,7 @@ package com.infoshareacademy.niewiem;
 public class ConsoleInterface {
     private ConsoleReader cr;
     private ConsolePrinter cp;
-    public Hall hall;
+    private Hall hall;
 
     /*********** CONSTRUCTOR *************************/
 

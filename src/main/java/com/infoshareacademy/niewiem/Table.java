@@ -3,8 +3,8 @@ package com.infoshareacademy.niewiem;
 import java.util.Objects;
 
 public class Table implements Comparable<Table> {
-    // tableID - String, int?
-    private int tableID;
+    // tableId - String, int?
+    private int tableId;
     private TableType type;
 
     @Override
@@ -12,12 +12,12 @@ public class Table implements Comparable<Table> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return tableID == table.tableID && type == table.type;
+        return tableId == table.tableId && type == table.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableID, type);
+        return Objects.hash(tableId, type);
     }
 
     @Override
@@ -26,15 +26,15 @@ public class Table implements Comparable<Table> {
         return 0;
     }
 
-    public Table(int tableID, TableType type) {
-        this.tableID = tableID;
+    public Table(int tableId, TableType type) {
+        this.tableId = tableId;
         this.type = type;
     }
 
     @Override
     public String toString() {
         return "Table{" +
-                "tableID=" + tableID +
+                "tableId=" + tableId +
                 ", type=" + type +
                 '}';
     }
