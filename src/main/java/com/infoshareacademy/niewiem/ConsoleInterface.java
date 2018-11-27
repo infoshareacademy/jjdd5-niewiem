@@ -24,14 +24,14 @@ public class ConsoleInterface {
 
     /*********** HALL MENU *************************/
 
-    private void printHallMenu(){
+    private void printHallMenu() {
         System.out.println("" +
                 "1. Load existing hall\n" +
                 "2. Create new hall\n" +
                 "0. Exit application");
     }
 
-    private void hallMenu(){
+    private void hallMenu() {
         printHallMenu();
         int choice = cr.readInt();
         switch (choice) {
@@ -52,7 +52,7 @@ public class ConsoleInterface {
         }
     }
 
-    private String readHallName(){
+    private String readHallName() {
         System.out.println("Insert hall's name: ");
         return cr.readString();
     }
@@ -154,26 +154,58 @@ public class ConsoleInterface {
     private void adminPanelMenu() {
         printAdminPanelMenu();
         int choice = cr.readInt();
-//        switch (choice) {
-//            case 1:
-//                addTableMenu();
-//                break;
-//            case 2:
+        switch (choice) {
+            case 1:
+                addTableMenu();
+                break;
+            case 2:
+                printFunctionalityUnavailable();
 //                freezeTableMenu();
-//                break;
-//            case 3:
+                break;
+            case 3:
+                printFunctionalityUnavailable();
 //                showFrozenTablesMenu();
-//                break;
-//            case 4:
+                break;
+            case 4:
+                printFunctionalityUnavailable();
 //                unfreezeTableMenu();
-//                break;
-//            case 5:
+                break;
+            case 5:
+                printFunctionalityUnavailable();
 //                deleteTableMenu();
-//                break;
-//            default:
-//                mainMenu();
-//                break;
-//        }
+                break;
+            default:
+                mainMenu();
+                break;
+        }
+    }
+
+    private void printTableMenu() {
+        System.out.println("" +
+                "What kind of table do you want to add:" +
+                "1. Pool table" +
+                "2. Snooker table" +
+                "0. Cancel");
+    }
+
+    private void addTableMenu() {
+
+        printTableMenu();
+        int choice = cr.readInt();
+        switch (choice) {
+            case 1:
+                hall.addTable(TableType.POOL);
+                mainMenu();
+                break;
+            case 2:
+                hall.addTable(TableType.SNOOKER);
+                mainMenu();
+                break;
+            default:
+                mainMenu();
+                break;
+        }
+
     }
 
     /*********** DEV PANEL - MENU *************************/
@@ -181,6 +213,11 @@ public class ConsoleInterface {
     private void devPanelMenu() {
         System.out.println("Functionality unavailable");
         mainMenu();
+    }
+
+
+    private void printFunctionalityUnavailable() {
+        System.out.println(FUNCTIONALITY_UNAVAILABLE);
     }
 
     // add X tables
