@@ -43,7 +43,7 @@ public class Hall {
 
     private boolean addTable(TableType type) {
         // this addTable is used when adding new table from console, so id is decided by app tableList.size()++
-        Table newTable = new Table(tableList.size(), type);
+        Table newTable = new Table(tableList.size(), type, this.name);
         tableList.add(newTable);
 
         // add table to file

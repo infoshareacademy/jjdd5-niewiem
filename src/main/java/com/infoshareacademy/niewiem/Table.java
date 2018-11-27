@@ -6,6 +6,20 @@ public class Table implements Comparable<Table> {
     // tableId - String, int?
     private int tableId;
     private TableType type;
+    private String clubName;
+
+
+    public int getTableId() {
+        return tableId;
+    }
+
+    public TableType getType() {
+        return type;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -26,9 +40,10 @@ public class Table implements Comparable<Table> {
         return 0;
     }
 
-    public Table(int tableId, TableType type) {
+    public Table(int tableId, TableType type, String clubName) {
         this.tableId = tableId;
         this.type = type;
+        this.clubName = clubName;
     }
 
     @Override

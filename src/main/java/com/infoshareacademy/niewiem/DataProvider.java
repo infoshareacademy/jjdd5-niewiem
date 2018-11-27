@@ -10,18 +10,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileHandler {
+public class DataProvider {
 
     // read files with time logs for a given hall
     // read files with table data specific to a given hall
+
+    private static final String SEPARATOR = ",";
     private  Path path;
     private  Path tablesPath;
     private  Path hallsPath;
     private  Path historyPath;
     private  Path reservationsPath;
 
-
-    public FileHandler() {
+    public DataProvider() {
         this.path = Paths.get("data");
         this.tablesPath = Paths.get(path.toString(),"tables.csv");
         this.hallsPath = Paths.get(path.toString(), "halls.csv");
@@ -30,16 +31,16 @@ public class FileHandler {
     }
 
 
-    public void saveDataToFile(List<Table> tables, Hall hall) {
+    public void saveDataToFile(List<Table> tables) {
 
         List<String> out = new ArrayList<>();
 
         try {
             for (Table table : tables) {
                 List<String> properties = Arrays.asList(
-                        String.valueOf(table.getTableID()),
+                        String.valueOf(table.getTableId()),
                         String.valueOf(table.getType()),
-                        String.valueOf(hall.getName())
+                        String.valueOf(table.getClubName())
                 );
 
                 String singleEntry = properties.stream().collect(Collectors.joining(","));
@@ -58,7 +59,7 @@ public class FileHandler {
 
         try {
             for (String line : Files.readAllLines(tablesPath)) {
-                tables.add(createTable(line.split(",")));
+                tables.add(createTable(line.split(SEPARATOR)));
             }
 
         } catch (IOException ex) {
@@ -70,12 +71,13 @@ public class FileHandler {
 
     public List<Table> readFromTables(String club) {
 
-        List<Table> tables = new LinkedList<>();
+        List<Table> tables = new ArrayList<>();
 
         try {
             for (String line : Files.readAllLines(tablesPath)) {
-                //if
-                tables.add(createTable(line.split(",")));
+                if(line.contains(club)) {
+                    tables.add(createTable(line.split(SEPARATOR)));
+                }
             }
 
         } catch (IOException ex) {
@@ -86,7 +88,7 @@ public class FileHandler {
     }
 
     public Table createTable(String [] splittedLine) {
-        return new Table(Integer.valueOf(splittedLine[0]), TableType.valueOf(splittedLine[1]));
+        return new Table(Integer.valueOf(splittedLine[0]), TableType.valueOf(splittedLine[1]), String.valueOf(splittedLine[2]));
     }
 }
 
