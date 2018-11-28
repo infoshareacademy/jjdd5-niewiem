@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DataProvider {
@@ -16,34 +13,33 @@ public class DataProvider {
     // read files with table data specific to a given hall
 
     private static final String SEPARATOR = ",";
-    private  Path path;
-    private  Path tablesPath;
-    private  Path hallsPath;
-    private  Path historyPath;
-    private  Path reservationsPath;
+    private Path path;
+    private Path tablesPath;
+    private Path hallsPath;
+    private Path historyPath;
+    private Path reservationsPath;
 
     public DataProvider() {
         this.path = Paths.get("data");
-        this.tablesPath = Paths.get(path.toString(),"tables.csv");
+        this.tablesPath = Paths.get(path.toString(), "tables.csv");
         this.hallsPath = Paths.get(path.toString(), "halls.csv");
         this.historyPath = Paths.get(path.toString(), "history.csv");
         this.reservationsPath = Paths.get(path.toString(), "reservation.csv");
     }
 
+    public void saveDataToFile(Set <Table> tables) {
 
-    public void saveDataToFile(List<Table> tables) {
-
-        List<String> out = new ArrayList<>();
+        Set<String> out = new HashSet<>();
 
         try {
             for (Table table : tables) {
-                List<String> properties = Arrays.asList(
-                        String.valueOf(table.getTableId()),
-                        String.valueOf(table.getType()),
-                        String.valueOf(table.getClubName())
-                );
+                Set<String> properties = new HashSet<>();
+                properties.add(String.valueOf(table.getTableId()));
+                properties.add(String.valueOf(table.getType()));
+                properties.add(String.valueOf(table.getClubName()));
 
-                String singleEntry = properties.stream().collect(Collectors.joining(","));
+
+                String singleEntry = properties.stream().collect(Collectors.joining(SEPARATOR));
                 out.add(singleEntry);
             }
             Files.write(tablesPath, out);
@@ -53,42 +49,39 @@ public class DataProvider {
         }
     }
 
-    public List<Table> readFromTables() {
-
-        List<Table> tables = new LinkedList<>();
-
-        try {
-            for (String line : Files.readAllLines(tablesPath)) {
-                tables.add(createTable(line.split(SEPARATOR)));
-            }
-
-        } catch (IOException ex) {
-            System.out.println("Can't find this file!");
-        }
-
-        return tables;
+    public Set<Table> readFromTables() {
+        return readFromTables(null, getFileAsLineList());
     }
 
-    public List<Table> readFromTables(String club) {
+    public Set<Table> readFromTables(String club) {
+        return readFromTables(club, getFileAsLineList());
+    }
 
-        List<Table> tables = new ArrayList<>();
+    Set<Table> readFromTables(String club, Set<String> fileByLines) {
+        Set<Table> tables = new HashSet<>();
 
-        try {
-            for (String line : Files.readAllLines(tablesPath)) {
-                if(line.contains(club)) {
+            for (String line : fileByLines) {
+                if (club == null) {
+                    tables.add(createTable(line.split(SEPARATOR)));
+                } else if(line.contains(club)) {
                     tables.add(createTable(line.split(SEPARATOR)));
                 }
             }
 
-        } catch (IOException ex) {
-            System.out.println("Can't find this file!");
-        }
-
         return tables;
     }
 
+    private Set<String> getFileAsLineList() {
+        try {
+            return new HashSet<>(Files.readAllLines(tablesPath));
+        } catch (IOException ex) {
+            System.out.println("Can't find this file!");
+            return new HashSet<>();
+        }
+    }
+
     public Table createTable(String [] splittedLine) {
-        return new Table(Integer.valueOf(splittedLine[0]), TableType.valueOf(splittedLine[1]), String.valueOf(splittedLine[2]));
+        return new Table(Integer.valueOf(splittedLine[0].trim()), TableType.valueOf(splittedLine[1].trim()), String.valueOf(splittedLine[2].trim()));
     }
 }
 
