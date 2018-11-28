@@ -110,10 +110,8 @@ public class ConsoleInterface {
     private void chooseTableMenu() {
         System.out.println("Choose table:");
         int choice = cr.readInt();
-        // check if table exists todo: needs a list of tables
-        // check if table is inactive
-        //      if active - ask to stop or move
-        //      if inactive - ask for time-span
+
+
         mainMenu();
     }
 
@@ -182,9 +180,9 @@ public class ConsoleInterface {
 
     private void printTableMenu() {
         System.out.println("" +
-                "What kind of table do you want to add:" +
-                "1. Pool table" +
-                "2. Snooker table" +
+                "What kind of table do you want to add:\n" +
+                "1. Pool table\n" +
+                "2. Snooker table\n" +
                 "0. Cancel");
     }
 
