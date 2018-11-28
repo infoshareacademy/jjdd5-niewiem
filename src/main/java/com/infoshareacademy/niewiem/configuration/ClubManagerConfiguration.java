@@ -6,8 +6,9 @@ import java.util.Properties;
 
 public class ClubManagerConfiguration {
 
-    private static final String TIME_FORMAT = "timeFormat";
-    private static final String TIME_FORMAT_DEFAULT = "mm";
+    private static final String configPath = "app.properties";
+    private static final String TIME_FORMAT_KEY = "timeFormat";
+    private static final String TIME_FORMAT_DEFAULT = "yy-MM-dd_HH:mm:ss";
 
     private Properties properties;
 
@@ -18,14 +19,13 @@ public class ClubManagerConfiguration {
 
     private void loadProperties(String file) {
         try {
-            this.properties.load(new FileReader("app.properties"));
+            this.properties.load(new FileReader(configPath));
         } catch (IOException e) {
-            System.out.println("Missing properties file.");
+            System.out.println("Cannot read properties file");
         }
     }
 
     public String getTimeFormat() {
-        String timeFormat = properties.getProperty(TIME_FORMAT, TIME_FORMAT_DEFAULT);
-        return timeFormat;
+        return properties.getProperty(TIME_FORMAT_KEY, TIME_FORMAT_DEFAULT);
     }
 }
