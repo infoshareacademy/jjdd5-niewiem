@@ -10,8 +10,18 @@ public class Hall {
     private String name;
     private List<Table> tableList;
     private Map<Table, Boolean> activeTables; // shows list of tables,
+    private Map<Table, Reservation> reservations;
 
-    // log - id, table, timeStamp, timeSpan
+    public boolean addReservation(){
+        // todo: check if reservation possible
+        // todo: save in file
+        return false;
+    }
+
+    public boolean startGame(Table table, Reservation reservation){
+        reservations.put(table, reservation);
+        return false;
+    }
 
     public Hall(String name, List<Table> tableList) {
         this.name = name;
@@ -25,20 +35,6 @@ public class Hall {
 
     public String getName() {
         return name;
-    }
-
-    private boolean startGame(Table table, LocalDateTime startingTime, int timeSpan) {
-        // first check if active
-        // than check if reserved in the timeSpan
-        // if table not on a list - return false
-        return false;
-    }
-
-    private boolean reserveTable(Table table, LocalDateTime startingTime, int timeSpan) {
-        // check if one of currently active table is not in conflict
-        // check if the table is taken at that time - read reservations from a file,
-        //      filter reservations to only possible by only possible conflicts
-        return false;
     }
 
     public boolean addTable(TableType type) {
@@ -70,10 +66,6 @@ public class Hall {
 
     private boolean existsInTableList(Table table) {
         return tableList.contains(table);
-    }
-
-    private void activeTablesHandler() {
-        // if new log, add a table to active map
     }
 
     public List<Table> getTableList() {
