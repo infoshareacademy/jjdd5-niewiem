@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.infoshareacademy.niewiem.TableType.*;
+
 public class Hall {
     private String name;
     private List<Table> tableList;
@@ -30,7 +32,8 @@ public class Hall {
     private Table getTable(int tableNumber){
         // Until GUI we only have pool tables, so we are automatically adding "P" prefix
         String tableID = "P" + tableNumber;
-        int tableOnList = tableList.indexOf(tableID);
+        TableType tableType = POOL;
+        int tableOnList = tableList.indexOf(new Table(tableID, tableType));
         return tableList.get(tableOnList);
     }
 

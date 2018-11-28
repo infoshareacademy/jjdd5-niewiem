@@ -46,6 +46,10 @@ public class ConsoleInterface {
                 this.hall = new Hall(readHallName());
                 mainMenu();
                 break;
+            case 88224646:
+                devPanelMenu();
+                mainMenu();
+                break;
             default:
                 hallMenu();
                 break;
@@ -109,8 +113,12 @@ public class ConsoleInterface {
 
     private void chooseTableMenu() {
         System.out.println("Choose table:");
-        int choice = cr.readInt();
+        int tableChoice = cr.readInt();
 
+        System.out.println("Insert time span in minutes:");
+        int timeSpan = cr.readInt();
+
+        hall.startGame(tableChoice, timeSpan);
 
         mainMenu();
     }
@@ -209,7 +217,12 @@ public class ConsoleInterface {
     /*********** DEV PANEL - MENU *************************/
 
     private void devPanelMenu() {
-        System.out.println("Functionality unavailable");
+        System.out.println("Adding new hall...");
+        this.hall = new Hall("TEST CLUB");
+        for (int i = 0; i < 9; i++) {
+            System.out.printf("Adding table P%d...\n", (i+1));
+            hall.addTable(TableType.POOL);
+        }
         mainMenu();
     }
 
