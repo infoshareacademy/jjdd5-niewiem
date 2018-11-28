@@ -1,25 +1,26 @@
 package com.infoshareacademy.niewiem;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 public class Reservation {
-    Table table;
-    LocalDateTime startTime;
-    LocalDateTime stopTime;
-    Optional<String> customer;
+    private Table table;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private Optional<String> customer;
 
 
-    public Reservation(Table table, LocalDateTime startTime, LocalDateTime stopTime) {
+    public Reservation(Table table, LocalDateTime startTime, LocalDateTime endTime) {
         this.table = table;
         this.startTime = startTime;
-        this.stopTime = stopTime;
+        this.endTime = endTime;
     }
 
-    public Reservation(Table table, LocalDateTime startTime, LocalDateTime stopTime, String customer) {
+    public Reservation(Table table, LocalDateTime startTime, LocalDateTime endTime, String customer) {
         this.table = table;
         this.startTime = startTime;
-        this.stopTime = stopTime;
+        this.endTime = endTime;
         this.customer = Optional.of(customer);
     }
 
@@ -31,11 +32,23 @@ public class Reservation {
         return startTime;
     }
 
-    public LocalDateTime getStopTime() {
-        return stopTime;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     public Optional<String> getCustomer() {
         return customer;
+    }
+
+    public boolean isInProgress(){
+        boolean startsBeforeNow = startTime.isBefore(LocalDateTime.now());
+        boolean endsAfterNow = endTime.isAfter(LocalDateTime.now());
+
+        return startsBeforeNow && endsAfterNow;
+    }
+
+    public Long getTimeRemainingInSeconds(){
+        LocalDateTime now = LocalDateTime.now();
+        return now.until(endTime, ChronoUnit.SECONDS);
     }
 }

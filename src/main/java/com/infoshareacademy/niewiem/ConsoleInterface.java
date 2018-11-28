@@ -78,6 +78,7 @@ public class ConsoleInterface {
     }
 
     private void mainMenu() {
+        printTables();
         printMainMenu();
         int choice = cr.readInt();
         switch (choice) {
@@ -107,6 +108,10 @@ public class ConsoleInterface {
                 mainMenu();
                 break;
         }
+    }
+
+    private void printTables() {
+        cp.printTables(hall.getAllTablesAndRemainingTimes());
     }
 
     /*********** CHOOSE TABLE *************************/
@@ -230,6 +235,4 @@ public class ConsoleInterface {
     private void printFunctionalityUnavailable() {
         System.out.println(FUNCTIONALITY_UNAVAILABLE);
     }
-
-    // add X tables
 }

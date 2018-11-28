@@ -2,9 +2,12 @@ package com.infoshareacademy.niewiem;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import static com.infoshareacademy.niewiem.TableType.*;
+import static com.infoshareacademy.niewiem.TableType.POOL;
+import static java.util.stream.Collectors.toMap;
 
 public class Hall {
     private String name;
@@ -31,14 +34,33 @@ public class Hall {
 
     private Table getTable(int tableNumber){
         // Until GUI we only have pool tables, so we are automatically adding "P" prefix
-        String tableID = "P" + tableNumber;
+        String tableID = "P" + String.format("%02d", tableNumber);
         TableType tableType = POOL;
         int tableOnList = tableList.indexOf(new Table(tableID, tableType));
         return tableList.get(tableOnList);
     }
 
+    public Map<Table, Long> getActiveTablesAndRemainingTimes(){
+        return reservations.stream()
+                .filter(Reservation::isInProgress)
+                .collect(toMap(
+                        Reservation::getTable,
+                        Reservation::getTimeRemainingInSeconds
+                ));
+    }
+
+    public Map<Table, Long> getAllTablesAndRemainingTimes(){
+        Map<Table, Long> activeTables = getActiveTablesAndRemainingTimes();
+        return tableList.stream()
+                .collect(toMap(
+                        t -> t,
+                        t -> activeTables.getOrDefault(t, 0L)
+                ));
+    }
+
     public boolean addTable(TableType type) {
-        String newTableID = "P" + tableList.size();
+        int nextAvailableID = tableList.size() + 1;
+        String newTableID = "P" + String.format("%02d", nextAvailableID);
         Table newTable = new Table(newTableID, type);
         tableList.add(newTable);
         return true;
@@ -57,7 +79,7 @@ public class Hall {
     }
 
     public List<Table> getTableList() {
-        return tableList;
+        return Collections.unmodifiableList(tableList);
     }
 
     public String getName() {
