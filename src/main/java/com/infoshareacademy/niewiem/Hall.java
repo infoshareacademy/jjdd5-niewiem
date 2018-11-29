@@ -1,26 +1,23 @@
 package com.infoshareacademy.niewiem;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Hall {
     private String name;
-    private List<Table> tableList;
+    private Set<Table> tableList;
     private Map<Table, Boolean> activeTables; // shows list of tables,
 
     // log - id, table, timeStamp, timeSpan
 
-    public Hall(String name, List<Table> tableList) {
+    public Hall(String name, Set<Table> tableList) {
         this.name = name;
         this.tableList = tableList;
     }
 
     public Hall(String name) {
         this.name = name;
-        this.tableList = new ArrayList<>();
+        this.tableList = new HashSet<>();
     }
 
     public String getName() {
@@ -76,7 +73,7 @@ public class Hall {
         // if new log, add a table to active map
     }
 
-    public List<Table> getTableList() {
+    public Set<Table> getTableList() {
         return tableList;
     }
 

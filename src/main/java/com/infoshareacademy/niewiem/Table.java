@@ -26,12 +26,14 @@ public class Table implements Comparable<Table> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return tableId == table.tableId && type == table.type;
+        return tableId == table.tableId &&
+                type == table.type &&
+                Objects.equals(clubName, table.clubName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, type);
+        return Objects.hash(tableId, type, clubName);
     }
 
     @Override

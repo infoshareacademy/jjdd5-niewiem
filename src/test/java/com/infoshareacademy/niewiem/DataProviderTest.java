@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,8 +49,27 @@ class DataProviderTest {
         assertThat(actual.size()).isEqualTo(1);
     }
 
+    @Test
+    @DisplayName("Should properly return list of all tables")
+    void readFromTablesForAllClubs() {
+        // given
+        DataProvider subject = new DataProvider();
+        Set<String> testList = new HashSet<>();
+        Set<Table> expectedlist = new HashSet<>();
 
+        testList.add("1, POOL, Green");
+        testList.add("1, SNOOKER, Red");
+        testList.add("1, SNOOKER, Green");
 
+        expectedlist.add(new Table(1,TableType.POOL,"Green"));
+        expectedlist.add(new Table(1,TableType.SNOOKER, "Red"));
+        expectedlist.add(new Table(1,TableType.SNOOKER, "Green"));
 
+        // when
+        Set<Table> actual = subject.readFromTables(null, testList);
+
+        // then
+        assertEquals(expectedlist, actual);
+    }
 
 }
