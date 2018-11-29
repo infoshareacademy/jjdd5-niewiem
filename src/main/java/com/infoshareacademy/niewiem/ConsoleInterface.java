@@ -57,7 +57,7 @@ public class ConsoleInterface {
     }
 
     private String readHallName() {
-        System.out.println("Insert hall's name: ");
+        System.out.println("Enter hall's name: ");
         return cr.readString();
     }
 
@@ -120,7 +120,7 @@ public class ConsoleInterface {
         System.out.println("Choose table:");
         int tableChoice = cr.readInt();
 
-        System.out.println("Insert time span in minutes:");
+        System.out.println("Enter time span in minutes:");
         int timeSpan = cr.readInt();
 
         hall.startGame(tableChoice, timeSpan);
