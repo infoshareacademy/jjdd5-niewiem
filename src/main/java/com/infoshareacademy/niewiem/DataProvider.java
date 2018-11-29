@@ -16,15 +16,14 @@ public class DataProvider {
     private Path path;
     private Path tablesPath;
     private Path hallsPath;
-    private Path historyPath;
-    private Path reservationsPath;
+    private Path reservationPath;
+
 
     public DataProvider() {
         this.path = Paths.get("data");
         this.tablesPath = Paths.get(path.toString(), "tables.csv");
         this.hallsPath = Paths.get(path.toString(), "halls.csv");
-        this.historyPath = Paths.get(path.toString(), "history.csv");
-        this.reservationsPath = Paths.get(path.toString(), "reservation.csv");
+        this.reservationPath = Paths.get(path.toString(), "reservation.csv");
     }
 
     public void saveDataToFile(Set <Table> tables) {
@@ -34,9 +33,10 @@ public class DataProvider {
         try {
             for (Table table : tables) {
                 Set<String> properties = new HashSet<>();
+                properties.add(String.valueOf(table.getHall()));
                 properties.add(String.valueOf(table.getTableId()));
                 properties.add(String.valueOf(table.getType()));
-                properties.add(String.valueOf(table.getClubName()));
+                properties.add(String.valueOf(table.getTableName()));
 
 
                 String singleEntry = properties.stream().collect(Collectors.joining(SEPARATOR));
