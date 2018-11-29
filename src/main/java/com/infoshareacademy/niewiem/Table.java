@@ -1,24 +1,32 @@
 package com.infoshareacademy.niewiem;
 
-import java.util.Objects;
-
 public class Table implements Comparable<Table> {
-    // tableId - String, int?
-    private int tableId;
-    private TableType type;
-    private String clubName;
+    private final Hall hall;
+    private final TableType type;
+    private final Integer tableId;
+    private final String tableName;
 
+    public Table(Hall hall, TableType type, Integer tableId, String tableName) {
+        this.hall = hall;
+        this.type = type;
+        this.tableId = tableId;
+        this.tableName = tableName;
+    }
 
-    public int getTableId() {
-        return tableId;
+    public Hall getHall() {
+        return hall;
     }
 
     public TableType getType() {
         return type;
     }
 
-    public String getClubName() {
-        return clubName;
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public String getTableName() {
+        return tableName;
     }
 
     @Override
@@ -26,33 +34,11 @@ public class Table implements Comparable<Table> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return tableId == table.tableId &&
-                type == table.type &&
-                Objects.equals(clubName, table.clubName);
+        return this.tableId == table.getTableId();
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(tableId, type, clubName);
-    }
-
-    @Override
-    public int compareTo(Table o) {
-        // sort table by number
-        return 0;
-    }
-
-    public Table(int tableId, TableType type, String clubName) {
-        this.tableId = tableId;
-        this.type = type;
-        this.clubName = clubName;
-    }
-
-    @Override
-    public String toString() {
-        return "Table{" +
-                "tableId=" + tableId +
-                ", type=" + type +
-                '}';
+    public int compareTo(Table t) {
+        return this.tableName.compareTo(t.getTableName());
     }
 }
