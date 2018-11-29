@@ -2,69 +2,75 @@ package com.infoshareacademy.niewiem;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
+import static com.infoshareacademy.niewiem.TableType.POOL;
+import static java.util.stream.Collectors.toMap;
 
 public class Hall {
     private String name;
     private List<Table> tableList;
-    private Map<Table, Boolean> activeTables; // shows list of tables,
-
-    // log - id, table, timeStamp, timeSpan
-
-    public Hall(String name, List<Table> tableList) {
-        this.name = name;
-        this.tableList = tableList;
-    }
+    private List<Reservation> reservations;
 
     public Hall(String name) {
         this.name = name;
         this.tableList = new ArrayList<>();
+        this.reservations = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    public boolean startGame(int tableNumber, int timeSpanInMinutes){
+
+        Table table = getTable(tableNumber);
+        LocalDateTime startTime = LocalDateTime.now();
+        LocalDateTime endTime = startTime.plusMinutes(timeSpanInMinutes);
+
+        Reservation reservation = new Reservation(table, startTime, endTime);
+
+        reservations.add(reservation);
+        return true;
     }
 
-    private boolean startGame(Table table, LocalDateTime startingTime, int timeSpan) {
-        // first check if active
-        // than check if reserved in the timeSpan
-        // if table not on a list - return false
-        return false;
+    private Table getTable(int tableNumber){
+        // Until GUI we only have pool tables, so we are automatically adding "P" prefix
+        String tableID = "P" + String.format("%02d", tableNumber);
+        TableType tableType = POOL;
+        int tableOnList = tableList.indexOf(new Table(tableID, tableType));
+        return tableList.get(tableOnList);
     }
 
-    private boolean reserveTable(Table table, LocalDateTime startingTime, int timeSpan) {
-        // check if one of currently active table is not in conflict
-        // check if the table is taken at that time - read reservations from a file,
-        //      filter reservations to only possible by only possible conflicts
-        return false;
+    public Map<Table, Long> getActiveTablesAndRemainingTimes(){
+        return reservations.stream()
+                .filter(Reservation::isInProgress)
+                .collect(toMap(
+                        Reservation::getTable,
+                        Reservation::getTimeRemainingInSeconds
+                ));
     }
 
-    private boolean addTable(TableType type) {
-        // this addTable is used when adding new table from console, so id is decided by app tableList.size()++
-        Table newTable = new Table(tableList.size(), type);
+    public Map<Table, Long> getAllTablesAndRemainingTimes(){
+        Map<Table, Long> activeTables = getActiveTablesAndRemainingTimes();
+        return tableList.stream()
+                .collect(toMap(
+                        t -> t,
+                        t -> activeTables.getOrDefault(t, 0L)
+                ));
+    }
+
+    public boolean addTable(TableType type) {
+        int nextAvailableID = tableList.size() + 1;
+        String newTableID = "P" + String.format("%02d", nextAvailableID);
+        Table newTable = new Table(newTableID, type);
         tableList.add(newTable);
-
-        // add table to file
-
-        // adds table to a list
-        // saves it to a file in a currently open hall
-        // check if table doesn't currently exist
-        return false;
+        return true;
     }
 
     private boolean removeTable(Table table) {
-        // rm table
         if (existsInTableList(table)) {
             tableList.remove(table);
             return true;
         }
-        // check if is on the list
-        // check if is active, if active => ??
-        //                          - rm with no other action
-        //                          - don't remove, exception
-        //                          - rm and cut timeSpan in log? (timeSpan = currentTime - startingTime)
         return false;
     }
 
@@ -72,29 +78,11 @@ public class Hall {
         return tableList.contains(table);
     }
 
-    private void activeTablesHandler() {
-        // if new log, add a table to active map
-    }
-
     public List<Table> getTableList() {
-        return tableList;
+        return Collections.unmodifiableList(tableList);
     }
 
-    // some getter that gives printer data on what to print
-    // can't be getTable
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Hall hall = (Hall) o;
-        return Objects.equals(name, hall.name) &&
-                Objects.equals(tableList, hall.tableList) &&
-                Objects.equals(activeTables, hall.activeTables);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, tableList, activeTables);
+    public String getName() {
+        return name;
     }
 }
