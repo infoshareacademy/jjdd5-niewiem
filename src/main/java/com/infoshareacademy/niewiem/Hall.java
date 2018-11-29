@@ -10,6 +10,7 @@ import static com.infoshareacademy.niewiem.TableType.POOL;
 import static java.util.stream.Collectors.toMap;
 
 public class Hall {
+    private Integer hallId;
     private String name;
     private List<Table> tableList;
     private List<Reservation> reservations;
@@ -32,11 +33,11 @@ public class Hall {
         return true;
     }
 
-    private Table getTable(int tableNumber){
+    private Table getTable(int tableNumber, String tableName){
         // Until GUI we only have pool tables, so we are automatically adding "P" prefix
-        String tableID = "P" + String.format("%02d", tableNumber);
+        Integer tableID = "P" + String.format("%02d", tableNumber);
         TableType tableType = POOL;
-        int tableOnList = tableList.indexOf(new Table(tableID, tableType));
+        int tableOnList = tableList.indexOf(new Table(this, tableType, tableID, tableName));
         return tableList.get(tableOnList);
     }
 

@@ -33,9 +33,10 @@ public class DataProvider {
         try {
             for (Table table : tables) {
                 Set<String> properties = new HashSet<>();
+                properties.add(String.valueOf(table.getHall()));
                 properties.add(String.valueOf(table.getTableId()));
                 properties.add(String.valueOf(table.getType()));
-                properties.add(String.valueOf(table.getClubName()));
+                properties.add(String.valueOf(table.getTableName()));
 
 
                 String singleEntry = properties.stream().collect(Collectors.joining(SEPARATOR));
