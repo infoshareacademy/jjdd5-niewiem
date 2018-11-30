@@ -15,13 +15,22 @@ public class Hall {
     private List<Table> tableList;
     private List<Reservation> reservations;
 
-    public Hall(String name) {
+    public Hall(Integer hallId, String name) {
+        this.hallId = hallId;
         this.name = name;
         this.tableList = new ArrayList<>();
         this.reservations = new ArrayList<>();
     }
 
-    public boolean startGame(int tableNumber, int timeSpanInMinutes){
+    public Integer getHallId() {
+        return hallId;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    /*public boolean startGame(int tableNumber, int timeSpanInMinutes){
 
         Table table = getTable(tableNumber);
         LocalDateTime startTime = LocalDateTime.now();
@@ -31,15 +40,15 @@ public class Hall {
 
         reservations.add(reservation);
         return true;
-    }
+    }*/
 
-    private Table getTable(int tableNumber, String tableName){
+    /*private Table getTable(int tableNumber, String tableName){
         // Until GUI we only have pool tables, so we are automatically adding "P" prefix
         Integer tableID = "P" + String.format("%02d", tableNumber);
         TableType tableType = POOL;
         int tableOnList = tableList.indexOf(new Table(this, tableType, tableID, tableName));
         return tableList.get(tableOnList);
-    }
+    }*/
 
     public Map<Table, Long> getActiveTablesAndRemainingTimes(){
         return reservations.stream()
@@ -59,13 +68,13 @@ public class Hall {
                 ));
     }
 
-    public boolean addTable(TableType type) {
+    /*public boolean addTable(TableType type) {
         int nextAvailableID = tableList.size() + 1;
         String newTableID = "P" + String.format("%02d", nextAvailableID);
         Table newTable = new Table(newTableID, type);
         tableList.add(newTable);
         return true;
-    }
+    }*/
 
     private boolean removeTable(Table table) {
         if (existsInTableList(table)) {

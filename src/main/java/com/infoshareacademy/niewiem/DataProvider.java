@@ -21,18 +21,18 @@ public class DataProvider {
 
     public DataProvider() {
         this.path = Paths.get("data");
-        this.tablesPath = Paths.get(path.toString(), "tables.csv");
         this.hallsPath = Paths.get(path.toString(), "halls.csv");
-        this.reservationPath = Paths.get(path.toString(), "reservation.csv");
+        this.tablesPath = Paths.get(path.toString(), "tables.csv");
+        this.reservationPath = Paths.get(path.toString(), "reservations.csv");
     }
 
-    public void saveDataToFile(Set <Table> tables) {
+    /*public void saveDataToFile(List <Table> tables) {
 
-        Set<String> out = new HashSet<>();
+        List<String> out = new HashSet<>();
 
         try {
             for (Table table : tables) {
-                Set<String> properties = new HashSet<>();
+                List<String> properties = new ArrayList<>();
                 properties.add(String.valueOf(table.getHall()));
                 properties.add(String.valueOf(table.getTableId()));
                 properties.add(String.valueOf(table.getType()));
@@ -47,41 +47,73 @@ public class DataProvider {
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
         }
+    }*/
+
+    public Map<Integer,String> readFromHalls() {
+        return readFromHalls(getFileAsLineList(hallsPath));
     }
 
-    public Set<Table> readFromTables() {
-        return readFromTables(null, getFileAsLineList());
+    public List<Table> readFromTables(Hall hall) {
+        return readFromTables(hall, getFileAsLineList(tablesPath));
     }
 
-    public Set<Table> readFromTables(String club) {
-        return readFromTables(club, getFileAsLineList());
+//    public Table readFromReservations(List<Table> tables){
+//        return readFromReservations(getFileAsLineList(reservationPath));
+//    }
+
+
+    private Map<Integer,String> readFromHalls(List<String> fileByLines) {
+        Map<Integer,String> halls = new HashMap<>();
+
+        for (String line : fileByLines) {
+            Hall hall = createHall(line.split(SEPARATOR));
+            halls.put(hall.getHallId(), hall.getName());
+        }
+
+        return halls;
     }
 
-    Set<Table> readFromTables(String club, Set<String> fileByLines) {
-        Set<Table> tables = new HashSet<>();
+    private List<Table> readFromTables(Hall hall,List<String> fileByLines) {
+        List<Table> tables = new ArrayList<>();
 
-            for (String line : fileByLines) {
-                if (club == null) {
-                    tables.add(createTable(line.split(SEPARATOR)));
-                } else if(line.contains(club)) {
-                    tables.add(createTable(line.split(SEPARATOR)));
-                }
+        for (String line : fileByLines) {
+            Table tableToAdd = createTable(hall,line.split(SEPARATOR));
+            if(tableToAdd != null) {
+                tables.add(tableToAdd);
             }
-
+        }
         return tables;
     }
 
-    private Set<String> getFileAsLineList() {
+    private Table readFromReservations(List<String> fileByLines){
+
+    }
+
+    private List <String> getFileAsLineList(Path path) {
         try {
-            return new HashSet<>(Files.readAllLines(tablesPath));
+            return new ArrayList<>(Files.readAllLines(path));
         } catch (IOException ex) {
             System.out.println("Can't find this file!");
-            return new HashSet<>();
+            return new ArrayList<>();
         }
     }
 
-    public Table createTable(String [] splittedLine) {
-        return new Table(Integer.valueOf(splittedLine[0].trim()), TableType.valueOf(splittedLine[1].trim()), String.valueOf(splittedLine[2].trim()));
+    private Hall createHall(String [] splittedLine) {
+        return new Hall(Integer.valueOf(splittedLine[0].trim()),String.valueOf((splittedLine[1].trim())));
+    }
+
+    private Table createTable(Hall hall,String [] splittedLine) {
+
+        Integer hallIDfromFile = Integer.valueOf(splittedLine[0].trim());
+
+        if(hallIDfromFile.equals(hall.getHallId())) {
+            TableType tableType = TableType.valueOf(splittedLine[1].trim());
+            Integer tableId = Integer.valueOf(splittedLine[2].trim());
+            String tableName = String.valueOf(splittedLine[3].trim());
+            return new Table(hall, tableType, tableId, tableName);
+        }
+
+        return null;
     }
 }
 
