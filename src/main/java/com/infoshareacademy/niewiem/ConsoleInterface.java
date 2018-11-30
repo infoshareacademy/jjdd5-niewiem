@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import com.infoshareacademy.niewiem.Factory;
 
 public class ConsoleInterface {
     private static final String FUNCTIONALITY_UNAVAILABLE = "I'm sorry Dave, I'm afraid I can't do that.";
@@ -248,6 +249,7 @@ public class ConsoleInterface {
             System.out.printf("Adding table P%d...\n", (i+1));
             hall.addTable(TableType.POOL);
         }
+
         mainMenu();
     }
 

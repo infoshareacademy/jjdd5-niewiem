@@ -51,4 +51,5 @@ public class Reservation {
         LocalDateTime now = LocalDateTime.now();
         return now.until(endTime, ChronoUnit.SECONDS);
     }
+
 }
