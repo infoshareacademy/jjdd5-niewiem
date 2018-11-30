@@ -1,5 +1,8 @@
 package com.infoshareacademy.niewiem;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class ConsoleInterface {
     private static final String FUNCTIONALITY_UNAVAILABLE = "I'm sorry Dave, I'm afraid I can't do that.";
     private static final String GOODBYE_MESSAGE = "Bye, bye!";
@@ -131,9 +134,26 @@ public class ConsoleInterface {
     /*********** ADD RESERVATION *************************/
 
     private void addReservationMenu() {
-        System.out.println("Functionality unavailable");
+        //todo: check if date is within a week from the date:
+        System.out.println("Choose a date within a week of today (YY-MM-DD):");
+        LocalDate startDate = cr.readDate();
+        //todo: check if time is within open hours of the club:
+        System.out.println("Choose time between 12:00 and 23:00 (HH:MM):");
+        //todo: check if reservation ends before closing time:
+        LocalTime startTime = cr.readTime();
+        System.out.println("Enter time span in minutes:");
+        int timeSpan = cr.readInt();
+        System.out.println("Enter table number:");
+        int tableNumber = cr.readInt();
+        addReservation(tableNumber, startTime, startDate, timeSpan);
+
         mainMenu();
     }
+
+    private boolean addReservation() {
+
+    }
+
 
     /*********** CANCEL RESERVATION *************************/
 
