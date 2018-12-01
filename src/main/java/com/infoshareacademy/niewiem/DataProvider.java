@@ -12,7 +12,7 @@ public class DataProvider {
     // read files with time logs for a given hall
     // read files with table data specific to a given hall
 
-    private static final String SEPARATOR = ",";
+    private static final String SEPARATOR = ";";
     private Path path;
     private Path tablesPath;
     private Path hallsPath;
@@ -20,13 +20,13 @@ public class DataProvider {
 
 
     public DataProvider() {
-        this.path = Paths.get("data");
+        this.path = Paths.get("test-hall");
         this.tablesPath = Paths.get(path.toString(), "tables.csv");
         this.hallsPath = Paths.get(path.toString(), "halls.csv");
         this.reservationPath = Paths.get(path.toString(), "reservation.csv");
     }
 
-    public void saveDataToFile(Set <Table> tables) {
+    /*public void saveDataToFile(Set <Table> tables) {
 
         Set<String> out = new HashSet<>();
 
@@ -47,41 +47,58 @@ public class DataProvider {
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
         }
+    }*/
+
+
+    public List<Hall> readFromHalls() {
+        return readFromHalls(getFileAsLineList());
     }
 
-    public Set<Table> readFromTables() {
-        return readFromTables(null, getFileAsLineList());
+    public List<Table> readFromTables() {
+        return readFromTables(getFileAsLineList());
     }
 
-    public Set<Table> readFromTables(String club) {
-        return readFromTables(club, getFileAsLineList());
-    }
+    private List<Table> readFromTables(List<String> fileByLines) {
+        List<Table> tables = new ArrayList<>();
 
-    Set<Table> readFromTables(String club, Set<String> fileByLines) {
-        Set<Table> tables = new HashSet<>();
+        fileByLines.remove(0);
 
-            for (String line : fileByLines) {
-                if (club == null) {
-                    tables.add(createTable(line.split(SEPARATOR)));
-                } else if(line.contains(club)) {
-                    tables.add(createTable(line.split(SEPARATOR)));
-                }
-            }
+        for (String line : fileByLines) {
+            tables.add(createTable(line.split(SEPARATOR)));
+        }
+
+        tables.retainAll(readFromHalls());
 
         return tables;
     }
 
-    private Set<String> getFileAsLineList() {
+    private List<Hall> readFromHalls(List<String> fileByLines) {
+        List<Hall> halls = new ArrayList<>();
+
+        fileByLines.remove(0);
+
+            for (String line : fileByLines) {
+                halls.add(createHall(line.split(SEPARATOR)));
+            }
+
+        return halls;
+    }
+
+    private List <String> getFileAsLineList() {
         try {
-            return new HashSet<>(Files.readAllLines(tablesPath));
+            return new ArrayList<>(Files.readAllLines(hallsPath));
         } catch (IOException ex) {
             System.out.println("Can't find this file!");
-            return new HashSet<>();
+            return new ArrayList<>();
         }
     }
 
-    public Table createTable(String [] splittedLine) {
-        return new Table(Integer.valueOf(splittedLine[0].trim()), TableType.valueOf(splittedLine[1].trim()), String.valueOf(splittedLine[2].trim()));
+    private Hall createHall(String [] splittedLine) {
+        return new Hall(Integer.valueOf(splittedLine[0].trim()),String.valueOf((splittedLine[1].trim())));
+    }
+
+    private Table createTable(String [] splittedLine) {
+        return new Table(this.(splittedLine[0].trim()),TableType.valueOf(splittedLine[1].trim()), Integer.valueOf(splittedLine[2].trim()),String.valueOf(splittedLine[3].trim()));
     }
 }
 

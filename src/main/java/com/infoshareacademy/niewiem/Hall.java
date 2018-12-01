@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import com.infoshareacademy.niewiem.DataProvider;
 
 import static com.infoshareacademy.niewiem.TableType.POOL;
 import static java.util.stream.Collectors.toMap;
@@ -15,10 +16,20 @@ public class Hall {
     private List<Table> tableList;
     private List<Reservation> reservations;
 
-    public Hall(String name) {
+    public Hall(Integer hallId, String name) {
+        this.hallId = hallId;
         this.name = name;
         this.tableList = new ArrayList<>();
         this.reservations = new ArrayList<>();
+    }
+
+    public void loadExistingHall(){
+        this.tableList = DataProvider.returnTablesListFromFile(this);
+        this.reservations = DataProvider.returnReservationsFromList();
+    }
+
+    public Integer getHallId() {
+        return hallId;
     }
 
     public boolean startGame(int tableNumber, int timeSpanInMinutes){

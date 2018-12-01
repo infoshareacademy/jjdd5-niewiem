@@ -1,4 +1,7 @@
 package com.infoshareacademy.niewiem;
+import com.infoshareacademy.niewiem.DataProvider;
+
+import java.util.Map;
 
 public class ConsoleInterface {
     private static final String FUNCTIONALITY_UNAVAILABLE = "I'm sorry Dave, I'm afraid I can't do that.";
@@ -40,10 +43,16 @@ public class ConsoleInterface {
                 System.exit(0);
                 break;
             case 1:
-                System.out.println(FUNCTIONALITY_UNAVAILABLE);
+                Map<Integer, String> halls = DataProvider.returnAllHalls();
+                printAvailableHalls(halls);
+                System.out.println("Enter hall's number: ");
+                int chosenHallID = cr.readInt();
+                this.hall = new Hall(chosenHallID, halls.get(chosenHallID));
+                hall.loadExistingHall();
+                mainMenu();
                 break;
             case 2:
-                this.hall = new Hall(readHallName());
+//                this.hall = new Hall(readHallName());
                 mainMenu();
                 break;
             case 88224646:
@@ -53,6 +62,12 @@ public class ConsoleInterface {
             default:
                 hallMenu();
                 break;
+        }
+    }
+
+    private void printAvailableHalls(Map<Integer, String> halls) {
+        for(Map.Entry hall : halls.entrySet()){
+            System.out.println(hall.getKey() + ". " + hall.getValue());
         }
     }
 
