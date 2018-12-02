@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem;
 
 public class Table implements Comparable<Table> {
-    private Hall hall;
+    private final Hall hall;
     private final TableType type;
     private final Integer tableId;
     private final String tableName;
@@ -11,10 +11,6 @@ public class Table implements Comparable<Table> {
         this.type = type;
         this.tableId = tableId;
         this.tableName = tableName;
-    }
-
-    public void setHall(Hall hall) {
-        this.hall = hall;
     }
 
     public Hall getHall() {
