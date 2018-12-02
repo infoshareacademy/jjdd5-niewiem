@@ -10,13 +10,10 @@ import java.util.stream.Collectors;
 
 public class DataProvider {
 
-    // read files with time logs for a given hall
-    // read files with table data specific to a given hall
-
     private static final String SEPARATOR = ";";
-    private static final Path path = Paths.get("test-hall");
-    private static final Path tablesPath = Paths.get(path.toString(), "halls.csv");
-    private static final Path hallsPath = Paths.get(path.toString(), "tables.csv");
+    private static final Path path = Paths.get("files");
+    private static final Path hallsPath = Paths.get(path.toString(), "halls.csv");
+    private static final Path tablesPath = Paths.get(path.toString(), "tables.csv");
     private static final Path reservationPath = Paths.get(path.toString(), "reservations.csv");
 
     private static final int HALL_ID_IN_HALLS = 0;
@@ -29,10 +26,13 @@ public class DataProvider {
     private static final int END_TIME_IN_RESERVATIONS = 2;
     private static final int CUSTOMER = 3;
 
-    public static void writeHallToFile(Hall hall) {
+
+    public static boolean saveHallInCsv(Hall hall) {
         List<String> out = new ArrayList<>();
 
         try {
+            returnPreviousContent(out, hallsPath);
+
             List<String> hallsAsStringList = new ArrayList<>();
             hallsAsStringList.add(String.valueOf(hall.getHallId()));
             hallsAsStringList.add(hall.getName());
@@ -41,15 +41,21 @@ public class DataProvider {
             out.add(singleEntry);
             Files.write(hallsPath, out);
 
+            return true;
+
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
+            return false;
         }
+
     }
 
-    public static void writeTablesToFile(Table table, Hall hall){
+    public static boolean saveTableInCsv(Table table, Hall hall){
         List<String> out = new ArrayList<>();
 
         try {
+            returnPreviousContent(out, tablesPath);
+
             List<String> tablesAsStringList = new ArrayList<>();
             tablesAsStringList.add(String.valueOf(hall.getHallId()));
             tablesAsStringList.add(String.valueOf(table.getType()));
@@ -60,16 +66,45 @@ public class DataProvider {
             out.add(singleEntry);
             Files.write(tablesPath, out);
 
+            return true;
+
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
+            return false;
         }
     }
 
-    public static Map<Integer, String> returnAllHalls() {
-        return returnAllHalls(getFileAsLineList(hallsPath));
+    public static boolean saveReservationInCsv(Reservation reservation, Table table){
+        List<String> out = new ArrayList<>();
+
+        try {
+            returnPreviousContent(out, reservationPath);
+
+            List<String> reservationAsStringList = new ArrayList<>();
+            reservationAsStringList.add(String.valueOf(table.getTableId()));
+            reservationAsStringList.add(String.valueOf(reservation.getStartTime()));
+            reservationAsStringList.add(String.valueOf(reservation.getEndTime()));
+            reservationAsStringList.add(String.valueOf(reservation.getCustomer()));
+
+            String singleEntry = reservationAsStringList.stream().collect(Collectors.joining(SEPARATOR));
+            out.add(singleEntry);
+            Files.write(reservationPath, out);
+
+            return true;
+
+        } catch (IOException ex) {
+            System.out.println("Can't save this file!");
+            return false;
+        }
     }
 
-    private static Map<Integer, String> returnAllHalls(List<String> fileByLines) {
+    /** Halls *********************************************************************************************************/
+
+    public static Map<Integer, String> getMapOfExistingHalls() {
+        return getMapOfExistingHalls(getFileAsLineList(hallsPath));
+    }
+
+    private static Map<Integer, String> getMapOfExistingHalls(List<String> fileByLines) {
         Map<Integer, String> hallsAsMap = new HashMap<>();
 
         for (String line : fileByLines) {
@@ -84,6 +119,8 @@ public class DataProvider {
 
         return hallsAsMap;
     }
+
+    /*** Tables *******************************************************************************************************/
 
     public static List<Table> returnTablesListFromFile(Hall hall) {
         return returnTablesListFromFile(hall, getFileAsLineList(tablesPath));
@@ -114,6 +151,8 @@ public class DataProvider {
 
         return null;
     }
+
+    /** Reservations **************************************************************************************************/
 
     public static List<Reservation> returnReservationsFromFile(List<Table> tables) {
         return returnReservationsFromFile(tables, getFileAsLineList(reservationPath));
@@ -152,12 +191,21 @@ public class DataProvider {
         return null;
     }
 
+    /** Files - shared functionality **********************************************************************************/
+
     private static List<String> getFileAsLineList(Path path) {
         try {
             return new ArrayList<>(Files.readAllLines(path));
         } catch (IOException ex) {
             System.out.println("Can't find this file!");
             return new ArrayList<>();
+        }
+    }
+
+    private static void returnPreviousContent(List<String> out, Path hallsPath) {
+        List<String> fileAsLineList = getFileAsLineList(hallsPath);
+        for (String line : fileAsLineList) {
+            out.add(line);
         }
     }
 }

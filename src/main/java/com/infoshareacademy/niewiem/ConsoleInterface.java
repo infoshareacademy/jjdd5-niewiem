@@ -1,5 +1,4 @@
 package com.infoshareacademy.niewiem;
-import com.infoshareacademy.niewiem.DataProvider;
 
 import java.util.Map;
 
@@ -43,7 +42,7 @@ public class ConsoleInterface {
                 System.exit(0);
                 break;
             case 1:
-                Map<Integer, String> halls = DataProvider.returnAllHalls();
+                Map<Integer, String> halls = DataProvider.getMapOfExistingHalls();
                 printAvailableHalls(halls);
                 System.out.println("Enter hall's number: ");
                 int chosenHallID = cr.readInt();
