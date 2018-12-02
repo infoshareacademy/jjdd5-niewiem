@@ -1,12 +1,9 @@
 package com.infoshareacademy.niewiem;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.infoshareacademy.niewiem.TableType.POOL;
 import static java.util.stream.Collectors.toMap;
 
 public class Hall {
@@ -20,34 +17,6 @@ public class Hall {
         this.name = name;
         this.tableList = new ArrayList<>();
         this.reservations = new ArrayList<>();
-    }
-
-    public Integer getHallId() {
-        return hallId;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public boolean startGame(int tableNumber, int timeSpanInMinutes){
-
-        Table table = getTable(tableNumber);
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(timeSpanInMinutes);
-
-        Reservation reservation = new Reservation(table, startTime, endTime);
-
-        reservations.add(reservation);
-        return true;
-    }
-
-    private Table getTable(int tableNumber, String tableName){
-        // Until GUI we only have pool tables, so we are automatically adding "P" prefix
-        Integer tableID = "P" + String.format("%02d", tableNumber);
-        TableType tableType = POOL;
-        int tableOnList = tableList.indexOf(new Table(this, tableType, tableID, tableName));
-        return tableList.get(tableOnList);
     }
 
     public Map<Table, Long> getActiveTablesAndRemainingTimes(){
@@ -68,31 +37,26 @@ public class Hall {
                 ));
     }
 
-    public boolean addTable(TableType type) {
-        int nextAvailableID = tableList.size() + 1;
-        String newTableID = "P" + String.format("%02d", nextAvailableID);
-        Table newTable = new Table(newTableID, type);
-        tableList.add(newTable);
-        return true;
+    private Table getTable(int tableId){
+        return tableList.stream()
+                .filter(table -> table.getTableId() == tableId)
+                .findFirst()
+                .orElse(null);
     }
 
-    private boolean removeTable(Table table) {
-        if (existsInTableList(table)) {
-            tableList.remove(table);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean existsInTableList(Table table) {
-        return tableList.contains(table);
-    }
-
-    public List<Table> getTableList() {
-        return Collections.unmodifiableList(tableList);
+    public Integer getHallId() {
+        return hallId;
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<Table> getTableList() {
+        return tableList;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
     }
 }

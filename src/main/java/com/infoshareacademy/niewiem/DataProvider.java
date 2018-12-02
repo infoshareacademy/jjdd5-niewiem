@@ -21,19 +21,18 @@ public class DataProvider {
     public static final int TABLE_NAME_IN_TABLES = 3;
     public static final int TABLE_ID_IN_RESERVATIONS = 0;
 
-    public static Map<Integer, String> readFromHalls() {
-        return readFromHalls(getFileAsLineList(hallsPath));
+    //todo:
+    // public static Integer getNextAvailableHallID(){}
+    // public static boolean saveHallInCsv(){}
+
+
+    /** Halls *********************************************************************************************************/
+
+    public static Map<Integer, String> getMapOfExistingHalls() {
+        return getMapOfExistingHalls(getFileAsLineList(hallsPath));
     }
 
-    public static List<Table> readFromTables(Hall hall) {
-        return readFromTables(hall, getFileAsLineList(tablesPath));
-    }
-
-    public static Table readFromReservations(List<Table> tables) {
-        return readFromReservations(tables, getFileAsLineList(reservationPath));
-    }
-
-    private static Map<Integer, String> readFromHalls(List<String> fileByLines) {
+    private static Map<Integer, String> getMapOfExistingHalls(List<String> fileByLines) {
         Map<Integer, String> hallsAsMap = new HashMap<>();
 
         for (String line : fileByLines) {
@@ -42,11 +41,16 @@ public class DataProvider {
             Integer hallID = Integer.valueOf(hallAsArray[HALL_ID_IN_HALLS]);
             String hallName = hallAsArray[HALL_NAME_IN_HALLS];
 
-
             hallsAsMap.put(hallID, hallName);
         }
 
         return hallsAsMap;
+    }
+
+    /*** Tables *******************************************************************************************************/
+
+    public static List<Table> readFromTables(Hall hall) {
+        return readFromTables(hall, getFileAsLineList(tablesPath));
     }
 
     private static List<Table> readFromTables(Hall hall, List<String> fileByLines) {
@@ -61,6 +65,25 @@ public class DataProvider {
         return tables;
     }
 
+    private static Table loadTable(Hall hall, String[] splittedLine) {
+        Integer hallIDfromFile = Integer.valueOf(splittedLine[HALL_ID_IN_HALLS].trim());
+        boolean hallMatchesTable = hallIDfromFile.equals(hall.getHallId());
+
+        if (hallMatchesTable) {
+            TableType tableType = TableType.valueOf(splittedLine[TABLE_TYPE_IN_TABLES_].trim());
+            Integer tableId = Integer.valueOf(splittedLine[TABLE_ID_IN_TABLES].trim());
+            String tableName = splittedLine[TABLE_NAME_IN_TABLES].trim();
+            return new Table(hall, tableType, tableId, tableName);
+        }
+        return null;
+    }
+
+    /** Reservations **************************************************************************************************/
+
+    public static List<Reservation> readFromReservations(List<Table> tables) {
+        return readFromReservations(tables, getFileAsLineList(reservationPath));
+    }
+
     private static List<Reservation> readFromReservations(List<Table> tables, List<String> fileByLines) {
         List<Reservation> reservations = new ArrayList<>();
 
@@ -68,29 +91,6 @@ public class DataProvider {
             String[] reservatiosAsArray = line.split(SEPARATOR);
             Integer tableIdFromFile = Integer.valueOf(reservatiosAsArray[0]);
         }
-        return null;
-    }
-
-    private static List<String> getFileAsLineList(Path path) {
-        try {
-            return new ArrayList<>(Files.readAllLines(path));
-        } catch (IOException ex) {
-            System.out.println("Can't find this file!");
-            return new ArrayList<>();
-        }
-    }
-
-    private static Table loadTable(Hall hall, String[] splittedLine) {
-
-        Integer hallIDfromFile = Integer.valueOf(splittedLine[HALL_ID_IN_HALLS].trim());
-
-        if (hallIDfromFile.equals(hall.getHallId())) {
-            TableType tableType = TableType.valueOf(splittedLine[TABLE_TYPE_IN_TABLES_].trim());
-            Integer tableId = Integer.valueOf(splittedLine[TABLE_ID_IN_TABLES].trim());
-            String tableName = splittedLine[TABLE_NAME_IN_TABLES].trim();
-            return new Table(hall, tableType, tableId, tableName);
-        }
-
         return null;
     }
 
@@ -112,6 +112,17 @@ public class DataProvider {
             return new Reservation(tableFromReservation, startTime, endTime, customer);
         }
         return null;
+    }
+
+    /** Files - shared functionality **********************************************************************************/
+
+    private static List<String> getFileAsLineList(Path path) {
+        try {
+            return new ArrayList<>(Files.readAllLines(path));
+        } catch (IOException ex) {
+            System.out.println("Can't find this file!");
+            return new ArrayList<>();
+        }
     }
 }
 

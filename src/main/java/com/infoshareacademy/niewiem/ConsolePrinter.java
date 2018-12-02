@@ -53,7 +53,7 @@ public class ConsolePrinter {
     private static void printLineWithTableNumbers(Map<Table, Long> tables) {
         tables.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> System.out.print("|  " + entry.getKey().getTableId() + "  |"));
+                .forEach(entry -> System.out.print("|  " + entry.getKey().getTableName() + "  |"));
         System.out.print("\n");
     }
 
