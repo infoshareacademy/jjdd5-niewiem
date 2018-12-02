@@ -19,7 +19,7 @@ public class Hall {
         this.reservations = new ArrayList<>();
     }
 
-    public Map<Table, Long> getActiveTablesAndRemainingTimes(){
+    public Map<Table, Long> getActiveTablesAndRemainingTimes() {
         return reservations.stream()
                 .filter(Reservation::isInProgress)
                 .collect(toMap(
@@ -28,7 +28,7 @@ public class Hall {
                 ));
     }
 
-    public Map<Table, Long> getAllTablesAndRemainingTimes(){
+    public Map<Table, Long> getAllTablesAndRemainingTimes() {
         Map<Table, Long> activeTables = getActiveTablesAndRemainingTimes();
         return tableList.stream()
                 .collect(toMap(
@@ -37,7 +37,7 @@ public class Hall {
                 ));
     }
 
-    private Table getTable(int tableId){
+    private Table getTable(int tableId) {
         return tableList.stream()
                 .filter(table -> table.getTableId() == tableId)
                 .findFirst()

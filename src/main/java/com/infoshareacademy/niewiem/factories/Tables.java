@@ -27,4 +27,11 @@ public class Tables {
         Table table = new Table(hall, type, tableID, name);
         hall.getTableList().add(table);
     }
+
+    public static Table getTableByID(Hall hall, Integer tableId) {
+        return hall.getTableList().stream()
+                .filter(table -> table.getTableId() == tableId)
+                .findFirst()
+                .orElse(null);
+    }
 }

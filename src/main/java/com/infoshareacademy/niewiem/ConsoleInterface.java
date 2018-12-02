@@ -4,9 +4,7 @@ import com.infoshareacademy.niewiem.factories.Halls;
 import com.infoshareacademy.niewiem.factories.Reservations;
 import com.infoshareacademy.niewiem.factories.Tables;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 
 public class ConsoleInterface {
@@ -17,20 +15,26 @@ public class ConsoleInterface {
     private ConsolePrinter cp;
     private Hall hall;
 
-    /** Constructor ***************************************************************************************************/
+    /**
+     * Constructor
+     ***************************************************************************************************/
 
     ConsoleInterface() {
         this.cr = new ConsoleReader();
         this.cp = new ConsolePrinter();
     }
 
-    /** Boot Up *******************************************************************************************************/
+    /**
+     * Boot Up
+     *******************************************************************************************************/
 
     public void bootUp() {
         hallMenu();
     }
 
-    /** Hall Menu *****************************************************************************************************/
+    /**
+     * Hall Menu
+     *****************************************************************************************************/
 
     private void printHallMenu() {
         System.out.println("" +
@@ -41,7 +45,7 @@ public class ConsoleInterface {
 
     private void hallMenu() {
         printHallMenu();
-        int choice = cr.readInt();
+        int choice = cr.enterInt();
         switch (choice) {
             case 0:
                 System.out.println(GOODBYE_MESSAGE);
@@ -51,7 +55,7 @@ public class ConsoleInterface {
                 System.out.println(FUNCTIONALITY_UNAVAILABLE);
                 break;
             case 2:
-                this.hall = Halls.create(readHallName());
+                this.hall = Halls.create(enterHallName());
                 mainMenu();
                 break;
             case 88224646:
@@ -64,12 +68,14 @@ public class ConsoleInterface {
         }
     }
 
-    private String readHallName() {
+    private String enterHallName() {
         System.out.println("Enter hall's name: ");
-        return cr.readString();
+        return cr.enterString();
     }
 
-    /** Main Menu *****************************************************************************************************/
+    /**
+     * Main Menu
+     *****************************************************************************************************/
 
     private void printMainMenu() {
         System.out.println("" +
@@ -88,7 +94,7 @@ public class ConsoleInterface {
     private void mainMenu() {
         printTables();
         printMainMenu();
-        int choice = cr.readInt();
+        int choice = cr.enterInt();
         switch (choice) {
             case 0:
                 System.out.println("Bye, bye!");
@@ -122,70 +128,87 @@ public class ConsoleInterface {
         cp.printTables(hall.getAllTablesAndRemainingTimes());
     }
 
-    /** Choose tables *************************************************************************************************/
+    /**
+     * Start Stop Game
+     *************************************************************************************************/
 
     private void startOrStopGame() {
-        chooseTable();
+        LocalDateTime startTime = LocalDateTime.now();
 
-        //todo: isAvailable() - check if table has a currently started game
-
-        System.out.println("Enter time span in minutes:");
-        int timeSpan = cr.readInt();
-
-//        Reservations.create(tableChoice, timeSpan);
-
+        while (true) {
+            Table table = chooseTable();
+            int timeSpan = enterTimeSpan();
+            if (Reservations.create(hall, table, startTime, timeSpan, "")) {
+                break;
+            }
+            System.out.println("Table is already taken, try again.");
+        }
         mainMenu();
     }
 
-    private void chooseTable(){
-        System.out.println("Choose table ID:");
-        int tableChoice = cr.readInt(); // todo: check what name table is given when created
-        // todo: Tables.get()
+    private int enterTimeSpan() {
+        System.out.println("Enter time span in minutes:");
+        return cr.enterInt();
     }
 
-    /** Add reservations **********************************************************************************************/
+    private Table chooseTable() {
+        while (true) {
+            System.out.println("Choose table ID:");
+            int tableChoice = cr.enterInt();
+            Table table = Tables.getTableByID(hall, tableChoice);
+            if (table != null) {
+                return table;
+            }
+            System.out.println("Table with that ID doesn't exist");
+        }
+    }
+
+    /**
+     * Add reservations
+     **********************************************************************************************/
 
     private void addReservationMenu() {
-        Table tableToBeReserved = null;
-        LocalDateTime startDateTime = null;
-        Integer timeSpan = 0;
-        String customer = "";
-        insertDataForReservation(tableToBeReserved, startDateTime, timeSpan, customer);
+        while (true) {
+            Table table = chooseTable();
+            LocalDateTime startDateTime = LocalDateTime.now().plusMinutes(1); //todo: enter valid time
+            Integer timeSpan = enterTimeSpan();
+            String customer = enterCustomerInformation();
 
-        Reservations.create(this.hall, tableToBeReserved, startDateTime, timeSpan, customer);
-
+            if (Reservations.create(this.hall, table, startDateTime, timeSpan, customer)) {
+                break;
+            }
+            System.out.println("Table is already taken at that time, try again.");
+        }
         mainMenu();
     }
-    private void insertDataForReservation(Table table, LocalDateTime startDateTime, Integer timeSpan, String customer){
-        //todo: show available tables
-        System.out.println("Enter table number:");
-        int tableNumber = cr.readInt();
 
-        System.out.println("Choose a date within a week of today (YY-MM-DD):");
-        LocalDate startDate = cr.readDate();
-
-        System.out.println("Choose time between 12:00 and 23:00 (HH:MM):");
-        LocalTime startTime = cr.readTime();
-
-        System.out.println("Enter time span in minutes:");
-        timeSpan = cr.readInt();
+    private String enterCustomerInformation() {
+        System.out.println("Enter customer information:");
+        return cr.enterString();
     }
 
-    /** Cancel Reservation ********************************************************************************************/
+
+    /**
+     * Cancel Reservation
+     ********************************************************************************************/
 
     private void cancelReservationMenu() {
         System.out.println("Functionality unavailable");
         mainMenu();
     }
 
-    /** Tables Queue **************************************************************************************************/
+    /**
+     * Tables Queue
+     **************************************************************************************************/
 
     private void tablesQueueMenu() {
         System.out.println("Functionality unavailable");
         mainMenu();
     }
 
-    /** Admin Panel ***************************************************************************************************/
+    /**
+     * Admin Panel
+     ***************************************************************************************************/
 
     private void printAdminPanelMenu() {
         System.out.println("" +
@@ -200,7 +223,7 @@ public class ConsoleInterface {
 
     private void adminPanelMenu() {
         printAdminPanelMenu();
-        int choice = cr.readInt();
+        int choice = cr.enterInt();
         switch (choice) {
             case 1:
                 addTableMenu();
@@ -226,7 +249,10 @@ public class ConsoleInterface {
                 break;
         }
     }
-    /** Add Table *****************************************************************************************************/
+
+    /**
+     * Add Table
+     *****************************************************************************************************/
 
     private void addTableMenu() {
         // todo: add choice of TableType and name
@@ -237,23 +263,25 @@ public class ConsoleInterface {
         mainMenu();
     }
 
-    private String chooseTableName(){
+    private String chooseTableName() {
         Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
         return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
     }
 
-    private TableType chooseTableType(){
+    private TableType chooseTableType() {
         return TableType.POOL;
     }
 
 
-    /** Dev Panel *****************************************************************************************************/
+    /**
+     * Dev Panel
+     *****************************************************************************************************/
 
     private void devPanelMenu() {
         System.out.println("Adding new hall...");
         this.hall = Halls.create("DEMO CLUB"); // todo: new hall should not be saved to file!
         for (int i = 0; i < 9; i++) {
-            System.out.printf("Adding table P%d...\n", (i+1));
+            System.out.printf("Adding table P%d...\n", (i + 1));
             Integer tableID = Tables.getNextAvailableId(hall);
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
@@ -262,13 +290,15 @@ public class ConsoleInterface {
         mainMenu();
     }
 
-    /** Shared functions **********************************************************************************************/
+    /**
+     * Shared functions
+     **********************************************************************************************/
 
     private void printFunctionalityUnavailable() {
         System.out.println(FUNCTIONALITY_UNAVAILABLE);
     }
 
-    private String giveNameBasedOnId(Integer tableID, TableType type){
+    private String giveNameBasedOnId(Integer tableID, TableType type) {
         String typeToString = "P";
         String idToString = String.format("%02d", tableID);
         return typeToString + idToString;

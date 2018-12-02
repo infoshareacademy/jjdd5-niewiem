@@ -12,26 +12,26 @@ public class ConsoleReader {
         this.sc = new Scanner(System.in);
     }
 
-    public int readInt(){
+    public int enterInt(){
         // check if input is actually int
         int input = sc.nextInt();
         sc.nextLine();
         return input;
     }
 
-    public LocalDate readDate(){
+    public LocalDate enterDate(){
         String input = sc.nextLine();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.parse(input, dateFormat);
     }
-    public LocalTime readTime(){
+    public LocalTime enterTime(){
         String input = sc.nextLine();
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
         return LocalTime.parse(input, timeFormat);
     }
 
 
-    public String readString(){
+    public String enterString(){
         return sc.nextLine();
     }
 }
