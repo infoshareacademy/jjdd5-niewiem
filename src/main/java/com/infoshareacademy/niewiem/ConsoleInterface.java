@@ -17,20 +17,26 @@ public class ConsoleInterface {
     private ConsolePrinter cp;
     private Hall hall;
 
-    /** Constructor ***************************************************************************************************/
+    /**
+     * Constructor
+     ***************************************************************************************************/
 
     ConsoleInterface() {
         this.cr = new ConsoleReader();
         this.cp = new ConsolePrinter();
     }
 
-    /** Boot Up *******************************************************************************************************/
+    /**
+     * Boot Up
+     *******************************************************************************************************/
 
     public void bootUp() {
         hallMenu();
     }
 
-    /** Hall Menu *****************************************************************************************************/
+    /**
+     * Hall Menu
+     *****************************************************************************************************/
 
     private void printHallMenu() {
         System.out.println("" +
@@ -41,7 +47,15 @@ public class ConsoleInterface {
 
     private void hallMenu() {
         printHallMenu();
-        int choice = cr.readInt();
+        hallMenuChoice(cr.readInt());
+    }
+
+    private void getHallMenuValue() {
+        printWrongValueMessage();
+        hallMenuChoice(cr.readInt());
+    }
+
+    private void hallMenuChoice(int choice) {
         switch (choice) {
             case 0:
                 System.out.println(GOODBYE_MESSAGE);
@@ -59,7 +73,7 @@ public class ConsoleInterface {
                 mainMenu();
                 break;
             default:
-                hallMenu();
+                getHallMenuValue();
                 break;
         }
     }
@@ -69,7 +83,9 @@ public class ConsoleInterface {
         return cr.readString();
     }
 
-    /** Main Menu *****************************************************************************************************/
+    /**
+     * Main Menu
+     *****************************************************************************************************/
 
     private void printMainMenu() {
         System.out.println("" +
@@ -88,7 +104,15 @@ public class ConsoleInterface {
     private void mainMenu() {
         printTables();
         printMainMenu();
-        int choice = cr.readInt();
+        mainMenuChoice(cr.readInt());
+    }
+
+    private void getMainMenuValue() {
+        printWrongValueMessage();
+        mainMenuChoice(cr.readInt());
+    }
+
+    private void mainMenuChoice(int choice) {
         switch (choice) {
             case 0:
                 System.out.println("Bye, bye!");
@@ -113,7 +137,7 @@ public class ConsoleInterface {
                 devPanelMenu();
                 break;
             default:
-                mainMenu();
+                getMainMenuValue();
                 break;
         }
     }
@@ -122,7 +146,9 @@ public class ConsoleInterface {
         cp.printTables(hall.getAllTablesAndRemainingTimes());
     }
 
-    /** Choose tables *************************************************************************************************/
+    /**
+     * Choose tables
+     *************************************************************************************************/
 
     private void startOrStopGame() {
         chooseTable();
@@ -137,13 +163,15 @@ public class ConsoleInterface {
         mainMenu();
     }
 
-    private void chooseTable(){
+    private void chooseTable() {
         System.out.println("Choose table ID:");
         int tableChoice = cr.readInt(); // todo: check what name table is given when created
         // todo: Tables.get()
     }
 
-    /** Add reservations **********************************************************************************************/
+    /**
+     * Add reservations
+     **********************************************************************************************/
 
     private void addReservationMenu() {
         Table tableToBeReserved = null;
@@ -156,7 +184,8 @@ public class ConsoleInterface {
 
         mainMenu();
     }
-    private void insertDataForReservation(Table table, LocalDateTime startDateTime, Integer timeSpan, String customer){
+
+    private void insertDataForReservation(Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
         //todo: show available tables
         System.out.println("Enter table number:");
         int tableNumber = cr.readInt();
@@ -171,21 +200,27 @@ public class ConsoleInterface {
         timeSpan = cr.readInt();
     }
 
-    /** Cancel Reservation ********************************************************************************************/
+    /**
+     * Cancel Reservation
+     ********************************************************************************************/
 
     private void cancelReservationMenu() {
         System.out.println("Functionality unavailable");
         mainMenu();
     }
 
-    /** Tables Queue **************************************************************************************************/
+    /**
+     * Tables Queue
+     **************************************************************************************************/
 
     private void tablesQueueMenu() {
         System.out.println("Functionality unavailable");
         mainMenu();
     }
 
-    /** Admin Panel ***************************************************************************************************/
+    /**
+     * Admin Panel
+     ***************************************************************************************************/
 
     private void printAdminPanelMenu() {
         System.out.println("" +
@@ -200,7 +235,15 @@ public class ConsoleInterface {
 
     private void adminPanelMenu() {
         printAdminPanelMenu();
-        int choice = cr.readInt();
+        adminPanelChoice(cr.readInt());
+    }
+
+    private void getAdminPanelValue() {
+        printWrongValueMessage();
+        adminPanelChoice(cr.readInt());
+    }
+
+    private void adminPanelChoice(int choice) {
         switch (choice) {
             case 1:
                 addTableMenu();
@@ -222,11 +265,14 @@ public class ConsoleInterface {
 //                deleteTableMenu();
                 break;
             default:
-                mainMenu();
+                getAdminPanelValue();
                 break;
         }
     }
-    /** Add Table *****************************************************************************************************/
+
+    /**
+     * Add Table
+     *****************************************************************************************************/
 
     private void addTableMenu() {
         // todo: add choice of TableType and name
@@ -237,23 +283,25 @@ public class ConsoleInterface {
         mainMenu();
     }
 
-    private String chooseTableName(){
+    private String chooseTableName() {
         Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
         return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
     }
 
-    private TableType chooseTableType(){
+    private TableType chooseTableType() {
         return TableType.POOL;
     }
 
 
-    /** Dev Panel *****************************************************************************************************/
+    /**
+     * Dev Panel
+     *****************************************************************************************************/
 
     private void devPanelMenu() {
         System.out.println("Adding new hall...");
         this.hall = Halls.create("DEMO CLUB"); // todo: new hall should not be saved to file!
         for (int i = 0; i < 9; i++) {
-            System.out.printf("Adding table P%d...\n", (i+1));
+            System.out.printf("Adding table P%d...\n", (i + 1));
             Integer tableID = Tables.getNextAvailableId(hall);
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
@@ -262,15 +310,21 @@ public class ConsoleInterface {
         mainMenu();
     }
 
-    /** Shared functions **********************************************************************************************/
+    /**
+     * Shared functions
+     **********************************************************************************************/
 
     private void printFunctionalityUnavailable() {
         System.out.println(FUNCTIONALITY_UNAVAILABLE);
     }
 
-    private String giveNameBasedOnId(Integer tableID, TableType type){
+    private String giveNameBasedOnId(Integer tableID, TableType type) {
         String typeToString = "P";
         String idToString = String.format("%02d", tableID);
         return typeToString + idToString;
+    }
+
+    private void printWrongValueMessage() {
+        System.out.println("Enter correct value: ");
     }
 }
