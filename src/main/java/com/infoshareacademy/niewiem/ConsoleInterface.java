@@ -52,7 +52,8 @@ public class ConsoleInterface {
                 mainMenu();
                 break;
             case 2:
-//                this.hall = new Hall(readHallName());
+                //todo::wykminic przypisywanie unikalnego id, poki co jest na sztywno 2
+                this.hall = new Hall(2, readHallName());
                 mainMenu();
                 break;
             case 88224646:
@@ -215,16 +216,17 @@ public class ConsoleInterface {
     }
 
     private void addTableMenu() {
-
+        System.out.println("Enter table name: ");
+        String tableName = cr.readString();
         printTableMenu();
         int choice = cr.readInt();
         switch (choice) {
             case 1:
-                hall.addTable(TableType.POOL);
+                hall.addTable(TableType.POOL, tableName);
                 mainMenu();
                 break;
             case 2:
-                hall.addTable(TableType.SNOOKER);
+                hall.addTable(TableType.SNOOKER, tableName);
                 mainMenu();
                 break;
             default:
@@ -238,10 +240,10 @@ public class ConsoleInterface {
 
     private void devPanelMenu() {
         System.out.println("Adding new hall...");
-        this.hall = new Hall("TEST CLUB");
+        this.hall = new Hall(1,"TEST CLUB");
         for (int i = 0; i < 9; i++) {
             System.out.printf("Adding table P%d...\n", (i+1));
-            hall.addTable(TableType.POOL);
+            hall.addTable(TableType.POOL, "test"+i);
         }
         mainMenu();
     }

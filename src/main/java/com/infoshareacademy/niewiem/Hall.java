@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import com.infoshareacademy.niewiem.DataProvider;
 
 import static com.infoshareacademy.niewiem.TableType.POOL;
@@ -23,7 +24,7 @@ public class Hall {
         this.reservations = new ArrayList<>();
     }
 
-    public void loadExistingHall(){
+    public void loadExistingHall() {
         this.tableList = DataProvider.returnTablesListFromFile(this);
         this.reservations = DataProvider.returnReservationsFromFile(tableList);
     }
@@ -36,7 +37,7 @@ public class Hall {
         return reservations;
     }
 
-    public boolean startGame(int tableNumber, int timeSpanInMinutes){
+    public boolean startGame(int tableNumber, int timeSpanInMinutes) {
         Table table = getTable(tableNumber);
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = startTime.plusMinutes(timeSpanInMinutes);
@@ -47,15 +48,12 @@ public class Hall {
         return true;
     }
 
-    private Table getTable(int tableNumber){
+    private Table getTable(int tableNumber) {
         // Until GUI we only have pool tables, so we are automatically adding "P" prefix
-        String tableID = "P" + String.format("%02d", tableNumber);
-        TableType tableType = POOL;
-        int tableOnList = tableList.indexOf(new Table(tableID, tableType));
-        return tableList.get(tableOnList);
+        return tableList.stream().filter(table -> table.getTableId() == tableNumber).findFirst().get();
     }
 
-    public Map<Table, Long> getActiveTablesAndRemainingTimes(){
+    public Map<Table, Long> getActiveTablesAndRemainingTimes() {
         return reservations.stream()
                 .filter(Reservation::isInProgress)
                 .collect(toMap(
@@ -64,7 +62,7 @@ public class Hall {
                 ));
     }
 
-    public Map<Table, Long> getAllTablesAndRemainingTimes(){
+    public Map<Table, Long> getAllTablesAndRemainingTimes() {
         Map<Table, Long> activeTables = getActiveTablesAndRemainingTimes();
         return tableList.stream()
                 .collect(toMap(
@@ -73,10 +71,9 @@ public class Hall {
                 ));
     }
 
-    public boolean addTable(TableType type) {
+    public boolean addTable(TableType type, String tableName) {
         int nextAvailableID = tableList.size() + 1;
-        String newTableID = "P" + String.format("%02d", nextAvailableID);
-        Table newTable = new Table(newTableID, type);
+        Table newTable = new Table(this, type, nextAvailableID, tableName);
         tableList.add(newTable);
         return true;
     }

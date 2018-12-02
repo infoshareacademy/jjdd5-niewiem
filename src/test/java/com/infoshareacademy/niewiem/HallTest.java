@@ -11,7 +11,7 @@ public class HallTest {
     @Test
     public void newHallNameIsTheSameAsInConstructor(){
         // GIVEN
-        Hall hall = new Hall("Hall");
+        Hall hall = new Hall(1,"Hall");
 
         // WHEN
         String result = hall.getName();
@@ -22,7 +22,7 @@ public class HallTest {
     @Test
     public void newHallHasEmptyTableList(){
         // GIVEN
-        Hall hall = new Hall("Hall");
+        Hall hall = new Hall(1,"Hall");
 
         // WHEN
         List<Table> result = hall.getTableList();
