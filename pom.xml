@@ -48,7 +48,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>fully.qualified.MainClass</mainClass>
+                            <mainClass>com.infoshareacademy.niewiem.App</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
