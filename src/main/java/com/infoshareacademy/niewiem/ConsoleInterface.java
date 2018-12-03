@@ -236,10 +236,7 @@ public class ConsoleInterface {
         System.out.println("" +
                 "ADMIN PANEL\n" +
                 "1. Add table\n" +
-                "2. Freeze table\n" +
-                "3. Show frozen tables\n" +
-                "4. Unfreeze table\n" +
-                "5. Delete table\n" +
+                "2. Remove table\n" +
                 "0. Get back to App Menu");
     }
 
@@ -251,25 +248,21 @@ public class ConsoleInterface {
                 addTableMenu();
                 break;
             case 2:
-                printFunctionalityUnavailable();
-//                freezeTableMenu();
-                break;
-            case 3:
-                printFunctionalityUnavailable();
-//                showFrozenTablesMenu();
-                break;
-            case 4:
-                printFunctionalityUnavailable();
-//                unfreezeTableMenu();
-                break;
-            case 5:
-                printFunctionalityUnavailable();
-//                deleteTableMenu();
+                removeTableMenu();
                 break;
             default:
                 mainMenu();
                 break;
         }
+    }
+
+    /**
+     * Remove Table
+     *****************************************************************************************************/
+
+    private void removeTableMenu() {
+        Table table = chooseTable();
+        Tables.remove(hall, table);
     }
 
     /**

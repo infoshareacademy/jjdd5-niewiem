@@ -34,4 +34,11 @@ public class Tables {
                 .findFirst()
                 .orElse(null);
     }
+
+    public static void remove(Hall hall, Table table) {
+        Reservations.stop(hall, table);
+        Reservations.cancelAllFutureReservationsFromTable(hall, table);
+        hall.getTableList().remove(table);
+        // todo: remove table from file as well
+    }
 }

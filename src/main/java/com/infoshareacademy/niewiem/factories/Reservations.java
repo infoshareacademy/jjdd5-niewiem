@@ -34,6 +34,14 @@ public class Reservations {
         //todo: find record for the reservation and change history
     }
 
+    public static void cancelAllFutureReservationsFromTable(Hall hall, Table table) {
+        hall.getReservations().stream()
+                .filter(r -> r.getTable().equals(table))
+                .filter(r -> r.getStartTime().isAfter(LocalDateTime.now()))
+                .forEach(r -> hall.getReservations().remove(r));
+        // todo: remove from file
+    }
+
     public static boolean isTimeSpanAvailable(Hall hall, Table table, LocalDateTime startTime, LocalDateTime endTime) {
         Long findConflicts = hall.getReservations().stream()
                 .filter(r -> r.getTable().equals(table))
