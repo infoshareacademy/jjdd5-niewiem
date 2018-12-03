@@ -47,6 +47,18 @@ public class Reservation {
         return startsBeforeNow && endsAfterNow;
     }
 
+    public boolean isOver(){
+        return endTime.isBefore(LocalDateTime.now());
+    }
+
+    public boolean isUpcoming(){
+        return startTime.isAfter(LocalDateTime.now());
+    }
+
+    public boolean isUpcomingOrInProgress(){
+        return endTime.isAfter(LocalDateTime.now());
+    }
+
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }

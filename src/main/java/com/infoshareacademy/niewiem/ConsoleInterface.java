@@ -5,6 +5,7 @@ import com.infoshareacademy.niewiem.factories.Reservations;
 import com.infoshareacademy.niewiem.factories.Tables;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class ConsoleInterface {
@@ -84,9 +85,8 @@ public class ConsoleInterface {
                 "======================\n" +
                 "1. Start/stop game\n" +
                 "2. Add reservation\n" +
-                "3. Cancel reservation\n" +
-                "4. Tables queue\n" +
-                "5. Admin panel\n" +
+                "3. Show reservations and their options\n" +
+                "4. Admin panel\n" +
                 "0. Exit application\n"
         );
     }
@@ -107,12 +107,9 @@ public class ConsoleInterface {
                 addReservationMenu();
                 break;
             case 3:
-                cancelReservationMenu();
+                reservationsMenu();
                 break;
             case 4:
-                tablesQueueMenu();
-                break;
-            case 5:
                 adminPanelMenu();
                 break;
             case 88224646:
@@ -125,7 +122,7 @@ public class ConsoleInterface {
     }
 
     private void printTables() {
-        cp.printTables(hall.getAllTablesAndRemainingTimes());
+        cp.printTables(Reservations.getAllTablesAndRemainingTimes(this.hall));
     }
 
     /**
@@ -156,16 +153,9 @@ public class ConsoleInterface {
                 "1. Yes\n" +
                 "2. No");
         int choice = cr.enterInt();
-        switch (choice) {
-            case 1:
-                Reservations.stop(this.hall, table);
-                mainMenu();
-                break;
-            default:
-                mainMenu();
-                break;
+        if (choice == 1) {
+            Reservations.stop(this.hall, table);
         }
-        mainMenu();
     }
 
     private int enterTimeSpan() {
@@ -190,16 +180,14 @@ public class ConsoleInterface {
      **********************************************************************************************/
 
     private void addReservationMenu() {
-        while (true) {
-            Table table = chooseTable();
-            LocalDateTime startDateTime = LocalDateTime.now().plusMinutes(1); //todo: enter valid time
-            Integer timeSpan = enterTimeSpan();
-            String customer = enterCustomerInformation();
 
-            if (Reservations.create(this.hall, table, startDateTime, timeSpan, customer)) {
-                break;
-            }
-            System.out.println("Table is already taken at that time, try again.");
+        Table table = chooseTable();
+        LocalDateTime startDateTime = LocalDateTime.now().plusMinutes(1); //todo: enter valid time
+        Integer timeSpan = enterTimeSpan();
+        String customer = enterCustomerInformation();
+
+        if (!Reservations.create(this.hall, table, startDateTime, timeSpan, customer)) {
+            System.out.println("Table is already taken at that time, sorry.");
         }
         mainMenu();
     }
@@ -211,21 +199,104 @@ public class ConsoleInterface {
 
 
     /**
-     * Cancel Reservation
+     * Reservations options
      ********************************************************************************************/
 
-    private void cancelReservationMenu() {
-        System.out.println("Functionality unavailable");
+    private void printOptionsForReservations() {
+        System.out.println("" +
+                "=======================================\n" +
+                "1. Add new reservation\n" +
+                "2. Cancel reservation from the list\n" +
+                "3. Show fastest available tables\n" +
+                "4. Show all reservations\n" +
+                "5. Show only upcoming reservations\n" +
+                "6. Show reservations for only one table\n" +
+                "7. Show history\n" +
+                "8. Show history for specific table\n" +
+                "0. Exit to main menu");
+    }
+
+    private void reservationsSwitch(List<Reservation> reservations) {
+        int choice = cr.enterInt();
+        switch (choice) {
+            case 1:
+                addReservationMenu();
+                break;
+            case 2:
+                cancelReservation(reservations);
+                break;
+            case 3:
+                showFastestAvailableTables();
+                break;
+            case 4:
+                reservationsMenu();
+                break;
+            case 5:
+                showOnlyUpcomingReservations();
+                break;
+            case 6:
+                showReservationsForSpecificTable();
+                break;
+            case 7:
+                showPastReservations();
+                break;
+            case 8:
+                showPastReservationsForSpecificTable();
+                break;
+            default:
+                break;
+        }
         mainMenu();
     }
 
-    /**
-     * Tables Queue
-     **************************************************************************************************/
+    private void showPastReservationsForSpecificTable() {
+        Table table = chooseTable();
+        cp.showPastReservationsForSpecificTable(hall, table);
+        System.out.println("Press enter to continue to main menu.");
+        cr.enterString();
+    }
 
-    private void tablesQueueMenu() {
-        System.out.println("Functionality unavailable");
-        mainMenu();
+    private void showPastReservations() {
+        cp.printPastReservations(hall);
+        System.out.println("Press enter to continue to main menu.");
+        cr.enterString();
+    }
+
+
+    private void showReservationsForSpecificTable() {
+        Table table = chooseTable();
+        List<Reservation> reservations = cp.printReservationForSpecificTable(hall, table);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
+    }
+
+    private void reservationsMenu() {
+        List<Reservation> reservations = cp.printListOfReservationsSortedByTableName(this.hall);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
+    }
+
+    private void showOnlyUpcomingReservations() {
+        List<Reservation> reservations = cp.showOnlyUpcomingReservations(this.hall);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
+    }
+
+    private void showFastestAvailableTables() {
+        cp.printFastestAvailableTables(hall);
+        System.out.println("Press enter to continue to main menu.");
+        cr.enterString();
+    }
+
+    private void cancelReservation(List<Reservation> reservations) {
+        System.out.println("Choose number by the reservation you want to cancel:");
+        Integer choice = cr.enterInt();
+        Reservation reservation = reservations.get(choice - 1);
+        if (reservation.isInProgress()) {
+            Reservations.stop(hall, reservation);
+        } else {
+            Reservations.cancel(hall, reservation);
+        }
     }
 
     /**
@@ -296,7 +367,9 @@ public class ConsoleInterface {
         System.out.println("" +
                 "1. Create DEMO CLUB, 10 tables, no reservations\n" +
                 "2. Create DEMO CLUB, 10 tables, all running, no reservations\n" +
-                "3. Create DEMO CLUB, 10 tables, 5 running, 5 reserved (in 10m, 30m, 1h, 2h, 5h");
+                "3. Create DEMO CLUB, 10 tables, 5 running, 5 reserved (in 10m, 30m, 1h, 2h, 5h\n" +
+                "4. Create DEMO CLUB, 10 tables, 7 running, 9 with reservations and history, one free\n" +
+                "0. Get back to Hall Menu");
     }
 
     private void devPanelMenu() {
@@ -304,11 +377,27 @@ public class ConsoleInterface {
         int choice = cr.enterInt();
         switch (choice) {
             case 1:
-                demoClubTenTables();
+                createDemoHall();
+                addTenTables();
                 mainMenu();
                 break;
             case 2:
-                demoClubTenTablesAllBooked();
+                createDemoHall();
+                addTenTables();
+                startAllTenTables();
+                mainMenu();
+                break;
+            case 3:
+                createDemoHall();
+                addTenTables();
+                startOddTables();
+                reserveEvenTables();
+                mainMenu();
+                break;
+            case 4:
+                createDemoHall();
+                addTenTables();
+                add7running9withReservationsAndHistory1Free();
                 mainMenu();
                 break;
             default:
@@ -316,18 +405,6 @@ public class ConsoleInterface {
                 break;
         }
         mainMenu();
-    }
-
-
-    private void demoClubTenTables() {
-        createDemoHall();
-        addTenTables();
-    }
-
-    private void demoClubTenTablesAllBooked() {
-        createDemoHall();
-        addTenTables();
-        startAllTenTables();
     }
 
     private void createDemoHall() {
@@ -355,6 +432,102 @@ public class ConsoleInterface {
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(14), 60, "");
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 10), LocalDateTime.now().minusMinutes(59), 60, "");
 
+    }
+
+    private void add7running9withReservationsAndHistory1Free() {
+        // Seven running tables
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().minusMinutes(20), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(10), 120, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(18), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 60, "");
+        // History
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(100), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(170), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(240), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(350), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(80), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(210), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(150), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(230), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(300), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(135), 120, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(260), 120, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(385), 120, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(510), 120, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(80), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(142), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(204), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(266), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(337), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(399), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(461), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(522), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(85), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(310), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(80), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(180), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(280), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(94), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(194), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(255), 60, "");
+        // Reservations
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(95), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(160), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(230), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(60), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(125), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(50), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(120), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(190), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(255), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(320), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().plusMinutes(50), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(120), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(190), 120, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(320), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(50), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(115), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(178), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(242), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(310), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().plusMinutes(200), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(10), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(200), 60, "");
+
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().plusMinutes(200), 60, "");
+    }
+
+    private void startOddTables() {
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(20), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 120, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(18), 60, "");
+    }
+
+    private void reserveEvenTables() {
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(10), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().plusMinutes(30), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(60), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(120), 60, "");
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 10), LocalDateTime.now().plusMinutes(360), 60, "");
     }
 
     /**
