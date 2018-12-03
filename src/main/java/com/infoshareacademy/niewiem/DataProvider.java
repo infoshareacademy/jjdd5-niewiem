@@ -26,7 +26,9 @@ public class DataProvider {
     // public static boolean saveHallInCsv(){}
 
 
-    /** Halls *********************************************************************************************************/
+    /**
+     * Halls
+     *********************************************************************************************************/
 
     public static Map<Integer, String> getMapOfExistingHalls() {
         return getMapOfExistingHalls(getFileAsLineList(hallsPath));
@@ -78,7 +80,9 @@ public class DataProvider {
         return null;
     }
 
-    /** Reservations **************************************************************************************************/
+    /**
+     * Reservations
+     **************************************************************************************************/
 
     public static List<Reservation> readFromReservations(List<Table> tables) {
         return readFromReservations(tables, getFileAsLineList(reservationPath));
@@ -114,7 +118,9 @@ public class DataProvider {
         return null;
     }
 
-    /** Files - shared functionality **********************************************************************************/
+    /**
+     * Files - shared functionality
+     **********************************************************************************/
 
     private static List<String> getFileAsLineList(Path path) {
         try {
