@@ -105,30 +105,7 @@ public class ConsoleInterface {
         printTables();
         printMainMenu();
         int choice = cr.enterInt();
-        switch (choice) {
-            case 0:
-                System.out.println("Bye, bye!");
-                System.exit(0);
-                break;
-            case 1:
-                startOrStopGame();
-                break;
-            case 2:
-                addReservationMenu();
-                break;
-            case 3:
-                reservationsMenu();
-                break;
-            case 4:
-                adminPanelMenu();
-                break;
-            case 88224646:
-                devPanelMenu();
-                break;
-            default:
-                getMainMenuValue();
-                break;
-        }
+        mainMenuChoice(choice);
     }
 
     private void getMainMenuValue() {
