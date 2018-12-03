@@ -149,4 +149,15 @@ public class ConsolePrinter {
                 .collect(Collectors.toList());
         printListOfReservations(reservations);
     }
+
+
+    // LAB - NOT YET WORKING FEATURES!!!
+    public void printAvailabilityAsGraph(Hall hall){
+        System.out.println("" +
+                "TIME|18:00||19:00||20:00||21:00|" +
+                "P01:[++|++][++|++][++|++][++|++]" +
+                "P01:[++|++][--|--][--|--][++|++]" +
+                "P01:[++|++][++|++][++|++][++|++]" +
+                "P02:[--|--][--|--][--|--][--|--]");
+    }
 }

@@ -45,10 +45,13 @@ public class Reservations {
     }
 
     public static void cancelAllFutureReservationsFromTable(Hall hall, Table table) {
-        hall.getReservations().stream()
+        List<Reservation> resToDelete = hall.getReservations().stream()
                 .filter(r -> r.getTable().equals(table))
-                .filter(r -> r.getStartTime().isAfter(LocalDateTime.now()))
-                .forEach(r -> hall.getReservations().remove(r));
+                .filter(Reservation::isUpcoming)
+                .collect(Collectors.toList());
+        for (Reservation res : resToDelete){
+            hall.getReservations().remove(res);
+        }
         // todo: remove from file
     }
 
