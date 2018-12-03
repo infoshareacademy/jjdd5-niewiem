@@ -428,7 +428,10 @@ public class ConsoleInterface {
                 break;
             case 2:
                 removeTableMenu();
+                adminPanelMenu();
                 break;
+            case 0:
+                mainMenu();
             default:
                 getAdminPanelValue();
                 break;
