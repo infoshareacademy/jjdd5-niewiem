@@ -131,10 +131,45 @@ public class ConsoleInterface {
         }
     }
 
+    private void getMainMenuValue() {
+        printWrongValueMessage();
+        mainMenuChoice(cr.enterInt());
+    }
+
+    private void mainMenuChoice(int choice) {
+        switch (choice) {
+            case 0:
+                System.out.println("Bye, bye!");
+                System.exit(0);
+                break;
+            case 1:
+                startOrStopGame();
+                break;
+            case 2:
+                addReservationMenu();
+                break;
+            case 3:
+                cancelReservationMenu();
+                break;
+            case 4:
+                tablesQueueMenu();
+                break;
+            case 5:
+                adminPanelMenu();
+                break;
+            case 88224646:
+                devPanelMenu();
+                break;
+            default:
+                getMainMenuValue();
+                break;
+        }
+    }
+
     private void printTables() {
         cp.printTables(Reservations.getAllTablesAndRemainingTimes(this.hall));
     }
-    */
+
     /**
      * Start Stop Game
      *************************************************************************************************/
@@ -205,243 +240,248 @@ public class ConsoleInterface {
     private void insertDataForReservation(Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
         //todo: show available tables
         System.out.println("Enter table number:");
-        int tableNumber = cr.readInt();
+        int tableNumber = cr.enterInt();
+    }
 
-        private String enterCustomerInformation () {
-            System.out.println("Enter customer information:");
-            return cr.enterString();
+    private String enterCustomerInformation() {
+        System.out.println("Enter customer information:");
+        return cr.enterString();
+    }
+
+
+    /**
+     * Reservations options
+     ********************************************************************************************/
+
+    private void printOptionsForReservations() {
+        System.out.println("" +
+                "=======================================\n" +
+                "1. Add new reservation\n" +
+                "2. Cancel reservation from the list\n" +
+                "3. Show fastest available tables\n" +
+                "4. Show all reservations\n" +
+                "5. Show only upcoming reservations\n" +
+                "6. Show reservations for only one table\n" +
+                "7. Show history\n" +
+                "8. Show history for specific table\n" +
+                "0. Exit to main menu");
+        System.out.println("Enter time span in minutes:");
+        int timeSpan = getTimeSpan();
+    }
+
+    private LocalDate getStartDate() {
+        LocalDate input = cr.enterDate();
+        if (input.isAfter(LocalDate.now()) || input.equals(LocalDate.now())) {
+            return input;
         }
+        printWrongValueMessage();
+        return getStartDate();
+    }
 
-
-        /**
-         * Reservations options
-         ********************************************************************************************/
-
-        private void printOptionsForReservations () {
-            System.out.println("" +
-                    "=======================================\n" +
-                    "1. Add new reservation\n" +
-                    "2. Cancel reservation from the list\n" +
-                    "3. Show fastest available tables\n" +
-                    "4. Show all reservations\n" +
-                    "5. Show only upcoming reservations\n" +
-                    "6. Show reservations for only one table\n" +
-                    "7. Show history\n" +
-                    "8. Show history for specific table\n" +
-                    "0. Exit to main menu");
-            System.out.println("Enter time span in minutes:");
-            timeSpan = getTimeSpan();
-        }
-
-        private LocalDate getStartDate () {
-            LocalDate input = cr.readDate();
-            if (input.isAfter(LocalDate.now()) || input.equals(LocalDate.now())) {
-                return input;
-            }
+    private LocalTime getStartTime(LocalDate startDate) {
+        LocalTime input = cr.enterTime();
+        if (startDate.isEqual(LocalDate.now())
+                && (input.equals(LocalTime.now()) || input.isBefore(LocalTime.now()))
+        ) {
             printWrongValueMessage();
-            return getStartDate();
+            return getStartTime(startDate);
         }
+        return input;
+    }
 
-        private LocalTime getStartTime (LocalDate startDate){
-            LocalTime input = cr.readTime();
-            if (startDate.isEqual(LocalDate.now())
-                    && (input.equals(LocalTime.now()) || input.isBefore(LocalTime.now()))
-            ) {
-                printWrongValueMessage();
-                return getStartTime(startDate);
-            }
-            return input;
+    private Integer getTimeSpan() {
+        int input = cr.enterInt();
+        if (input <= 0) {
+            printWrongValueMessage();
+            return getTimeSpan();
         }
+        return input;
+    }
 
-        private Integer getTimeSpan () {
-            int input = cr.readInt();
-            if (input <= 0) {
-                printWrongValueMessage();
-                return getTimeSpan();
-            }
-            return input;
+
+    /**
+     * Cancel Reservation
+     ********************************************************************************************/
+
+    private void cancelReservationMenu() {
+        System.out.println("Functionality unavailable");
+        mainMenu();
+    }
+
+    /**
+     * Tables Queue
+     **************************************************************************************************/
+
+    private void tablesQueueMenu() {
+        System.out.println("Functionality unavailable");
+    }
+
+    private void reservationsSwitch(List<Reservation> reservations) {
+        int choice = cr.enterInt();
+        switch (choice) {
+            case 1:
+                addReservationMenu();
+                break;
+            case 2:
+                cancelReservation(reservations);
+                break;
+            case 3:
+                showFastestAvailableTables();
+                break;
+            case 4:
+                reservationsMenu();
+                break;
+            case 5:
+                showOnlyUpcomingReservations();
+                break;
+            case 6:
+                showReservationsForSpecificTable();
+                break;
+            case 7:
+                showPastReservations();
+                break;
+            case 8:
+                showPastReservationsForSpecificTable();
+                break;
+            default:
+                break;
         }
+        mainMenu();
+    }
+
+    private void showPastReservationsForSpecificTable() {
+        Table table = chooseTable();
+        cp.showPastReservationsForSpecificTable(hall, table);
+        System.out.println("Press enter to continue to main menu.");
+        cr.enterString();
+    }
+
+    private void showPastReservations() {
+        cp.printPastReservations(hall);
+        System.out.println("Press enter to continue to main menu.");
+        cr.enterString();
+    }
 
 
-        /**
-         * Cancel Reservation
-         ********************************************************************************************/
+    private void showReservationsForSpecificTable() {
+        Table table = chooseTable();
+        List<Reservation> reservations = cp.printReservationForSpecificTable(hall, table);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
+    }
 
-        private void cancelReservationMenu () {
-            System.out.println("Functionality unavailable");
-            mainMenu();
+    private void reservationsMenu() {
+        List<Reservation> reservations = cp.printListOfReservationsSortedByTableName(this.hall);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
+    }
+
+    private void showOnlyUpcomingReservations() {
+        List<Reservation> reservations = cp.showOnlyUpcomingReservations(this.hall);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
+    }
+
+    private void showFastestAvailableTables() {
+        cp.printFastestAvailableTables(hall);
+        System.out.println("Press enter to continue to main menu.");
+        cr.enterString();
+    }
+
+    private void cancelReservation(List<Reservation> reservations) {
+        System.out.println("Choose number by the reservation you want to cancel:");
+        Integer choice = cr.enterInt();
+        Reservation reservation = reservations.get(choice - 1);
+        if (reservation.isInProgress()) {
+            Reservations.stop(hall, reservation);
+        } else {
+            Reservations.cancel(hall, reservation);
         }
+    }
 
-        /**
-         * Tables Queue
-         **************************************************************************************************/
+    /**
+     * Admin Panel
+     ***************************************************************************************************/
 
-        private void tablesQueueMenu () {
-            System.out.println("Functionality unavailable");
-            private void reservationsSwitch (List < Reservation > reservations) {
-                int choice = cr.enterInt();
-                switch (choice) {
-                    case 1:
-                        addReservationMenu();
-                        break;
-                    case 2:
-                        cancelReservation(reservations);
-                        break;
-                    case 3:
-                        showFastestAvailableTables();
-                        break;
-                    case 4:
-                        reservationsMenu();
-                        break;
-                    case 5:
-                        showOnlyUpcomingReservations();
-                        break;
-                    case 6:
-                        showReservationsForSpecificTable();
-                        break;
-                    case 7:
-                        showPastReservations();
-                        break;
-                    case 8:
-                        showPastReservationsForSpecificTable();
-                        break;
-                    default:
-                        break;
-                }
-                mainMenu();
-            }
+    private void printAdminPanelMenu() {
+        System.out.println("" +
+                "ADMIN PANEL\n" +
+                "1. Add table\n" +
+                "2. Remove table\n" +
+                "0. Get back to App Menu");
+    }
 
-            private void showPastReservationsForSpecificTable () {
-                Table table = chooseTable();
-                cp.showPastReservationsForSpecificTable(hall, table);
-                System.out.println("Press enter to continue to main menu.");
-                cr.enterString();
-            }
+    private void adminPanelMenu() {
+        printAdminPanelMenu();
+        adminPanelChoice(cr.enterInt());
+    }
 
-            private void showPastReservations () {
-                cp.printPastReservations(hall);
-                System.out.println("Press enter to continue to main menu.");
-                cr.enterString();
-            }
+    private void getAdminPanelValue() {
+        printWrongValueMessage();
+        adminPanelChoice(cr.enterInt());
+    }
 
+    private void adminPanelChoice(int choice) {
+        switch (choice) {
+            case 1:
+                addTableMenu();
+                break;
+            case 2:
+                removeTableMenu();
+                break;
+            default:
+                getAdminPanelValue();
+                break;
+        }
+    }
 
-            private void showReservationsForSpecificTable () {
-                Table table = chooseTable();
-                List<Reservation> reservations = cp.printReservationForSpecificTable(hall, table);
-                printOptionsForReservations();
-                reservationsSwitch(reservations);
-            }
+    /**
+     * Remove Table
+     *****************************************************************************************************/
 
-            private void reservationsMenu () {
-                List<Reservation> reservations = cp.printListOfReservationsSortedByTableName(this.hall);
-                printOptionsForReservations();
-                reservationsSwitch(reservations);
-            }
+    private void removeTableMenu() {
+        Table table = chooseTable();
+        Tables.remove(hall, table);
+    }
 
-            private void showOnlyUpcomingReservations () {
-                List<Reservation> reservations = cp.showOnlyUpcomingReservations(this.hall);
-                printOptionsForReservations();
-                reservationsSwitch(reservations);
-            }
+    /**
+     * Add Table
+     *****************************************************************************************************/
 
-            private void showFastestAvailableTables () {
-                cp.printFastestAvailableTables(hall);
-                System.out.println("Press enter to continue to main menu.");
-                cr.enterString();
-            }
+    private void addTableMenu() {
+        // todo: add choice of TableType and name
+        String tableName = chooseTableName();
+        TableType tableType = chooseTableType();
 
-            private void cancelReservation (List < Reservation > reservations) {
-                System.out.println("Choose number by the reservation you want to cancel:");
-                Integer choice = cr.enterInt();
-                Reservation reservation = reservations.get(choice - 1);
-                if (reservation.isInProgress()) {
-                    Reservations.stop(hall, reservation);
-                } else {
-                    Reservations.cancel(hall, reservation);
-                }
-            }
-
-            /**
-             * Admin Panel
-             ***************************************************************************************************/
-
-            private void printAdminPanelMenu () {
-                System.out.println("" +
-                        "ADMIN PANEL\n" +
-                        "1. Add table\n" +
-                        "2. Remove table\n" +
-                        "0. Get back to App Menu");
-            }
-
-            private void adminPanelMenu () {
-                printAdminPanelMenu();
-                adminPanelChoice(cr.enterInt());
-            }
-
-            private void getAdminPanelValue () {
-                printWrongValueMessage();
-                adminPanelChoice(cr.enterInt());
-            }
-
-            private void adminPanelChoice ( int choice){
-                switch (choice) {
-                    case 1:
-                        addTableMenu();
-                        break;
-                    case 2:
-                        removeTableMenu();
-                        break;
-                    default:
-                        getAdminPanelValue();
-                        break;
-                }
-            }
-
-            /**
-             * Remove Table
-             *****************************************************************************************************/
-
-            private void removeTableMenu () {
-                Table table = chooseTable();
-                Tables.remove(hall, table);
-            }
-
-            /**
-             * Add Table
-             *****************************************************************************************************/
-
-            private void addTableMenu () {
-                // todo: add choice of TableType and name
-                String tableName = chooseTableName();
-                TableType tableType = chooseTableType();
-
-                Tables.create(this.hall, tableName, tableType);
-                mainMenu();
-            }
+        Tables.create(this.hall, tableName, tableType);
+        mainMenu();
+    }
 
     private String chooseTableName() {
-                Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
-                return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
-            }
+        Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
+        return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
+    }
 
     private TableType chooseTableType() {
-                return TableType.POOL;
-            }
+        return TableType.POOL;
+    }
 
 
-            /** Dev Panel *****************************************************************************************************/
+    /**
+     * Dev Panel
+     *****************************************************************************************************/
 
-            private void devPanelMenu () {
-                System.out.println("Adding new hall...");
-                this.hall = Halls.create("DEMO CLUB"); // todo: new hall should not be saved to file!
-                for (int i = 0; i < 9; i++) {
-                    System.out.printf("Adding table P%d...\n", (i + 1));
-                    Integer tableID = Tables.getNextAvailableId(hall);
-                    TableType type = TableType.POOL;
-                    String tableName = giveNameBasedOnId(tableID, type);
+    private void devPanelMenu() {
+        System.out.println("Adding new hall...");
+        this.hall = Halls.create("DEMO CLUB"); // todo: new hall should not be saved to file!
+        for (int i = 0; i < 9; i++) {
+            System.out.printf("Adding table P%d...\n", (i + 1));
+            Integer tableID = Tables.getNextAvailableId(hall);
+            TableType type = TableType.POOL;
+            String tableName = giveNameBasedOnId(tableID, type);
             Tables.load(this.hall, type, tableID, tableName);
-                }
-            }
+        }
+    }
 
     private void startAllTenTables() {
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
@@ -557,18 +597,17 @@ public class ConsoleInterface {
      * Shared functions
      **********************************************************************************************/
 
-            private void printFunctionalityUnavailable () {
-                System.out.println(FUNCTIONALITY_UNAVAILABLE);
-            }
+    private void printFunctionalityUnavailable() {
+        System.out.println(FUNCTIONALITY_UNAVAILABLE);
+    }
 
     private String giveNameBasedOnId(Integer tableID, TableType type) {
-                String typeToString = "P";
-                String idToString = String.format("%02d", tableID);
-                return typeToString + idToString;
-            }
-
-            private void printWrongValueMessage () {
-                System.out.println("Enter correct value: ");
-            }
-
+        String typeToString = "P";
+        String idToString = String.format("%02d", tableID);
+        return typeToString + idToString;
     }
+
+    private void printWrongValueMessage() {
+        System.out.println("Enter correct value: ");
+    }
+}
