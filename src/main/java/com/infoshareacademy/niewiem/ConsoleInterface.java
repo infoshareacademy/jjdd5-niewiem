@@ -190,15 +190,45 @@ public class ConsoleInterface {
         System.out.println("Enter table number:");
         int tableNumber = cr.readInt();
 
-        System.out.println("Choose a date within a week of today (YY-MM-DD):");
-        LocalDate startDate = cr.readDate();
-
+        System.out.println("Choose a date within a week of today (YYYY-MM-DD):");
+        LocalDate startDate = getStartDate();
         System.out.println("Choose time between 12:00 and 23:00 (HH:MM):");
-        LocalTime startTime = cr.readTime();
+        LocalTime startTime = getStartTime(startDate);
+
 
         System.out.println("Enter time span in minutes:");
-        timeSpan = cr.readInt();
+        timeSpan = getTimeSpan();
     }
+
+    private LocalDate getStartDate() {
+        LocalDate input = cr.readDate();
+        if (input.isAfter(LocalDate.now()) || input.equals(LocalDate.now())) {
+            return input;
+        }
+        printWrongValueMessage();
+        return getStartDate();
+    }
+
+    private LocalTime getStartTime(LocalDate startDate) {
+        LocalTime input = cr.readTime();
+        if (startDate.isEqual(LocalDate.now())
+                && (input.equals(LocalTime.now()) || input.isBefore(LocalTime.now()))
+        ) {
+            printWrongValueMessage();
+            return getStartTime(startDate);
+        }
+        return input;
+    }
+
+    private Integer getTimeSpan() {
+        int input = cr.readInt();
+        if (input <= 0) {
+            printWrongValueMessage();
+            return getTimeSpan();
+        }
+        return input;
+    }
+
 
     /**
      * Cancel Reservation
