@@ -1,20 +1,32 @@
 package com.infoshareacademy.niewiem;
 
 public class Table implements Comparable<Table> {
-    private final String tableId;
+    private final Hall hall;
     private final TableType type;
+    private final Integer tableId;
+    private final String tableName;
 
-    public Table(String tableId, TableType type) {
-        this.tableId = tableId;
+    public Table(Hall hall, TableType type, Integer tableId, String tableName) {
+        this.hall = hall;
         this.type = type;
+        this.tableId = tableId;
+        this.tableName = tableName;
     }
 
-    public String getTableId() {
-        return tableId;
+    public Hall getHall() {
+        return hall;
     }
 
     public TableType getType() {
         return type;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public String getTableName() {
+        return tableName;
     }
 
     @Override
@@ -22,11 +34,11 @@ public class Table implements Comparable<Table> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return tableId.equals(table.tableId) && type == table.type;
+        return this.tableId == table.getTableId();
     }
 
     @Override
     public int compareTo(Table t) {
-        return this.tableId.compareTo(t.getTableId());
+        return this.tableName.compareTo(t.getTableName());
     }
 }
