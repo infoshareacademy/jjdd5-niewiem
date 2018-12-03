@@ -4,7 +4,9 @@ import com.infoshareacademy.niewiem.factories.Halls;
 import com.infoshareacademy.niewiem.factories.Reservations;
 import com.infoshareacademy.niewiem.factories.Tables;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -46,7 +48,15 @@ public class ConsoleInterface {
 
     private void hallMenu() {
         printHallMenu();
-        int choice = cr.enterInt();
+        hallMenuChoice(cr.enterInt());
+    }
+
+    private void getHallMenuValue() {
+        printWrongValueMessage();
+        hallMenuChoice(cr.enterInt());
+    }
+
+    private void hallMenuChoice(int choice) {
         switch (choice) {
             case 0:
                 System.out.println(GOODBYE_MESSAGE);
@@ -64,7 +74,7 @@ public class ConsoleInterface {
                 mainMenu();
                 break;
             default:
-                hallMenu();
+                getHallMenuValue();
                 break;
         }
     }
@@ -95,6 +105,15 @@ public class ConsoleInterface {
         printTables();
         printMainMenu();
         int choice = cr.enterInt();
+        mainMenuChoice(choice);
+    }
+
+    private void getMainMenuValue() {
+        printWrongValueMessage();
+        mainMenuChoice(cr.enterInt());
+    }
+
+    private void mainMenuChoice(int choice) {
         switch (choice) {
             case 0:
                 System.out.println("Bye, bye!");
@@ -116,7 +135,7 @@ public class ConsoleInterface {
                 devPanelMenu();
                 break;
             default:
-                mainMenu();
+                getMainMenuValue();
                 break;
         }
     }
@@ -192,6 +211,12 @@ public class ConsoleInterface {
         mainMenu();
     }
 
+    private void insertDataForReservation(Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
+        //todo: show available tables
+        System.out.println("Enter table number:");
+        int tableNumber = cr.enterInt();
+    }
+
     private String enterCustomerInformation() {
         System.out.println("Enter customer information:");
         return cr.enterString();
@@ -214,6 +239,55 @@ public class ConsoleInterface {
                 "7. Show history\n" +
                 "8. Show history for specific table\n" +
                 "0. Exit to main menu");
+        System.out.println("Enter time span in minutes:");
+        int timeSpan = getTimeSpan();
+    }
+
+    private LocalDate getStartDate() {
+        LocalDate input = cr.enterDate();
+        if (input.isAfter(LocalDate.now()) || input.equals(LocalDate.now())) {
+            return input;
+        }
+        printWrongValueMessage();
+        return getStartDate();
+    }
+
+    private LocalTime getStartTime(LocalDate startDate) {
+        LocalTime input = cr.enterTime();
+        if (startDate.isEqual(LocalDate.now())
+                && (input.equals(LocalTime.now()) || input.isBefore(LocalTime.now()))
+        ) {
+            printWrongValueMessage();
+            return getStartTime(startDate);
+        }
+        return input;
+    }
+
+    private Integer getTimeSpan() {
+        int input = cr.enterInt();
+        if (input <= 0) {
+            printWrongValueMessage();
+            return getTimeSpan();
+        }
+        return input;
+    }
+
+
+    /**
+     * Cancel Reservation
+     ********************************************************************************************/
+
+    private void cancelReservationMenu() {
+        System.out.println("Functionality unavailable");
+        mainMenu();
+    }
+
+    /**
+     * Tables Queue
+     **************************************************************************************************/
+
+    private void tablesQueueMenu() {
+        System.out.println("Functionality unavailable");
     }
 
     private void reservationsSwitch(List<Reservation> reservations) {
@@ -313,16 +387,27 @@ public class ConsoleInterface {
 
     private void adminPanelMenu() {
         printAdminPanelMenu();
-        int choice = cr.enterInt();
+        adminPanelChoice(cr.enterInt());
+    }
+
+    private void getAdminPanelValue() {
+        printWrongValueMessage();
+        adminPanelChoice(cr.enterInt());
+    }
+
+    private void adminPanelChoice(int choice) {
         switch (choice) {
             case 1:
                 addTableMenu();
                 break;
             case 2:
                 removeTableMenu();
+                adminPanelMenu();
                 break;
-            default:
+            case 0:
                 mainMenu();
+            default:
+                getAdminPanelValue();
                 break;
         }
     }
@@ -363,56 +448,11 @@ public class ConsoleInterface {
      * Dev Panel
      *****************************************************************************************************/
 
-    private void printDevPanelMenu() {
-        System.out.println("" +
-                "1. Create DEMO CLUB, 10 tables, no reservations\n" +
-                "2. Create DEMO CLUB, 10 tables, all running, no reservations\n" +
-                "3. Create DEMO CLUB, 10 tables, 5 running, 5 reserved (in 10m, 30m, 1h, 2h, 5h\n" +
-                "4. Create DEMO CLUB, 10 tables, 7 running, 9 with reservations and history, one free\n" +
-                "0. Get back to Hall Menu");
-    }
-
     private void devPanelMenu() {
-        printDevPanelMenu();
-        int choice = cr.enterInt();
-        switch (choice) {
-            case 1:
-                createDemoHall();
-                addTenTables();
-                mainMenu();
-                break;
-            case 2:
-                createDemoHall();
-                addTenTables();
-                startAllTenTables();
-                mainMenu();
-                break;
-            case 3:
-                createDemoHall();
-                addTenTables();
-                startOddTables();
-                reserveEvenTables();
-                mainMenu();
-                break;
-            case 4:
-                createDemoHall();
-                addTenTables();
-                add7running9withReservationsAndHistory1Free();
-                mainMenu();
-                break;
-            default:
-                hallMenu();
-                break;
-        }
-        mainMenu();
-    }
-
-    private void createDemoHall() {
-        this.hall = Halls.create("DEMO CLUB"); //todo: change to load when dataProvider delivers
-    }
-
-    private void addTenTables() {
-        for (int i = 0; i <= 9; i++) {
+        System.out.println("Adding new hall...");
+        this.hall = Halls.create("DEMO CLUB"); // todo: new hall should not be saved to file!
+        for (int i = 0; i < 9; i++) {
+            System.out.printf("Adding table P%d...\n", (i + 1));
             Integer tableID = Tables.getNextAvailableId(hall);
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
@@ -542,5 +582,9 @@ public class ConsoleInterface {
         String typeToString = "P";
         String idToString = String.format("%02d", tableID);
         return typeToString + idToString;
+    }
+
+    private void printWrongValueMessage() {
+        System.out.println("Enter correct value: ");
     }
 }
