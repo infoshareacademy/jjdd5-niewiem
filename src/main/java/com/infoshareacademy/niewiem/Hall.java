@@ -2,9 +2,6 @@ package com.infoshareacademy.niewiem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static java.util.stream.Collectors.toMap;
 
 public class Hall {
     private Integer hallId;
@@ -17,31 +14,6 @@ public class Hall {
         this.name = name;
         this.tableList = new ArrayList<>();
         this.reservations = new ArrayList<>();
-    }
-
-    public Map<Table, Long> getActiveTablesAndRemainingTimes(){
-        return reservations.stream()
-                .filter(Reservation::isInProgress)
-                .collect(toMap(
-                        Reservation::getTable,
-                        Reservation::getTimeRemainingInSeconds
-                ));
-    }
-
-    public Map<Table, Long> getAllTablesAndRemainingTimes(){
-        Map<Table, Long> activeTables = getActiveTablesAndRemainingTimes();
-        return tableList.stream()
-                .collect(toMap(
-                        t -> t,
-                        t -> activeTables.getOrDefault(t, 0L)
-                ));
-    }
-
-    private Table getTable(int tableId){
-        return tableList.stream()
-                .filter(table -> table.getTableId() == tableId)
-                .findFirst()
-                .orElse(null);
     }
 
     public Integer getHallId() {

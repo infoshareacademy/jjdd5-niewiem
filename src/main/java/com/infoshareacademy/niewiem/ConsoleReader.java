@@ -13,19 +13,18 @@ public class ConsoleReader {
         this.sc = new Scanner(System.in);
     }
 
-    public int readInt() {
-
+    public int enterInt() {
         String input = sc.nextLine();
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
             System.out.println("Please enter a number: ");
             //todo: log 'e' exception
-            return readInt();
+            return enterInt();
         }
     }
 
-    public LocalDate readDate() {
+    public LocalDate enterDate() {
         String input = sc.nextLine().trim();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
@@ -33,12 +32,12 @@ public class ConsoleReader {
         } catch (DateTimeParseException e) {
             //todo::log 'e' exception
             System.out.println("Please enter the date in the given format (yyyy-MM-dd)");
-            return readDate();
+            return enterDate();
         }
     }
 
-    public LocalTime readTime() {
-        String input = sc.nextLine().trim();
+    public LocalTime enterTime() {
+        String input = sc.nextLine();
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
         try {
             return LocalTime.parse(input, timeFormat);
@@ -46,12 +45,11 @@ public class ConsoleReader {
             System.out.println(e);
             //todo::log 'e' exception
             System.out.println("Please enter the time in the given format (HH:mm)");
-            return readTime();
+            return enterTime();
         }
     }
 
-
-    public String readString() {
+    public String enterString() {
         return sc.nextLine().trim();
     }
 }
