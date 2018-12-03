@@ -249,29 +249,31 @@ public class ConsoleInterface {
         mainMenu();
     }
 
-    private void showPastReservationsForSpecificTable() {
-        Table table = chooseTable();
-        cp.showPastReservationsForSpecificTable(hall, table);
-        System.out.println("Press enter to continue to main menu.");
-        cr.enterString();
+    private void reservationsMenu() {
+        List<Reservation> reservations = cp.printListOfReservationsSortedByTableName(this.hall);
+        printOptionsForReservations();
+        reservationsSwitch(reservations);
     }
 
     private void showPastReservations() {
         cp.printPastReservations(hall);
-        System.out.println("Press enter to continue to main menu.");
+        System.out.println("Press enter to continue...");
         cr.enterString();
+        reservationsMenu();
+    }
+
+    private void showPastReservationsForSpecificTable() {
+        Table table = chooseTable();
+        cp.showPastReservationsForSpecificTable(hall, table);
+        System.out.println("Press enter to continue...");
+        cr.enterString();
+        reservationsMenu();
     }
 
 
     private void showReservationsForSpecificTable() {
         Table table = chooseTable();
         List<Reservation> reservations = cp.printReservationForSpecificTable(hall, table);
-        printOptionsForReservations();
-        reservationsSwitch(reservations);
-    }
-
-    private void reservationsMenu() {
-        List<Reservation> reservations = cp.printListOfReservationsSortedByTableName(this.hall);
         printOptionsForReservations();
         reservationsSwitch(reservations);
     }
@@ -284,8 +286,9 @@ public class ConsoleInterface {
 
     private void showFastestAvailableTables() {
         cp.printFastestAvailableTables(hall);
-        System.out.println("Press enter to continue to main menu.");
+        System.out.println("Press enter to continue...");
         cr.enterString();
+        reservationsMenu();
     }
 
     private void cancelReservation(List<Reservation> reservations) {
@@ -437,6 +440,9 @@ public class ConsoleInterface {
     private void add7running9withReservationsAndHistory1Free() {
         // Seven running tables
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
+        //move this
+        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(95), 60, "");
+
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(10), 60, "");
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().minusMinutes(20), 60, "");
@@ -481,7 +487,7 @@ public class ConsoleInterface {
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(194), 60, "");
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(255), 60, "");
         // Reservations
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(95), 60, "");
+
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(160), 60, "");
         Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(230), 60, "");
 
