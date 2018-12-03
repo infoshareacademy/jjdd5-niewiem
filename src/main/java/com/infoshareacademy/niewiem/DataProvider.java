@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 public class DataProvider {
 
     private static final String SEPARATOR = ";";
-    private static final Path path = Paths.get("files");
-    private static final Path hallsPath = Paths.get(path.toString(), "halls.csv");
-    private static final Path tablesPath = Paths.get(path.toString(), "tables.csv");
-    private static final Path reservationPath = Paths.get(path.toString(), "reservations.csv");
+    private static final Path path = Paths.get("hall");
+    private static final Path hallsPath = Paths.get(path.toString(), "test-hall", "halls.csv");
+    private static final Path tablesPath = Paths.get(path.toString(), "test-hall", "tables.csv");
+    private static final Path reservationPath = Paths.get(path.toString(), "test-hall", "reservations.csv");
 
     private static final int HALL_ID_IN_HALLS = 0;
     private static final int HALL_NAME_IN_HALLS = 1;
