@@ -26,6 +26,14 @@ public class Reservations {
         return false;
     }
 
+    public static void stop(Hall hall, Table table) {
+        hall.getReservations().stream()
+                .filter(r -> r.getTable().equals(table))
+                .filter(Reservation::isInProgress)
+                .forEach(r -> r.setEndTime(LocalDateTime.now()));
+        //todo: find record for the reservation and change history
+    }
+
     public static boolean isTimeSpanAvailable(Hall hall, Table table, LocalDateTime startTime, LocalDateTime endTime) {
         Long findConflicts = hall.getReservations().stream()
                 .filter(r -> r.getTable().equals(table))
@@ -36,5 +44,11 @@ public class Reservations {
                 })
                 .count();
         return findConflicts == 0;
+    }
+
+    public static boolean tableIsActive(Hall hall, Table table) {
+        return hall.getReservations().stream()
+                .filter(r -> r.getTable().equals(table))
+                .anyMatch(Reservation::isInProgress);
     }
 }

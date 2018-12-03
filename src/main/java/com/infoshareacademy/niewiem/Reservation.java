@@ -47,6 +47,10 @@ public class Reservation {
         return startsBeforeNow && endsAfterNow;
     }
 
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     public Long getTimeRemainingInSeconds(){
         LocalDateTime now = LocalDateTime.now();
         return now.until(endTime, ChronoUnit.SECONDS);

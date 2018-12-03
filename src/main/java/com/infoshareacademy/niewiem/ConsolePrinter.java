@@ -71,4 +71,8 @@ public class ConsolePrinter {
         }
         System.out.print("\n");
     }
+
+    private static void printTableQueue(){
+
+    }
 }
