@@ -126,12 +126,9 @@ public class ConsoleInterface {
                 addReservationMenu();
                 break;
             case 3:
-                cancelReservationMenu();
+                reservationsMenu();
                 break;
             case 4:
-                tablesQueueMenu();
-                break;
-            case 5:
                 adminPanelMenu();
                 break;
             case 88224646:
