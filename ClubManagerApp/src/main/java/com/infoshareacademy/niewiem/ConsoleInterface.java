@@ -451,11 +451,60 @@ public class ConsoleInterface {
      * Dev Panel
      *****************************************************************************************************/
 
+    /**
+     * Dev Panel
+     *****************************************************************************************************/
+
+    private void printDevPanelMenu() {
+        System.out.println("" +
+                "1. Create DEMO CLUB, 10 tables, no reservations\n" +
+                "2. Create DEMO CLUB, 10 tables, all running, no reservations\n" +
+                "3. Create DEMO CLUB, 10 tables, 5 running, 5 reserved (in 10m, 30m, 1h, 2h, 5h\n" +
+                "4. Create DEMO CLUB, 10 tables, 7 running, 9 with reservations and history, one free\n" +
+                "0. Get back to Hall Menu");
+    }
+
     private void devPanelMenu() {
-        System.out.println("Adding new hall...");
-        this.hall = Halls.create("DEMO CLUB"); // todo: new hall should not be saved to file!
-        for (int i = 0; i < 9; i++) {
-            System.out.printf("Adding table P%d...\n", (i + 1));
+        printDevPanelMenu();
+        int choice = cr.enterInt();
+        switch (choice) {
+            case 1:
+                createDemoHall();
+                addTenTables();
+                mainMenu();
+                break;
+            case 2:
+                createDemoHall();
+                addTenTables();
+                startAllTenTables();
+                mainMenu();
+                break;
+            case 3:
+                createDemoHall();
+                addTenTables();
+                startOddTables();
+                reserveEvenTables();
+                mainMenu();
+                break;
+            case 4:
+                createDemoHall();
+                addTenTables();
+                add7running9withReservationsAndHistory1Free();
+                mainMenu();
+                break;
+            default:
+                hallMenu();
+                break;
+        }
+        mainMenu();
+    }
+
+    private void createDemoHall() {
+        this.hall = Halls.create("DEMO CLUB"); //todo: change to load when dataProvider delivers
+    }
+
+    private void addTenTables() {
+        for (int i = 0; i <= 9; i++) {
             Integer tableID = Tables.getNextAvailableId(hall);
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
