@@ -20,7 +20,7 @@ public class ConsoleInterface {
 
     /**
      * Constructor
-     ***************************************************************************************************/
+     ******************************************************************************************************************/
 
     ConsoleInterface() {
         this.cr = new ConsoleReader();
@@ -29,7 +29,7 @@ public class ConsoleInterface {
 
     /**
      * Boot Up
-     *******************************************************************************************************/
+     ******************************************************************************************************************/
 
     public void bootUp() {
         hallMenu();
@@ -37,7 +37,7 @@ public class ConsoleInterface {
 
     /**
      * Hall Menu
-     *****************************************************************************************************/
+     ******************************************************************************************************************/
 
     private void printHallMenu() {
         System.out.println("" +
@@ -86,7 +86,7 @@ public class ConsoleInterface {
 
     /**
      * Main Menu
-     *****************************************************************************************************/
+     ******************************************************************************************************************/
 
     private void printMainMenu() {
         System.out.println("" +
@@ -146,7 +146,7 @@ public class ConsoleInterface {
 
     /**
      * Start Stop Game
-     *************************************************************************************************/
+     ******************************************************************************************************************/
 
     private void startOrStopGame() {
         Table table = chooseTable();
@@ -196,7 +196,7 @@ public class ConsoleInterface {
 
     /**
      * Add reservations
-     **********************************************************************************************/
+     ******************************************************************************************************************/
 
     private void addReservationMenu() {
 
@@ -222,26 +222,17 @@ public class ConsoleInterface {
         return cr.enterString();
     }
 
+    /**
+     * Data validation
+     ******************************************************************************************************************/
+
+
 
     /**
      * Reservations options
-     ********************************************************************************************/
+     ******************************************************************************************************************/
 
-    private void printOptionsForReservations() {
-        System.out.println("" +
-                "=======================================\n" +
-                "1. Add new reservation\n" +
-                "2. Cancel reservation from the list\n" +
-                "3. Show fastest available tables\n" +
-                "4. Show all reservations\n" +
-                "5. Show only upcoming reservations\n" +
-                "6. Show reservations for only one table\n" +
-                "7. Show history\n" +
-                "8. Show history for specific table\n" +
-                "0. Exit to main menu");
-        System.out.println("Enter time span in minutes:");
-        int timeSpan = getTimeSpan();
-    }
+
 
     private LocalDate getStartDate() {
         LocalDate input = cr.enterDate();
@@ -271,23 +262,22 @@ public class ConsoleInterface {
         }
         return input;
     }
-
-
-    /**
-     * Cancel Reservation
-     ********************************************************************************************/
-
-    private void cancelReservationMenu() {
-        System.out.println("Functionality unavailable");
-        mainMenu();
-    }
-
     /**
      * Tables Queue
-     **************************************************************************************************/
+     ******************************************************************************************************************/
 
-    private void tablesQueueMenu() {
-        System.out.println("Functionality unavailable");
+    private void printOptionsForReservations() {
+        System.out.println("" +
+                "=======================================\n" +
+                "1. Add new reservation\n" +
+                "2. Cancel reservation from the list\n" +
+                "3. Show fastest available tables\n" +
+                "4. Show all reservations\n" +
+                "5. Show only upcoming reservations\n" +
+                "6. Show reservations for only one table\n" +
+                "7. Show history\n" +
+                "8. Show history for specific table\n" +
+                "0. Exit to main menu");
     }
 
     private void reservationsSwitch(List<Reservation> reservations) {
@@ -378,7 +368,7 @@ public class ConsoleInterface {
 
     /**
      * Admin Panel
-     ***************************************************************************************************/
+     ******************************************************************************************************************/
 
     private void printAdminPanelMenu() {
         System.out.println("" +
@@ -416,17 +406,8 @@ public class ConsoleInterface {
     }
 
     /**
-     * Remove Table
-     *****************************************************************************************************/
-
-    private void removeTableMenu() {
-        Table table = chooseTable();
-        Tables.remove(hall, table);
-    }
-
-    /**
      * Add Table
-     *****************************************************************************************************/
+     ******************************************************************************************************************/
 
     private void addTableMenu() {
         // todo: add choice of TableType and name
@@ -446,14 +427,18 @@ public class ConsoleInterface {
         return TableType.POOL;
     }
 
+    /**
+     * Remove Table
+     ******************************************************************************************************************/
+
+    private void removeTableMenu() {
+        Table table = chooseTable();
+        Tables.remove(hall, table);
+    }
 
     /**
      * Dev Panel
-     *****************************************************************************************************/
-
-    /**
-     * Dev Panel
-     *****************************************************************************************************/
+     ******************************************************************************************************************/
 
     private void printDevPanelMenu() {
         System.out.println("" +
@@ -627,7 +612,7 @@ public class ConsoleInterface {
 
     /**
      * Shared functions
-     **********************************************************************************************/
+     ******************************************************************************************************************/
 
     private void printFunctionalityUnavailable() {
         System.out.println(FUNCTIONALITY_UNAVAILABLE);
