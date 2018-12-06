@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DataProvider {
 
@@ -21,6 +20,7 @@ public class DataProvider {
 
     private static final int HALL_ID_IN_HALLS = 0;
     private static final int HALL_NAME_IN_HALLS = 1;
+    private static final int HALL_ID_IN_TABLES = 0;
     private static final int TABLE_ID_IN_TABLES = 2;
     private static final int TABLE_TYPE_IN_TABLES = 1;
     private static final int TABLE_NAME_IN_TABLES = 3;
@@ -30,15 +30,13 @@ public class DataProvider {
     private static final int CUSTOMER = 3;
 
 
-    /**
-     * Halls
-     *********************************************************************************************************/
+    /*** Halls ********************************************************************************************************/
 
     public static void saveHallInCsv(Hall hall) {
-
         try {
-            String hallToAddAsString = hall.toCSVString();
+            String hallToAddAsString = hall.toCsvString();
             Files.write(hallsPath, hallToAddAsString.getBytes(), StandardOpenOption.APPEND);
+            Files.write(hallsPath, "\n".getBytes(), StandardOpenOption.APPEND);
 
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
@@ -50,163 +48,98 @@ public class DataProvider {
         return getListOfSavedHalls(rawHallsAsStrings);
     }
 
-
     private static List<Hall> getListOfSavedHalls(List<String> rawHallsAsStrings) {
-        List<Hall> hallsAsMap = new ArrayList<>();
+        List<Hall> savedHalls = new ArrayList<>();
 
         for (String line : rawHallsAsStrings) {
             String[] hallAsArray = line.split(SEPARATOR);
 
-            Integer hallId = Integer.valueOf(hallAsArray[HALL_ID_IN_HALLS]);
-            String hallName = hallAsArray[HALL_NAME_IN_HALLS];
+            Integer hallId = Integer.valueOf(hallAsArray[HALL_ID_IN_HALLS].trim());
+            String hallName = hallAsArray[HALL_NAME_IN_HALLS].trim();
 
-//            hallsAsMap.add(new Hall(hallId, hallName));
+            savedHalls.add(new Hall(hallId, hallName));
         }
-
-        return hallsAsMap;
-    }
-
-    public static List<Hall> getMapOfExistingHalls() {
-        return getMapOfExistingHalls(getFileAsRawStringList(hallsPath));
-
-        //todo: create list of objects Hall, not map of int / String
-    }
-
-    public static Integer getNextAvailableHallID() {
-        OptionalInt nextAvailableId = getMapOfExistingHalls().stream()
-                .mapToInt(e -> e.getHallId())
-                .max();
-
-        if (nextAvailableId.isPresent()) {
-            return nextAvailableId.getAsInt() + 1;
-        }
-        return 1;
+        return savedHalls;
     }
 
     /*** Tables *******************************************************************************************************/
 
-    public static boolean saveTableInCsv(Table table) {
-        List<String> out = new ArrayList<>();
-
+    public static void saveTableInCsv(Table table) {
         try {
-            loadRawFileAsListOfStrings(out, tablesPath);
-
-            List<String> tablesAsStringList = new ArrayList<>();
-            tablesAsStringList.add(String.valueOf(table.getHall().getHallId()));
-            tablesAsStringList.add(String.valueOf(table.getType()));
-            tablesAsStringList.add(String.valueOf(table.getTableId()));
-            tablesAsStringList.add(String.valueOf(table.getTableName()));
-
-            String singleEntry = tablesAsStringList.stream().collect(Collectors.joining(SEPARATOR));
-            out.add(singleEntry);
-            Files.write(tablesPath, out);
-
-            return true;
+            String tableToAddAsString = table.toCsvString(table.getHall());
+            Files.write(tablesPath, tableToAddAsString.getBytes(), StandardOpenOption.APPEND);
+            Files.write(tablesPath, "\n".getBytes(), StandardOpenOption.APPEND);
 
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
-            return false;
         }
     }
 
-    public static List<Table> returnTablesListFromFile(Hall hall) {
-        return returnTablesListFromFile(hall, getFileAsRawStringList(tablesPath));
+    public static List<Table> loadTablesAsList(Hall hall) {
+        List<String> rawTablesAsStrings = getFileAsRawStringList(tablesPath);
+        return getListOfSavedTables(hall, rawTablesAsStrings);
     }
 
-    private static List<Table> returnTablesListFromFile(Hall hall, List<String> fileByLines) {
-        List<Table> tables = new ArrayList<>();
+    private static List<Table> getListOfSavedTables(Hall hall, List<String> rawTablesAsStrings) {
+        List<Table> savedTables = new ArrayList<>();
 
-        for (String line : fileByLines) {
-            Table tableToAdd = loadTable(hall, line.split(SEPARATOR));
-            if (tableToAdd != null) {
-                tables.add(tableToAdd);
+        for (String line : rawTablesAsStrings) {
+            String[] tableAsArray = line.split(SEPARATOR);
+
+            Integer hallIdFromFile = Integer.valueOf(tableAsArray[HALL_ID_IN_TABLES].trim());
+            TableType tableType = TableType.valueOf(tableAsArray[TABLE_TYPE_IN_TABLES].trim());
+            Integer tableId = Integer.valueOf(tableAsArray[TABLE_ID_IN_TABLES].trim());
+            String tableName = tableAsArray[TABLE_NAME_IN_TABLES].trim();
+
+            if (hallIdFromFile.equals(hall.getHallId())) {
+                savedTables.add(new Table(hall, tableType, tableId, tableName));
             }
         }
-        return tables;
+        return savedTables;
     }
 
-    private static Table loadTable(Hall hall, String[] splittedLine) {
+    /*** Reservations *************************************************************************************************/
 
-        Integer hallIdFromFile = Integer.valueOf(splittedLine[HALL_ID_IN_HALLS].trim());
-
-        if (hallIdFromFile.equals(hall.getHallId())) {
-            TableType tableType = TableType.valueOf(splittedLine[TABLE_TYPE_IN_TABLES].trim());
-            Integer tableId = Integer.valueOf(splittedLine[TABLE_ID_IN_TABLES].trim());
-            String tableName = splittedLine[TABLE_NAME_IN_TABLES].trim();
-            return new Table(hall, tableType, tableId, tableName);
-        }
-
-        return null;
-    }
-
-    /**
-     * Reservations
-     **************************************************************************************************/
-
-    public static boolean saveReservationInCsv(Reservation reservation) {
-        List<String> out = new ArrayList<>();
-
+    public static void saveReservationInCsv(Reservation reservation) {
         try {
-            loadRawFileAsListOfStrings(out, reservationPath);
-
-            List<String> reservationAsStringList = new ArrayList<>();
-            reservationAsStringList.add(String.valueOf(reservation.getTable().getTableId()));
-            reservationAsStringList.add(String.valueOf(reservation.getStartTime()));
-            reservationAsStringList.add(String.valueOf(reservation.getEndTime()));
-            reservationAsStringList.add(String.valueOf(reservation.getCustomer()));
-
-            String singleEntry = reservationAsStringList.stream().collect(Collectors.joining(SEPARATOR));
-            out.add(singleEntry);
-            Files.write(reservationPath, out);
-
-            return true;
+            String tableToAddAsString = reservation.toCsvString(reservation.getTable());
+            Files.write(reservationPath, tableToAddAsString.getBytes(), StandardOpenOption.APPEND);
+            Files.write(reservationPath, "\n".getBytes(), StandardOpenOption.APPEND);
 
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
-            return false;
         }
     }
 
-    public static List<Reservation> returnReservationsFromFile(List<Table> tables) {
-        return returnReservationsFromFile(tables, getFileAsRawStringList(reservationPath));
+    public static List<Reservation> loadReservationsAsList(List<Table> tables) {
+        List<String> rawReservationsAsStrings = getFileAsRawStringList(tablesPath);
+        return getListOfReservations(tables, rawReservationsAsStrings);
     }
 
-    private static List<Reservation> returnReservationsFromFile(List<Table> tables, List<String> fileByLines) {
-
+    private static List<Reservation> getListOfReservations(List<Table> tables, List<String> rawReservationsAsStrings) {
         List<Reservation> reservations = new ArrayList<>();
 
-        for (String line : fileByLines) {
-            Reservation reservationToAdd = loadReservations(tables, line.split(SEPARATOR));
-            if (reservationToAdd != null) {
-                reservations.add(reservationToAdd);
+        for (String line : rawReservationsAsStrings) {
+            String[] reservationAsArray = line.split(SEPARATOR);
+
+            Integer tableIdFromFile = Integer.valueOf(reservationAsArray[TABLE_ID_IN_RESERVATIONS].trim());
+            LocalDateTime startTime = LocalDateTime.parse(reservationAsArray[START_TIME_IN_RESERVATIONS].trim());
+            LocalDateTime endTime = LocalDateTime.parse(reservationAsArray[END_TIME_IN_RESERVATIONS].trim());
+            String customer = reservationAsArray[CUSTOMER].trim();
+
+            Table tableFromReservation = tables.stream()
+                    .filter(table -> table.getTableId().equals(tableIdFromFile))
+                    .findFirst()
+                    .orElse(null);
+
+            if (tableFromReservation != null) {
+                reservations.add(new Reservation(tableFromReservation, startTime, endTime, customer));
             }
         }
         return reservations;
     }
 
-    private static Reservation loadReservations(List<Table> tables, String[] splittedLine) {
-
-        Integer tableIdFromFile = Integer.valueOf(splittedLine[TABLE_ID_IN_RESERVATIONS].trim());
-
-        Table tableFromReservation = tables.stream()
-                .filter(table -> table.getTableId().equals(tableIdFromFile))
-                .findFirst()
-                .orElse(null);
-
-        boolean isOnAList = (tableFromReservation != null);
-
-        if (isOnAList) {
-            LocalDateTime startTime = LocalDateTime.parse(splittedLine[START_TIME_IN_RESERVATIONS].trim());
-            LocalDateTime endTime = LocalDateTime.parse(splittedLine[END_TIME_IN_RESERVATIONS].trim());
-            String customer = splittedLine[CUSTOMER].trim();
-            return new Reservation(tableFromReservation, startTime, endTime, customer);
-        } else
-            return null;
-    }
-
-    /**
-     * Files - shared functionality
-     **********************************************************************************/
+    /*** Files - shared functionality *********************************************************************************/
 
     private static List<String> getFileAsRawStringList(Path path) {
         try {
@@ -221,7 +154,7 @@ public class DataProvider {
 
     public static void removeTableFromFile(Hall hall, Table table) {
 
-        List<Table> tables = returnTablesListFromFile(hall);
+        List<Table> tables = loadTablesAsList(hall);
 
         Table tableToRemove = Tables.getTableByID(hall, table.getTableId());
         tables.remove(tableToRemove);
