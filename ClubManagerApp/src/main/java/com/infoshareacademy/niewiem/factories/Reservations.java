@@ -13,6 +13,7 @@ import static java.util.stream.Collectors.toMap;
 
 public class Reservations {
     public static boolean create(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
+
         return load(hall, table, startDateTime, timeSpan, customer);
         // todo: save reservation to file
     }

@@ -31,4 +31,10 @@ public class Hall {
     public List<Reservation> getReservations() {
         return reservations;
     }
+
+    @Override
+    public String toString() {
+        return "Hall ID: " + hallId +
+                ", name: " + name;
+    }
 }

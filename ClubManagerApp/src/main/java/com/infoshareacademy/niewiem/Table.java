@@ -41,4 +41,12 @@ public class Table implements Comparable<Table> {
     public int compareTo(Table t) {
         return this.tableName.compareTo(t.getTableName());
     }
+
+    @Override
+    public String toString() {
+        return  "hall: " + hall.getName() +
+                ", type: " + type +
+                ", table ID: " + tableId +
+                ", table name: " + tableName;
+    }
 }

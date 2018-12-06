@@ -1,4 +1,6 @@
 package com.infoshareacademy.niewiem.web;
 
-public class TestServlet {
+import javax.servlet.http.HttpServlet;
+
+public class TestServlet extends HttpServlet {
 }
