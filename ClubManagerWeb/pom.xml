@@ -65,7 +65,7 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.2.1.Final</version>
                 <configuration>
-                    <name>freemarker-demo.war</name>
+                    <name>ClubManager.war</name>
                 </configuration>
                 <executions>
                     <execution>
