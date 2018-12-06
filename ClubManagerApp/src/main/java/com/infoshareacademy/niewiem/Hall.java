@@ -31,4 +31,10 @@ public class Hall {
     public List<Reservation> getReservations() {
         return reservations;
     }
+
+    public String toCSVString(){
+        StringBuffer sb = new StringBuffer();
+        sb.append(hallId).append(";").append(name);
+        return sb.toString();
+    }
 }

@@ -16,6 +16,7 @@ public class ConsoleInterface {
 
     private ConsoleReader cr;
     private ConsolePrinter cp;
+    private List<Hall> savedHalls;
     private Hall hall;
 
     /**

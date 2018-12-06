@@ -10,6 +10,8 @@ public class Halls {
         return hall;
     }
 
+    // todo: return a list of saved halls
+
     public static Hall load(Integer hallID){
         return null;
     }
