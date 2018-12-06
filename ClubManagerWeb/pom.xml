@@ -37,6 +37,7 @@
             <version>2.3.28</version>
         </dependency>
 
+        <!--Club Manager APP-->
         <dependency>
             <groupId>com.infoshareacademy.niewiem</groupId>
             <artifactId>ClubManagerApp</artifactId>
@@ -47,6 +48,7 @@
     <build>
         <plugins>
 
+            <!-- WAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -56,6 +58,7 @@
                 </configuration>
             </plugin>
 
+            <!-- wildfly -->
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
