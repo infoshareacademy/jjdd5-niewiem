@@ -13,7 +13,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -21,14 +20,6 @@
     </properties>
 
     <dependencies>
-
-        <!--Club Manager APP-->
-        <dependency>
-            <groupId>com.infoshareacademy.niewiem</groupId>
-            <artifactId>ClubManagerApp</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
         <!-- Java EE API -->
         <dependency>
             <groupId>javax</groupId>
@@ -44,6 +35,12 @@
             <version>2.3.28</version>
         </dependency>
 
+        <!--Club Manager APP-->
+        <dependency>
+            <groupId>com.infoshareacademy.niewiem</groupId>
+            <artifactId>ClubManagerApp</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -65,7 +62,7 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.2.1.Final</version>
                 <configuration>
-                    <name>freemarker-demo.war</name>
+                    <name>ClubManager.war</name>
                 </configuration>
                 <executions>
                     <execution>
