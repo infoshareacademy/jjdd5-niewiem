@@ -66,7 +66,7 @@ public class ConsoleInterface {
             case 1:
                 savedHalls = DataProvider.loadHallsAsList();
 
-                if(savedHalls.isEmpty() || savedHalls == null){
+                if (savedHalls == null || savedHalls.isEmpty()){
                     System.out.println("There are no files in memory, sorry.");
                     hallMenu();
                 }

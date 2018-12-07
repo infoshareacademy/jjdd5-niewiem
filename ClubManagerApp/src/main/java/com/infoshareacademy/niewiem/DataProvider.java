@@ -139,9 +139,9 @@ public class DataProvider {
             LocalDateTime startTime = LocalDateTime.parse(reservationAsArray[START_TIME_IN_RESERVATIONS].trim());
             LocalDateTime endTime = LocalDateTime.parse(reservationAsArray[END_TIME_IN_RESERVATIONS].trim());
             String customer;
-            if(reservationAsArray.length > CUSTOMER){
+            if (reservationAsArray.length > CUSTOMER){
                 customer = reservationAsArray[CUSTOMER].trim();
-            }else{
+            }else {
                 customer = "";
             }
 
@@ -191,7 +191,7 @@ public class DataProvider {
     }
 
     private static void checkIfExistsAndCreateDataDirectory() {
-        if(!Files.exists(path)) {
+        if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
             } catch (IOException e) {
@@ -201,7 +201,7 @@ public class DataProvider {
     }
 
     private static void checkIfExistsAndCreateCsvFile(Path path) {
-        if(!Files.exists(path)) {
+        if (!Files.exists(path)) {
             try {
                 Files.createFile(path);
             } catch (IOException e) {
