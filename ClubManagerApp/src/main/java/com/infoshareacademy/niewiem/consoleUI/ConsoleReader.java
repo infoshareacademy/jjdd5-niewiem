@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem;
+package com.infoshareacademy.niewiem.consoleUI;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

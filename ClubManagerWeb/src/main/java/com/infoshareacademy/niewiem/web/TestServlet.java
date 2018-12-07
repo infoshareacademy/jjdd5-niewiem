@@ -1,6 +1,5 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.Hall;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

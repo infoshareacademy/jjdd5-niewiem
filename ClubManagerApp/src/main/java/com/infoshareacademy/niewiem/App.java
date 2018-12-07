@@ -1,5 +1,8 @@
 package com.infoshareacademy.niewiem;
 
+import com.infoshareacademy.niewiem.consoleUI.ConsoleInterface;
+import com.infoshareacademy.niewiem.dao.DataProvider;
+
 public class App {
 
     public static void main(String[] args) {
