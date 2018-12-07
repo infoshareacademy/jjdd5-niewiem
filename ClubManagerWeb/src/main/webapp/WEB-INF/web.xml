@@ -8,7 +8,7 @@
     <name>java:ds/clubds</name>
     <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
     <!-- database name: club -->
-    <url>jdbc:mysql://0.0.0.0:3306/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
+    <url>jdbc:mysql://localhost:3306/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
     <!-- gotta have this as a user in your local database! -->
     <user>root</user>
     <!-- gotta have this as a password in your local database! -->
