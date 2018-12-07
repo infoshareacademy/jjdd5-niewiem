@@ -98,7 +98,7 @@ public class ConsoleInterface {
      ******************************************************************************************************************/
 
     private void printMainMenu() {
-        System.out.println("" +
+        System.out.println("\n" +
                 "MAIN MENU\n" +
                 "======================\n" +
                 "Hall: " + hall.getName() + "\n" +
@@ -385,12 +385,21 @@ public class ConsoleInterface {
         }
     }
 
+//    private boolean checkIfReservationExists(List<Reservation> reservations) {
+//        if (reservation == null) {
+//            LOG.warn ("IndexOutOfBoundsException");
+//            return false;
+//        }
+//        return true;
+//    }
+
+
     /**
      * Admin Panel
      ******************************************************************************************************************/
 
     private void printAdminPanelMenu() {
-        System.out.println("" +
+        System.out.println("\n" +
                 "ADMIN PANEL\n" +
                 "======================\n" +
                 "1. Add table\n" +
@@ -643,7 +652,7 @@ public class ConsoleInterface {
 
     private void printFunctionalityUnavailable() {
         System.out.println("I'm sorry Dave, I'm afraid I can't... ascii penis");
-        LOG.error("functionality unavailable");
+        LOG.fatal("functionality unavailable");
     }
 
     private String giveNameBasedOnId(Integer tableID, TableType type) {
