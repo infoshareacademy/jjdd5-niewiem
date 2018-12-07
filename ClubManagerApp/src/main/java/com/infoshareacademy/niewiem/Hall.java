@@ -31,4 +31,18 @@ public class Hall {
     public List<Reservation> getReservations() {
         return reservations;
     }
+
+    public void setTableList(List<Table> tableList) {
+        this.tableList = tableList;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public String toCsvString(){
+        StringBuffer sb = new StringBuffer();
+        sb.append(hallId).append(";").append(name);
+        return sb.toString();
+    }
 }

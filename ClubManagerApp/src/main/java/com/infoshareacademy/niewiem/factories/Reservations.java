@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.factories;
 
+import com.infoshareacademy.niewiem.DataProvider;
 import com.infoshareacademy.niewiem.Hall;
 import com.infoshareacademy.niewiem.Reservation;
 import com.infoshareacademy.niewiem.Table;
@@ -7,28 +8,35 @@ import com.infoshareacademy.niewiem.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
 public class Reservations {
-    public static boolean create(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
-        return load(hall, table, startDateTime, timeSpan, customer);
-        // todo: save reservation to file
+    public static Optional<Reservation> create(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
+        Optional<Reservation> reservationOpt = load(hall, table, startDateTime, timeSpan, customer);
+        boolean reservationWasCreated = reservationOpt.isPresent();
+
+        if (reservationWasCreated) {
+            Reservation reservation = reservationOpt.get();
+            DataProvider.saveReservationInCsv(reservation);
+        }
+        return reservationOpt;
     }
 
-    public static boolean load(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
+    public static Optional<Reservation> load(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
         LocalDateTime endDateTime = startDateTime.plusMinutes(timeSpan);
         return load(hall, table, startDateTime, endDateTime, customer);
     }
 
-    public static boolean load(Hall hall, Table table, LocalDateTime startDateTime, LocalDateTime endDateTime, String customer) {
+    public static Optional<Reservation> load(Hall hall, Table table, LocalDateTime startDateTime, LocalDateTime endDateTime, String customer) {
         if (isTimeSpanAvailable(hall, table, startDateTime, endDateTime)) {
             Reservation reservation = new Reservation(table, startDateTime, endDateTime, customer);
             hall.getReservations().add(reservation);
-            return true;
+            return Optional.of(reservation);
         }
-        return false;
+        return Optional.empty();
     }
 
     public static void stop(Hall hall, Table table) {

@@ -16,6 +16,7 @@ public class ConsoleInterface {
 
     private ConsoleReader cr;
     private ConsolePrinter cp;
+    private List<Hall> savedHalls;
     private Hall hall;
 
     /**
@@ -63,7 +64,26 @@ public class ConsoleInterface {
                 System.exit(0);
                 break;
             case 1:
-                System.out.println(FUNCTIONALITY_UNAVAILABLE);
+                savedHalls = DataProvider.loadHallsAsList();
+
+                if (savedHalls == null || savedHalls.isEmpty()){
+                    System.out.println("There are no files in memory, sorry.");
+                    hallMenu();
+                }
+                savedHalls.stream()
+                        .forEach(h -> System.out.println(h.getHallId() + ". " + h.getName()));
+
+                System.out.println("Choose existing hall by ID:");
+                Integer chooseHallID = cr.enterInt();
+                this.hall = Halls.load(chooseHallID, savedHalls.get((chooseHallID - 1)).getName());
+
+                List<Table> savedTables = DataProvider.loadTablesAsList(hall);
+                hall.setTableList(savedTables);
+
+                List<Reservation> reservations = DataProvider.loadReservationsAsList(savedTables);
+                hall.setReservations(reservations);
+
+                mainMenu();
                 break;
             case 2:
                 this.hall = Halls.create(enterHallName());
@@ -161,7 +181,8 @@ public class ConsoleInterface {
     private void startGameMenu(Table table) {
         LocalDateTime startTime = LocalDateTime.now();
         int timeSpan = enterTimeSpan();
-        if (!Reservations.create(hall, table, startTime, timeSpan, "")) {
+        boolean timeSpanNotAvailable = !Reservations.create(hall, table, startTime, timeSpan, "").isPresent();
+        if (timeSpanNotAvailable) {
             System.out.println("Table is already taken, sorry.");
         }
     }
@@ -205,8 +226,9 @@ public class ConsoleInterface {
         Integer timeSpan = enterTimeSpan();
         String customer = enterCustomerInformation();
 
-        if (!Reservations.create(this.hall, table, startDateTime, timeSpan, customer)) {
-            System.out.println("Table is already taken at that time, sorry.");
+        boolean timeSpanNotAvailable = !Reservations.create(this.hall, table, startDateTime, timeSpan, customer).isPresent();
+        if (timeSpanNotAvailable) {
+            System.out.println("Table is already taken, sorry.");
         }
         mainMenu();
     }
@@ -419,7 +441,7 @@ public class ConsoleInterface {
     }
 
     private String chooseTableName() {
-        Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
+        Integer nextAvailableTableId = Tables.getNextAvailableId();
         return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
     }
 
@@ -490,7 +512,7 @@ public class ConsoleInterface {
 
     private void addTenTables() {
         for (int i = 0; i <= 9; i++) {
-            Integer tableID = Tables.getNextAvailableId(hall);
+            Integer tableID = Tables.getNextAvailableId();
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
             Tables.load(this.hall, type, tableID, tableName);

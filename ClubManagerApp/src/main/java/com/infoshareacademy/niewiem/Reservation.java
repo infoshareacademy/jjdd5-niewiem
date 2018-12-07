@@ -8,7 +8,7 @@ public class Reservation {
     private Table table;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Optional<String> customer;
+    private String customer;
 
 
     public Reservation(Table table, LocalDateTime startTime, LocalDateTime endTime) {
@@ -21,7 +21,7 @@ public class Reservation {
         this.table = table;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.customer = Optional.of(customer);
+        this.customer = customer;
     }
 
     public Table getTable() {
@@ -36,7 +36,7 @@ public class Reservation {
         return endTime;
     }
 
-    public Optional<String> getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
@@ -66,6 +66,12 @@ public class Reservation {
     public Long getTimeRemainingInSeconds(){
         LocalDateTime now = LocalDateTime.now();
         return now.until(endTime, ChronoUnit.SECONDS);
+    }
+
+    public String toCsvString(Table table){
+        StringBuffer sb = new StringBuffer();
+        sb.append(table.getTableId()).append(";").append(startTime).append(";").append(endTime).append(";").append(customer);
+        return sb.toString();
     }
 
 }

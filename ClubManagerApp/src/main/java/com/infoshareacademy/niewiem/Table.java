@@ -29,6 +29,12 @@ public class Table implements Comparable<Table> {
         return tableName;
     }
 
+    public String toCsvString(Hall hall){
+        StringBuffer sb = new StringBuffer();
+        sb.append(hall.getHallId()).append(";").append(type).append(";").append(tableId).append(";").append(tableName);
+        return sb.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
