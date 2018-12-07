@@ -75,6 +75,19 @@ public class DataProvider {
         }
     }
 
+    public static Set<Integer> getSetOfSavedTablesIds (){
+        List<String> rawTablesAsStrings = getFileAsRawStringList(tablesPath);
+        Set<Integer> savedTablesIds = new HashSet<>();
+
+        for (String line : rawTablesAsStrings) {
+            String[] tableAsArray = line.split(SEPARATOR);
+
+            Integer tableId = Integer.valueOf(tableAsArray[TABLE_ID_IN_TABLES].trim());
+            savedTablesIds.add(tableId);
+        }
+        return savedTablesIds;
+    }
+
     public static List<Table> loadTablesAsList(Hall hall) {
         List<String> rawTablesAsStrings = getFileAsRawStringList(tablesPath);
         return getListOfSavedTables(hall, rawTablesAsStrings);
@@ -112,7 +125,7 @@ public class DataProvider {
     }
 
     public static List<Reservation> loadReservationsAsList(List<Table> tables) {
-        List<String> rawReservationsAsStrings = getFileAsRawStringList(tablesPath);
+        List<String> rawReservationsAsStrings = getFileAsRawStringList(reservationPath);
         return getListOfReservations(tables, rawReservationsAsStrings);
     }
 
@@ -125,7 +138,12 @@ public class DataProvider {
             Integer tableIdFromFile = Integer.valueOf(reservationAsArray[TABLE_ID_IN_RESERVATIONS].trim());
             LocalDateTime startTime = LocalDateTime.parse(reservationAsArray[START_TIME_IN_RESERVATIONS].trim());
             LocalDateTime endTime = LocalDateTime.parse(reservationAsArray[END_TIME_IN_RESERVATIONS].trim());
-            String customer = reservationAsArray[CUSTOMER].trim();
+            String customer;
+            if(reservationAsArray.length > CUSTOMER){
+                customer = reservationAsArray[CUSTOMER].trim();
+            }else{
+                customer = "";
+            }
 
             Table tableFromReservation = tables.stream()
                     .filter(table -> table.getTableId().equals(tableIdFromFile))
@@ -163,5 +181,32 @@ public class DataProvider {
             saveTableInCsv(tableFromNewList);
         }
 
+    }
+
+    public static void checkDataStructure() {
+        checkIfExistsAndCreateDataDirectory();
+        checkIfExistsAndCreateCsvFile(hallsPath);
+        checkIfExistsAndCreateCsvFile(tablesPath);
+        checkIfExistsAndCreateCsvFile(reservationPath);
+    }
+
+    private static void checkIfExistsAndCreateDataDirectory() {
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void checkIfExistsAndCreateCsvFile(Path path) {
+        if(!Files.exists(path)) {
+            try {
+                Files.createFile(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

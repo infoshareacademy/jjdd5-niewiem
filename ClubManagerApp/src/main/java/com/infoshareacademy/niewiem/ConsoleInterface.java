@@ -441,7 +441,7 @@ public class ConsoleInterface {
     }
 
     private String chooseTableName() {
-        Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
+        Integer nextAvailableTableId = Tables.getNextAvailableId();
         return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
     }
 
@@ -512,7 +512,7 @@ public class ConsoleInterface {
 
     private void addTenTables() {
         for (int i = 0; i <= 9; i++) {
-            Integer tableID = Tables.getNextAvailableId(hall);
+            Integer tableID = Tables.getNextAvailableId();
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
             Tables.load(this.hall, type, tableID, tableName);

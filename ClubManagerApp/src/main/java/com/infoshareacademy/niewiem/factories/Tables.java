@@ -9,14 +9,14 @@ import java.util.OptionalInt;
 
 public class Tables {
     public static void create(Hall hall, String name, TableType type) {
-        Integer tableID = getNextAvailableId(hall);
+        Integer tableID = getNextAvailableId();
         Table table = load(hall, type, tableID, name);
         DataProvider.saveTableInCsv(table);
     }
 
-    public static Integer getNextAvailableId(Hall hall){
-        OptionalInt nextAvailableId = hall.getTableList().stream()
-                .mapToInt(Table::getTableId)
+    public static Integer getNextAvailableId(){
+        OptionalInt nextAvailableId = DataProvider.getSetOfSavedTablesIds().stream()
+                .mapToInt(a -> a)
                 .max();
         if(nextAvailableId.isPresent()){
             return nextAvailableId.getAsInt() + 1;
