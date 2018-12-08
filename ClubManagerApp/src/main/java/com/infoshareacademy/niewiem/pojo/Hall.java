@@ -18,7 +18,7 @@ public class Hall {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "halls", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
     private Set<Table> tables;
 
     // Constructors ----------------------------------------------------------------------------------------------------

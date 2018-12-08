@@ -28,7 +28,7 @@ public class Table implements Comparable<Table> {
     @JoinColumn(name = "hall_id")
     private Hall hall;
 
-    @OneToMany(mappedBy = "tables", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
     private Set<Reservation> reservations;
 
     // Constructors ----------------------------------------------------------------------------------------------------
