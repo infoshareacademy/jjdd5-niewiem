@@ -77,6 +77,14 @@ public class Table implements Comparable<Table> {
         this.hall = hall;
     }
 
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     // Business logic for Console UI -----------------------------------------------------------------------------------
     // Needed for console app - DataProvider ---------------------------------------------------------------------------
 

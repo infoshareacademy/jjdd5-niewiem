@@ -47,6 +47,7 @@ public class Hall {
         this.name = name;
     }
 
+
     public Set<Table> getTables() {
         return tables;
     }
