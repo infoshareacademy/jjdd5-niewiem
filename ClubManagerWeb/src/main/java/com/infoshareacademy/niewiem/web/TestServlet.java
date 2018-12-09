@@ -3,6 +3,8 @@ package com.infoshareacademy.niewiem.web;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -20,6 +22,9 @@ public class TestServlet extends HttpServlet {
 
     private static final String TEMPLATE_NAME = "test";
 
+    private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
+
+
     @Inject
     private TemplateProvider templateProvider;
 
@@ -30,12 +35,16 @@ public class TestServlet extends HttpServlet {
         model.put("date", LocalDateTime.now());
 
 
+        sendModelToTemplate(resp, model);
+    }
+
+    private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
         try {
             template.process(model, resp.getWriter());
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Error while processing template: " + e);
         }
     }
 }

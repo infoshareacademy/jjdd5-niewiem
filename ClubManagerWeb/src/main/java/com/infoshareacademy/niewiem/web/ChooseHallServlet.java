@@ -5,6 +5,8 @@ import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletConfig;
@@ -19,9 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 
+
 @WebServlet("choose-hall")
 public class ChooseHallServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "choose-hall";
+    private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
@@ -53,7 +57,7 @@ public class ChooseHallServlet extends HttpServlet {
         try {
             template.process(model, resp.getWriter());
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Error while processing template: " + e);
         }
     }
 
