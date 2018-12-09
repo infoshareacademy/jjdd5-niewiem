@@ -9,8 +9,6 @@ import java.time.temporal.ChronoUnit;
 @javax.persistence.Table(name = "reservations")
 public class Reservation {
 
-    // Fields ----------------------------------------------------------------------------------------------------------
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,8 +27,6 @@ public class Reservation {
     @JoinColumn(name = "table_id")
     private Table table;
 
-    // Constructors ----------------------------------------------------------------------------------------------------
-
     public Reservation() {
     }
 
@@ -40,8 +36,6 @@ public class Reservation {
         this.endTime = endTime;
         this.customer = customer;
     }
-
-    // Getters and setters ---------------------------------------------------------------------------------------------
 
     public Long getId() {
         return id;

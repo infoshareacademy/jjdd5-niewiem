@@ -8,8 +8,6 @@ import java.util.Set;
 @javax.persistence.Table(name = "halls")
 public class Hall {
 
-    // Fields ----------------------------------------------------------------------------------------------------------
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,8 +19,6 @@ public class Hall {
     @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
     private Set<Table> tables;
 
-    // Constructors ----------------------------------------------------------------------------------------------------
-
     public Hall() {
     }
 
@@ -30,8 +26,6 @@ public class Hall {
         this.id = hallId;
         this.name = name;
     }
-
-    // Getters and setters ---------------------------------------------------------------------------------------------
 
     public Integer getId() {
         return id;

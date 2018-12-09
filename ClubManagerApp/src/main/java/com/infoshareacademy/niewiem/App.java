@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem;
 
-import com.infoshareacademy.niewiem.consoleUI.ConsoleInterface;
+import com.infoshareacademy.niewiem.consoleui.ConsoleInterface;
 import com.infoshareacademy.niewiem.dao.DataProvider;
 
 public class App {

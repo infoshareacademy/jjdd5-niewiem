@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.consoleUI;
+package com.infoshareacademy.niewiem.consoleui;
 
 import com.infoshareacademy.niewiem.dao.DataProvider;
 import com.infoshareacademy.niewiem.enums.TableType;

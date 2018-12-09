@@ -10,8 +10,6 @@ import java.util.Set;
 @javax.persistence.Table(name = "tables")
 public class Table implements Comparable<Table> {
 
-    // Fields ----------------------------------------------------------------------------------------------------------
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,8 +29,6 @@ public class Table implements Comparable<Table> {
     @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
     private Set<Reservation> reservations;
 
-    // Constructors ----------------------------------------------------------------------------------------------------
-
     public Table() {
     }
 
@@ -42,8 +38,6 @@ public class Table implements Comparable<Table> {
         this.id = Id;
         this.name = tableName;
     }
-
-    // Getters and setters ---------------------------------------------------------------------------------------------
 
     public Integer getId() {
         return id;
@@ -86,7 +80,6 @@ public class Table implements Comparable<Table> {
     }
 
     // Business logic for Console UI -----------------------------------------------------------------------------------
-    // Needed for console app - DataProvider ---------------------------------------------------------------------------
 
     @Override
     public boolean equals(Object o) {
