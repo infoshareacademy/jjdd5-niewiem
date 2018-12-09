@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--suppress ALL -->
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd" version="2.2">
+
+    <persistence-unit name="clubManagerPU" transaction-type="JTA">
+        <jta-data-source>java:ds/clubds</jta-data-source>
+
+        <class>com.infoshareacademy.niewiem.pojo.Hall</class>
+        <class>com.infoshareacademy.niewiem.pojo.Table</class>
+        <class>com.infoshareacademy.niewiem.pojo.Reservation</class>
+
+        <properties>
+            <!-- Hibernate settings -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+        </properties>
+
+
+    </persistence-unit>
+
+</persistence>

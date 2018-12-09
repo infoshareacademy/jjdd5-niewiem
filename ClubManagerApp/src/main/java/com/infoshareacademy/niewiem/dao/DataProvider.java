@@ -1,6 +1,10 @@
-package com.infoshareacademy.niewiem;
+package com.infoshareacademy.niewiem.dao;
 
-import com.infoshareacademy.niewiem.factories.Tables;
+import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.repositories.Tables;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.pojo.Table;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -104,7 +108,7 @@ public class DataProvider {
             Integer tableId = Integer.valueOf(tableAsArray[TABLE_ID_IN_TABLES].trim());
             String tableName = tableAsArray[TABLE_NAME_IN_TABLES].trim();
 
-            if (hallIdFromFile.equals(hall.getHallId())) {
+            if (hallIdFromFile.equals(hall.getId())) {
                 savedTables.add(new Table(hall, tableType, tableId, tableName));
             }
         }
@@ -146,7 +150,7 @@ public class DataProvider {
             }
 
             Table tableFromReservation = tables.stream()
-                    .filter(table -> table.getTableId().equals(tableIdFromFile))
+                    .filter(table -> table.getId().equals(tableIdFromFile))
                     .findFirst()
                     .orElse(null);
 
@@ -174,7 +178,7 @@ public class DataProvider {
 
         List<Table> tables = loadTablesAsList(hall);
 
-        Table tableToRemove = Tables.getTableByID(hall, table.getTableId());
+        Table tableToRemove = Tables.getTableByID(hall, table.getId());
         tables.remove(tableToRemove);
 
         for (Table tableFromNewList : tables) {

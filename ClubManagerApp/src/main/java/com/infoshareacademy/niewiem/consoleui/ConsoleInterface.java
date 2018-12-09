@@ -1,8 +1,13 @@
-package com.infoshareacademy.niewiem;
+package com.infoshareacademy.niewiem.consoleui;
 
-import com.infoshareacademy.niewiem.factories.Halls;
-import com.infoshareacademy.niewiem.factories.Reservations;
-import com.infoshareacademy.niewiem.factories.Tables;
+import com.infoshareacademy.niewiem.dao.DataProvider;
+import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.repositories.Halls;
+import com.infoshareacademy.niewiem.repositories.Reservations;
+import com.infoshareacademy.niewiem.repositories.Tables;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.pojo.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +28,7 @@ public class ConsoleInterface {
      * Constructor
      ******************************************************************************************************************/
 
-    ConsoleInterface() {
+    public ConsoleInterface() {
         this.cr = new ConsoleReader();
         this.cp = new ConsolePrinter();
     }
@@ -71,17 +76,17 @@ public class ConsoleInterface {
                     hallMenu();
                 }
                 savedHalls.stream()
-                        .forEach(h -> System.out.println(h.getHallId() + ". " + h.getName()));
+                        .forEach(h -> System.out.println(h.getId() + ". " + h.getName()));
 
                 System.out.println("Choose existing hall by ID:");
                 Integer chooseHallID = cr.enterInt();
                 this.hall = Halls.load(chooseHallID, savedHalls.get((chooseHallID - 1)).getName());
 
                 List<Table> savedTables = DataProvider.loadTablesAsList(hall);
-                hall.setTableList(savedTables);
+                Tables.setTables(savedTables);
 
                 List<Reservation> reservations = DataProvider.loadReservationsAsList(savedTables);
-                hall.setReservations(reservations);
+                Reservations.setReservations(reservations);
 
                 mainMenu();
                 break;
