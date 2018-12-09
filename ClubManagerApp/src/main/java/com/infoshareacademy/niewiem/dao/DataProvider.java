@@ -1,8 +1,11 @@
-package com.infoshareacademy.niewiem;
+package com.infoshareacademy.niewiem.dao;
 
-import com.infoshareacademy.niewiem.factories.Tables;
+import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.repositories.Tables;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -69,7 +72,7 @@ public class DataProvider {
         List<Hall> hallsAsList = loadHallsAsList();
 
         List<Hall> hallsListWithoutRemovedHall = hallsAsList.stream()
-                .filter(h -> !(h.getHallId().equals(hall.getHallId())))
+                .filter(h -> !(h.getId().equals(hall.getId())))
                 .collect(Collectors.toList());
 
         removePreviousContentFromCsv(hallsPath);
@@ -121,7 +124,7 @@ public class DataProvider {
             Integer tableId = Integer.valueOf(tableAsArray[TABLE_ID_IN_TABLES].trim());
             String tableName = tableAsArray[TABLE_NAME_IN_TABLES].trim();
 
-            if (hallIdFromFile.equals(hall.getHallId())) {
+            if (hallIdFromFile.equals(hall.getId())) {
                 savedTables.add(new Table(hall, tableType, tableId, tableName));
             }
         }
@@ -133,7 +136,7 @@ public class DataProvider {
         List<Table> tablesAsList = loadTablesAsList(hall);
 
         List<Table> tablesListWithoutRemovedTable = tablesAsList.stream()
-                .filter(t -> !(t.getTableId().equals(table.getTableId())))
+                .filter(t -> !(t.getId().equals(table.getId())))
                 .collect(Collectors.toList());
 
         removePreviousContentFromCsv(tablesPath);
@@ -178,7 +181,7 @@ public class DataProvider {
             }
 
             Table tableFromReservation = tables.stream()
-                    .filter(table -> table.getTableId().equals(tableIdFromFile))
+                    .filter(table -> table.getId().equals(tableIdFromFile))
                     .findFirst()
                     .orElse(null);
 
@@ -191,10 +194,10 @@ public class DataProvider {
 
     public static void removeReservationFromFile(Hall hall, Reservation reservation) {
 
-        List<Reservation> reservationsAsList = loadReservationsAsList(hall.getTableList());
+        List<Reservation> reservationsAsList = loadReservationsAsList(Tables.getTables());
 
         List<Reservation> resListWithoutRemovedReservation = reservationsAsList.stream()
-                .filter(r -> !(r.getTable().getTableId()).equals(reservation.getTable().getTableId()))
+                .filter(r -> !(r.getTable().getId()).equals(reservation.getTable().getId()))
                 .collect(Collectors.toList());
 
         removePreviousContentFromCsv(reservationPath);
