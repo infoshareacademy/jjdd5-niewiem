@@ -16,7 +16,7 @@ import java.util.Map;
 
 @WebServlet("/create-hall")
 public class CreateHallServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "choose-hall";
+    private static final String TEMPLATE_NAME = "create-hall";
 
     @Inject
     private TemplateProvider templateProvider;
