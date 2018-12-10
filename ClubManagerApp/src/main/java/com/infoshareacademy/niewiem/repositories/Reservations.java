@@ -63,15 +63,16 @@ public class Reservations {
         reservations.stream()
                 .filter(r -> r.getTable().equals(table))
                 .filter(Reservation::isInProgress)
-                .forEach(r -> r.setEndTime(LocalDateTime.now()));
-        //todo: find record for the reservation and change history
-
+                .forEach(r -> {
+                    LocalDateTime now = LocalDateTime.now();
+                    r.setEndTime(now);
+                    DataProvider.editReservationEndTime(r,now);
+                });
     }
 
     public static void stop(Hall hall, Reservation reservation) {
         LocalDateTime now = LocalDateTime.now();
         reservation.setEndTime(now);
-        DataProvider.editReservationEndTime(reservation, now);
     }
 
     public static void cancelAllFutureReservationsFromTable(Hall hall, Table table) {
@@ -118,7 +119,7 @@ public class Reservations {
 
     public static void cancel(Hall hall, Reservation reservation) {
         reservations.remove(reservation);
-        //todo: find record for the reservation and delete
+        DataProvider.removeReservationFromFile(reservation);
     }
 
     public static Map<Table, Long> getAllTablesAndRemainingTimes(Hall hall) {
