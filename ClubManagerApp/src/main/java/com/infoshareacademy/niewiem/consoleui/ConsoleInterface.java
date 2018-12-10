@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ConsoleInterface {
 
-    private static final Logger LOG = LogManager.getLogger(Halls.class);
+    private static final Logger LOG = LogManager.getLogger(ConsoleInterface.class);
 
     private static final String FUNCTIONALITY_UNAVAILABLE = "I'm sorry Dave, I'm afraid I can't do that.";
     private static final String GOODBYE_MESSAGE = "Bye, bye!";
@@ -195,7 +195,8 @@ public class ConsoleInterface {
         } else {
             startGameMenu(table);
             LOG.info("new game started");
-        } LOG.warn("no tables yet");
+        }
+        LOG.warn("no tables yet");
         mainMenu();
     }
 
@@ -226,19 +227,17 @@ public class ConsoleInterface {
     }
 
     private Table chooseTable() {
-            System.out.println("Choose table ID:");
-            int tableChoice = cr.enterInt();
-            Table table = Tables.getTableByID(hall, tableChoice);
-            if (table != null) {
-                return table;
-            }
-            System.out.println("Table with that ID doesn't exist");
-            LOG.warn("table ID nonexistent");
-            mainMenu();
+        System.out.println("Choose table ID:");
+        int tableChoice = cr.enterInt();
+        Table table = Tables.getTableByID(hall, tableChoice);
+        if (table != null) {
+            return table;
+        }
+        System.out.println("Table with that ID doesn't exist");
+        LOG.warn("table ID [{}] nonexistent", cr.enterInt());
+        mainMenu();
         return null;
-
     }
-
     /**
      * Add reservations
      ******************************************************************************************************************/
@@ -281,7 +280,7 @@ public class ConsoleInterface {
 
     private LocalDate getStartDate() {
         LocalDate input = cr.enterDate();
-        LOG.info("start date entered");
+        LOG.info("start date entered: [{}]", cr.enterDate());
         if (input.isAfter(LocalDate.now()) || input.equals(LocalDate.now())) {
             return input;
         }
@@ -291,7 +290,7 @@ public class ConsoleInterface {
 
     private LocalTime getStartTime(LocalDate startDate) {
         LocalTime input = cr.enterTime();
-        LOG.info("start time entered");
+        LOG.info("start time entered: [{}]", cr.enterTime());
         if (startDate.isEqual(LocalDate.now())
                 && (input.equals(LocalTime.now()) || input.isBefore(LocalTime.now()))
         ) {
@@ -303,7 +302,7 @@ public class ConsoleInterface {
 
     private Integer getTimeSpan() {
         int input = cr.enterInt();
-        LOG.info("timespan entered");
+        LOG.info("timespan entered: [{}]", cr.enterInt());
         if (input <= 0) {
             printWrongValueMessage();
             return getTimeSpan();
