@@ -47,7 +47,7 @@ public class ConsolePrinter {
 
     private void printRemainingTime(Long remainingSeconds) {
         if (remainingSeconds == 0) {
-            System.out.print("|       |");
+            System.out.print("o       o");
             return;
         }
 
@@ -76,7 +76,7 @@ public class ConsolePrinter {
 
     private static void printEdge(int howManyTables) {
         for (int i = 1; i <= howManyTables; i++) {
-            System.out.print("+-------+");
+            System.out.print("o-------o");
         }
         System.out.print("\n");
 

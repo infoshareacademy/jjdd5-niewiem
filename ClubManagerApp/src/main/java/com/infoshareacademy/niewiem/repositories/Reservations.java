@@ -6,6 +6,7 @@ import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toMap;
 
 public class Reservations {
-    private static List<Reservation> reservations;
+    private static List<Reservation> reservations = new ArrayList<>();
 
 
     public static List<Reservation> getReservations() {
