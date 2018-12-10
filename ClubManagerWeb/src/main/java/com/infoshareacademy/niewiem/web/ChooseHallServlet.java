@@ -43,7 +43,11 @@ public class ChooseHallServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        showListOfHalls(resp);
+        Map<String, Object> model = new HashMap<>();
+
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
+        addListOfHallsToModel(resp, model);
+
     }
 
     @Override
@@ -51,6 +55,7 @@ public class ChooseHallServlet extends HttpServlet {
         Map<String, String[]> params = req.getParameterMap();
         String action = params.get("action")[0];
 
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
 
         if(action.equals(ACTION_SAVE_HALL)){
@@ -60,15 +65,10 @@ public class ChooseHallServlet extends HttpServlet {
             model.put("savedHall", name);
         }
 
-        showListOfHalls(resp, model);
+        addListOfHallsToModel(resp, model);
     }
 
-    private void showListOfHalls(HttpServletResponse resp) throws IOException {
-        Map<String, Object> model = new HashMap<>();
-        showListOfHalls(resp, model);
-    }
-
-    private void showListOfHalls(HttpServletResponse resp, Map<String, Object> model) throws IOException {
+    private void addListOfHallsToModel(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         List<Hall> halls = hallDao.findAll();
         LOG.info("Found {} halls in halls table", halls.size());
 

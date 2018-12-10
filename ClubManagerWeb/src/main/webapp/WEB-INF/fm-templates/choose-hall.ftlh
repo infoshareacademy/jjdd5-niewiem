@@ -28,7 +28,7 @@
             </div>
         </div>
 
-    <#if savedSuccess>
+    <#if savedSuccess??>
         <div class="row">
         <div class="alert alert-success">
         <p>Saved ${savedHall} in database</p>
@@ -36,6 +36,9 @@
         </div>
     </#if>
 
+    <div style="position: fixed; bottom: 0; right: 0">
+        <a href="dev-panel">π</a>
+    </div>
 
 </div>
 <#--BOOTSTRAP-->
