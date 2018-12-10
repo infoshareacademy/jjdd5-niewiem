@@ -65,6 +65,8 @@ public class ChooseHallServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         List<Hall> halls = hallDao.findAll();
+        LOG.info("Found {} halls in halls table", halls.size());
+
         model.put("halls", halls);
 
         sendModelToTemplate(resp, model);
