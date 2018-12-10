@@ -1,39 +1,52 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.dao.HallDao;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
+import com.infoshareacademy.niewiem.pojo.Hall;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@WebServlet("/test")
-public class TestServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "test";
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
-
+@WebServlet("choose-hall")
+public class ChooseHallServlet extends HttpServlet {
+    private static final String TEMPLATE_NAME = "choose-hall";
+    private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
+
+    @Inject
+    private HallDao hallDao;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Map<String, Object> model = new HashMap<>();
-        model.put("date", LocalDateTime.now());
 
+        List<Hall> halls = hallDao.findAll();
+        model.put("halls", halls);
 
         sendModelToTemplate(resp, model);
     }
@@ -47,4 +60,5 @@ public class TestServlet extends HttpServlet {
             LOG.error("Error while processing template: " + e);
         }
     }
+
 }

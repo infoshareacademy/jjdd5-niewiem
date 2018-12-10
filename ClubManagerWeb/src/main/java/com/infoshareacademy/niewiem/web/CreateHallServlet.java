@@ -13,16 +13,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/test")
-public class TestServlet extends HttpServlet {
+@WebServlet("/create-hall")
+public class CreateHallServlet extends HttpServlet {
+    private static final String TEMPLATE_NAME = "create-hall";
 
-    private static final String TEMPLATE_NAME = "test";
-
-    private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
 
 
     @Inject
@@ -32,8 +30,6 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Map<String, Object> model = new HashMap<>();
-        model.put("date", LocalDateTime.now());
-
 
         sendModelToTemplate(resp, model);
     }

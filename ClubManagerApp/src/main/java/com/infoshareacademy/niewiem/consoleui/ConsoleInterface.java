@@ -1,32 +1,34 @@
-package com.infoshareacademy.niewiem;
+package com.infoshareacademy.niewiem.consoleui;
 
-import com.infoshareacademy.niewiem.factories.Halls;
-import com.infoshareacademy.niewiem.factories.Reservations;
-import com.infoshareacademy.niewiem.factories.Tables;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.infoshareacademy.niewiem.dao.DataProvider;
+import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.repositories.Halls;
+import com.infoshareacademy.niewiem.repositories.Reservations;
+import com.infoshareacademy.niewiem.repositories.Tables;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.pojo.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
+
 
 public class ConsoleInterface {
-
-    private static final Logger LOG = LogManager.getLogger(ConsoleInterface.class);
-
+    private static final String FUNCTIONALITY_UNAVAILABLE = "I'm sorry Dave, I'm afraid I can't do that.";
     private static final String GOODBYE_MESSAGE = "Bye, bye!";
 
     private ConsoleReader cr;
     private ConsolePrinter cp;
+    private List<Hall> savedHalls;
     private Hall hall;
 
     /**
      * Constructor
      ******************************************************************************************************************/
 
-    ConsoleInterface() {
+    public ConsoleInterface() {
         this.cr = new ConsoleReader();
         this.cp = new ConsolePrinter();
     }
@@ -45,9 +47,6 @@ public class ConsoleInterface {
 
     private void printHallMenu() {
         System.out.println("" +
-                "\n" +
-                "INITIAL MENU\n" +
-                "======================\n" +
                 "1. Load existing hall\n" +
                 "2. Create new hall\n" +
                 "0. Exit application");
@@ -55,7 +54,6 @@ public class ConsoleInterface {
 
     private void hallMenu() {
         printHallMenu();
-        LOG.info("initial menu loaded");
         hallMenuChoice(cr.enterInt());
     }
 
@@ -68,15 +66,32 @@ public class ConsoleInterface {
         switch (choice) {
             case 0:
                 System.out.println(GOODBYE_MESSAGE);
-                LOG.info("program closed");
                 System.exit(0);
                 break;
             case 1:
-                printFunctionalityUnavailable();
+                savedHalls = DataProvider.loadHallsAsList();
+
+                if (savedHalls == null || savedHalls.isEmpty()){
+                    System.out.println("There are no files in memory, sorry.");
+                    hallMenu();
+                }
+                savedHalls.stream()
+                        .forEach(h -> System.out.println(h.getId() + ". " + h.getName()));
+
+                System.out.println("Choose existing hall by ID:");
+                Integer chooseHallID = cr.enterInt();
+                this.hall = Halls.load(chooseHallID, savedHalls.get((chooseHallID - 1)).getName());
+
+                List<Table> savedTables = DataProvider.loadTablesAsList(hall);
+                Tables.setTables(savedTables);
+
+                List<Reservation> reservations = DataProvider.loadReservationsAsList(savedTables);
+                Reservations.setReservations(reservations);
+
+                mainMenu();
                 break;
             case 2:
                 this.hall = Halls.create(enterHallName());
-                LOG.info("new hall created: [{}]", hall.toString());
                 mainMenu();
                 break;
             case 88224646:
@@ -99,8 +114,7 @@ public class ConsoleInterface {
      ******************************************************************************************************************/
 
     private void printMainMenu() {
-        System.out.println("\n" +
-                "MAIN MENU\n" +
+        System.out.println("" +
                 "======================\n" +
                 "Hall: " + hall.getName() + "\n" +
                 "======================\n" +
@@ -113,7 +127,6 @@ public class ConsoleInterface {
     }
 
     private void mainMenu() {
-        LOG.info("main menu loaded");
         printTables();
         printMainMenu();
         int choice = cr.enterInt();
@@ -129,7 +142,6 @@ public class ConsoleInterface {
         switch (choice) {
             case 0:
                 System.out.println("Bye, bye!");
-                LOG.info("program closed");
                 System.exit(0);
                 break;
             case 1:
@@ -163,26 +175,19 @@ public class ConsoleInterface {
 
     private void startOrStopGame() {
         Table table = chooseTable();
-        if (hall.getTableList().size() > 0) {
-            if (Reservations.tableIsActive(this.hall, table)) {
-                stopGameMenu(table);
-            } else {
-                startGameMenu(table);
-                LOG.info("new game started");
-            }
-            mainMenu();
-
+        if (Reservations.tableIsActive(this.hall, table)) {
+            stopGameMenu(table);
         } else {
-            System.out.println("no tables yet");
-            mainMenu();
+            startGameMenu(table);
         }
-        System.out.println(hall.getReservations().size());
+        mainMenu();
     }
 
     private void startGameMenu(Table table) {
         LocalDateTime startTime = LocalDateTime.now();
         int timeSpan = enterTimeSpan();
-        if (!Reservations.create(hall, table, startTime, timeSpan, "")) {
+        boolean timeSpanNotAvailable = !Reservations.create(hall, table, startTime, timeSpan, "").isPresent();
+        if (timeSpanNotAvailable) {
             System.out.println("Table is already taken, sorry.");
         }
     }
@@ -195,7 +200,6 @@ public class ConsoleInterface {
         int choice = cr.enterInt();
         if (choice == 1) {
             Reservations.stop(this.hall, table);
-            LOG.info("game stopped {} ", table.toString());
         }
     }
 
@@ -205,18 +209,15 @@ public class ConsoleInterface {
     }
 
     private Table chooseTable() {
+        while (true) {
             System.out.println("Choose table ID:");
             int tableChoice = cr.enterInt();
             Table table = Tables.getTableByID(hall, tableChoice);
-
             if (table != null) {
                 return table;
             }
             System.out.println("Table with that ID doesn't exist");
-            LOG.warn("table ID nonexistent");
-            mainMenu();
-            return null;
-
+        }
     }
 
     /**
@@ -229,10 +230,10 @@ public class ConsoleInterface {
         LocalDateTime startDateTime = LocalDateTime.now().plusMinutes(1); //todo: enter valid time
         Integer timeSpan = enterTimeSpan();
         String customer = enterCustomerInformation();
-        LOG.info("customer information given");
-        if (!Reservations.create(this.hall, table, startDateTime, timeSpan, customer)) {
-            System.out.println("Table is already taken at that time, sorry.");
-            LOG.warn("table already taken");
+
+        boolean timeSpanNotAvailable = !Reservations.create(this.hall, table, startDateTime, timeSpan, customer).isPresent();
+        if (timeSpanNotAvailable) {
+            System.out.println("Table is already taken, sorry.");
         }
         mainMenu();
     }
@@ -253,14 +254,15 @@ public class ConsoleInterface {
      ******************************************************************************************************************/
 
 
+
     /**
      * Reservations options
      ******************************************************************************************************************/
 
 
+
     private LocalDate getStartDate() {
         LocalDate input = cr.enterDate();
-        LOG.info("start date entered");
         if (input.isAfter(LocalDate.now()) || input.equals(LocalDate.now())) {
             return input;
         }
@@ -270,7 +272,6 @@ public class ConsoleInterface {
 
     private LocalTime getStartTime(LocalDate startDate) {
         LocalTime input = cr.enterTime();
-        LOG.info("start time entered");
         if (startDate.isEqual(LocalDate.now())
                 && (input.equals(LocalTime.now()) || input.isBefore(LocalTime.now()))
         ) {
@@ -282,14 +283,12 @@ public class ConsoleInterface {
 
     private Integer getTimeSpan() {
         int input = cr.enterInt();
-        LOG.info("timespan param pam pam");
         if (input <= 0) {
             printWrongValueMessage();
             return getTimeSpan();
         }
         return input;
     }
-
     /**
      * Tables Queue
      ******************************************************************************************************************/
@@ -391,27 +390,16 @@ public class ConsoleInterface {
             Reservations.stop(hall, reservation);
         } else {
             Reservations.cancel(hall, reservation);
-            LOG.info("reservation cancelled");
         }
     }
-
-//    private boolean checkIfReservationExists(List<Reservation> reservations) {
-//        if (reservation == null) {
-//            LOG.warn ("IndexOutOfBoundsException");
-//            return false;
-//        }
-//        return true;
-//    }
-
 
     /**
      * Admin Panel
      ******************************************************************************************************************/
 
     private void printAdminPanelMenu() {
-        System.out.println("\n" +
+        System.out.println("" +
                 "ADMIN PANEL\n" +
-                "======================\n" +
                 "1. Add table\n" +
                 "2. Remove table\n" +
                 "0. Get back to App Menu");
@@ -419,7 +407,6 @@ public class ConsoleInterface {
 
     private void adminPanelMenu() {
         printAdminPanelMenu();
-        LOG.info("admin panel loaded");
         adminPanelChoice(cr.enterInt());
     }
 
@@ -459,7 +446,7 @@ public class ConsoleInterface {
     }
 
     private String chooseTableName() {
-        Integer nextAvailableTableId = Tables.getNextAvailableId(hall);
+        Integer nextAvailableTableId = Tables.getNextAvailableId();
         return giveNameBasedOnId(nextAvailableTableId, TableType.POOL);
     }
 
@@ -474,7 +461,6 @@ public class ConsoleInterface {
     private void removeTableMenu() {
         Table table = chooseTable();
         Tables.remove(hall, table);
-        LOG.info("table removed [{}]", table.toString());
     }
 
     /**
@@ -491,26 +477,22 @@ public class ConsoleInterface {
     }
 
     private void devPanelMenu() {
-        LOG.info("Konami code entered, thus secret dev panel loaded");
         printDevPanelMenu();
         int choice = cr.enterInt();
         switch (choice) {
             case 1:
                 createDemoHall();
-                LOG.info("demo hall 1 created");
                 addTenTables();
                 mainMenu();
                 break;
             case 2:
                 createDemoHall();
-                LOG.info("demo hall 2 created");
                 addTenTables();
                 startAllTenTables();
                 mainMenu();
                 break;
             case 3:
                 createDemoHall();
-                LOG.info("demo hall 3 created");
                 addTenTables();
                 startOddTables();
                 reserveEvenTables();
@@ -518,7 +500,6 @@ public class ConsoleInterface {
                 break;
             case 4:
                 createDemoHall();
-                LOG.info("demo hall 4 created");
                 addTenTables();
                 add7running9withReservationsAndHistory1Free();
                 mainMenu();
@@ -536,7 +517,7 @@ public class ConsoleInterface {
 
     private void addTenTables() {
         for (int i = 0; i <= 9; i++) {
-            Integer tableID = Tables.getNextAvailableId(hall);
+            Integer tableID = Tables.getNextAvailableId();
             TableType type = TableType.POOL;
             String tableName = giveNameBasedOnId(tableID, type);
             Tables.load(this.hall, type, tableID, tableName);
@@ -661,8 +642,7 @@ public class ConsoleInterface {
      ******************************************************************************************************************/
 
     private void printFunctionalityUnavailable() {
-        System.out.println("I'm sorry Dave, I'm afraid I can't... ascii penis");
-        LOG.fatal("functionality unavailable");
+        System.out.println(FUNCTIONALITY_UNAVAILABLE);
     }
 
     private String giveNameBasedOnId(Integer tableID, TableType type) {
@@ -673,6 +653,5 @@ public class ConsoleInterface {
 
     private void printWrongValueMessage() {
         System.out.println("Enter correct value: ");
-        LOG.warn("incorrect value entered");
     }
 }

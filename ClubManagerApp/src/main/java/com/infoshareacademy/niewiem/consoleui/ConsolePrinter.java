@@ -1,6 +1,9 @@
-package com.infoshareacademy.niewiem;
+package com.infoshareacademy.niewiem.consoleui;
 
-import com.infoshareacademy.niewiem.factories.Reservations;
+import com.infoshareacademy.niewiem.repositories.Reservations;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.pojo.Table;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -67,7 +70,7 @@ public class ConsolePrinter {
     private static void printLineWithTableNumbers(Map<Table, Long> tables) {
         tables.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> System.out.print("|  " + entry.getKey().getTableName() + "  |"));
+                .forEach(entry -> System.out.print("|  " + entry.getKey().getName() + "  |"));
         System.out.print("\n");
     }
 
@@ -107,7 +110,7 @@ public class ConsolePrinter {
         Reservations.getAllTablesAndRemainingTimes(hall).entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue))
                 .forEach(e -> {
-                    String tableName = e.getKey().getTableName();
+                    String tableName = e.getKey().getName();
                     Long remainingSeconds = e.getValue();
                     System.out.println(tableName + " - remaining time: " + convertSecondsToString(remainingSeconds));
                 });
@@ -119,7 +122,7 @@ public class ConsolePrinter {
         for (int i = 0; i < reservations.size(); i++) {
             String index = String.format("%02d", i + 1);
             Reservation r = reservations.get(i);
-            String tableName = r.getTable().getTableName();
+            String tableName = r.getTable().getName();
             String startTime = r.getStartTime().format(startFormat);
             String endTime = r.getEndTime().format(endFormat);
             System.out.println(index + ". " + tableName + ": " + startTime + " -> " + endTime);
