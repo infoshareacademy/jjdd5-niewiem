@@ -1,12 +1,16 @@
-<html>
+<!doctype html>
+<html lang="pl">
+
 <head>
-    <title>Create New Hall</title>
+    <meta charset="UTF-8"/>
+    <title>Create Hall</title>
+    <#--BOOTSTRAP-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
 </head>
 <body>
 
-<form method="post" action="/choose-hall">
+<form method="post" action="choose-hall">
     Name: <input type="text" name="name">
-    Image: <input type="image" name="logo">
     <input type="submit" name="save" value="save">
     <input type="hidden" name="action" value="save-hall">
 </form>

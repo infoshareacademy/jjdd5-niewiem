@@ -100,4 +100,15 @@ public class Table implements Comparable<Table> {
         sb.append(hall.getId()).append(";").append(type).append(";").append(id).append(";").append(name);
         return sb.toString();
     }
+
+    @Override
+    public String toString() {
+        return "Table{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", hall=" + hall.getName() +
+                ", reservations=" + reservations +
+                '}';
+    }
 }
