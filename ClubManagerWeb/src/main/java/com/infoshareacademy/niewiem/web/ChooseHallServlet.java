@@ -56,14 +56,19 @@ public class ChooseHallServlet extends HttpServlet {
         if(action.equals(ACTION_SAVE_HALL)){
             String name = params.get("name")[0];
             hallDao.save(new Hall(name));
+            model.put("savedSuccess", true);
+            model.put("savedHall", name);
         }
 
-        showListOfHalls(resp);
+        showListOfHalls(resp, model);
     }
 
     private void showListOfHalls(HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
+        showListOfHalls(resp, model);
+    }
 
+    private void showListOfHalls(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         List<Hall> halls = hallDao.findAll();
         LOG.info("Found {} halls in halls table", halls.size());
 
@@ -74,7 +79,7 @@ public class ChooseHallServlet extends HttpServlet {
 
 
 
-    private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
+        private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
         try {

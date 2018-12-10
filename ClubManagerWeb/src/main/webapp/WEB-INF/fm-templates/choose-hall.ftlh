@@ -14,7 +14,7 @@
     <#list halls>
         <div class="row">
         <#items as h>
-            <div class = "col">
+            <div class="col">
             <p>${h.name}</p>
             </div>
 
@@ -22,11 +22,20 @@
         </div>
     </#list>
 
-    <div class="row">
-        <div id="create-new-hall">
-            <a href="create-hall">Create new hall</a>
+        <div class="row">
+            <div id="create-new-hall">
+                <a href="create-hall">Create new hall</a>
+            </div>
         </div>
-    </div>
+
+    <#if savedSuccess>
+        <div class="row">
+        <div class="alert alert-success">
+        <p>Saved ${savedHall} in database</p>
+        </div>
+        </div>
+    </#if>
+
 
 </div>
 <#--BOOTSTRAP-->
