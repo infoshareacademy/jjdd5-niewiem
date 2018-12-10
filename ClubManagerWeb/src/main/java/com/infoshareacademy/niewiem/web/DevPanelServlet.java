@@ -1,6 +1,10 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.dao.HallDao;
+import com.infoshareacademy.niewiem.dao.ReservationDao;
+import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
+import com.infoshareacademy.niewiem.pojo.Hall;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -15,22 +19,35 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/create-hall")
-public class CreateHallServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "create-hall";
-
-    private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
-
+@WebServlet("dev-panel")
+public class DevPanelServlet extends HttpServlet {
+    private static final String TEMPLATE_NAME = "dev-panel";
+    private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
 
+    @Inject
+    private HallDao hallDao;
+    @Inject
+    private TableDao tableDao;
+    @Inject
+    private ReservationDao reservationDao;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         Map<String, Object> model = new HashMap<>();
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
+
+        addThreeNewClubs();
 
         sendModelToTemplate(resp, model);
+    }
+
+    private void addThreeNewClubs() {
+        hallDao.save(new Hall("Green"));
+        hallDao.save(new Hall("Ślunźkie Modżajto"));
+        hallDao.save(new Hall("Timmy the Tim-Tim"));
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
@@ -42,4 +59,6 @@ public class CreateHallServlet extends HttpServlet {
             LOG.error("Error while processing template: " + e);
         }
     }
+
+
 }
