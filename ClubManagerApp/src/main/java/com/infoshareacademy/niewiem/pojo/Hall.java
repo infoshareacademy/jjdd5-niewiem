@@ -22,6 +22,10 @@ public class Hall {
     public Hall() {
     }
 
+    public Hall(String name) {
+        this.name = name;
+    }
+
     public Hall(Integer hallId, String name) {
         this.id = hallId;
         this.name = name;

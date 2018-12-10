@@ -38,5 +38,4 @@ public class HallDao {
         final Query query = entityManager.createQuery("SELECT hall FROM Hall hall");
         return query.getResultList();
     }
-
 }

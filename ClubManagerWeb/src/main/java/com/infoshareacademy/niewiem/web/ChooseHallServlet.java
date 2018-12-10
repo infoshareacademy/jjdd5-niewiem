@@ -25,6 +25,7 @@ import java.util.Map;
 @WebServlet("choose-hall")
 public class ChooseHallServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "choose-hall";
+    private static final String ACTION_SAVE_HALL = "save-hall";
     private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
 
     @Inject
@@ -42,7 +43,25 @@ public class ChooseHallServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        showListOfHalls(resp);
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map<String, String[]> params = req.getParameterMap();
+        String action = params.get("action")[0];
+
+        Map<String, Object> model = new HashMap<>();
+
+        if(action.equals(ACTION_SAVE_HALL)){
+            String name = params.get("name")[0];
+            hallDao.save(new Hall(name));
+        }
+
+        showListOfHalls(resp);
+    }
+
+    private void showListOfHalls(HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
 
         List<Hall> halls = hallDao.findAll();
@@ -50,6 +69,8 @@ public class ChooseHallServlet extends HttpServlet {
 
         sendModelToTemplate(resp, model);
     }
+
+
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
