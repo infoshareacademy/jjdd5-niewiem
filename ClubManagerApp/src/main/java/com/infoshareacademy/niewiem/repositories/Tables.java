@@ -5,11 +5,12 @@ import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 
 public class Tables {
-    private static List<Table> tables;
+    private static List<Table> tables = new ArrayList<>();
 
     public static List<Table> getTables() {
         return tables;

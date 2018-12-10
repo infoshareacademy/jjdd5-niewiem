@@ -1272,3 +1272,71 @@
 2018-12-10 15:17:13,721 INFO c.i.n.ConsoleInterface [main] main menu loaded
 2018-12-10 15:17:17,294 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
 2018-12-10 15:17:17,294 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 16:02:39,915 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:02:41,787 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:03:18,275 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:03:24,571 WARN c.i.n.r.Halls [main] no files found
+2018-12-10 16:03:24,572 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:03:28,870 INFO c.i.n.r.Halls [main] program closed
+2018-12-10 16:03:33,378 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:03:36,385 INFO c.i.n.r.Halls [main] new hall created: [com.infoshareacademy.niewiem.pojo.Hall@1d7acb34]
+2018-12-10 16:03:36,385 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:04:16,287 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:04:18,221 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:04:43,104 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:04:45,446 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:07:23,680 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:07:27,966 INFO c.i.n.r.Halls [main] Konami code entered, thus secret dev panel loaded
+2018-12-10 16:07:30,277 INFO c.i.n.r.Halls [main] demo hall 1 created
+2018-12-10 16:08:00,653 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:08:59,267 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:09:35,071 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:11:29,875 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:11:35,813 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:11:43,882 INFO c.i.n.r.Halls [main] program closed
+2018-12-10 16:11:50,218 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:11:53,323 INFO c.i.n.r.Halls [main] Konami code entered, thus secret dev panel loaded
+2018-12-10 16:11:54,777 INFO c.i.n.r.Halls [main] demo hall 1 created
+2018-12-10 16:11:54,779 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:12:56,162 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:13:00,331 INFO c.i.n.r.Halls [main] Konami code entered, thus secret dev panel loaded
+2018-12-10 16:13:01,291 INFO c.i.n.r.Halls [main] demo hall 1 created
+2018-12-10 16:13:01,293 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:13:19,166 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:13:25,127 INFO c.i.n.r.Halls [main] program closed
+2018-12-10 16:13:29,206 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:13:35,282 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:14:42,982 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:14:48,756 INFO c.i.n.r.Halls [main] new hall created: [11;wqerdt]
+2018-12-10 16:14:48,757 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:16:56,659 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:17:00,948 INFO c.i.n.r.Halls [main] new hall created: [12;1232qwregt]
+2018-12-10 16:17:00,948 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:17:04,665 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:17:05,864 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:19:29,911 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:19:32,063 INFO c.i.n.r.Halls [main] new hall created: [13;erwgt]
+2018-12-10 16:19:32,063 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:19:34,038 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:19:34,926 INFO c.i.n.r.Halls [main] table created: P02
+2018-12-10 16:19:34,929 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:19:52,775 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:19:54,992 WARN c.i.n.r.Halls [main] table ID nonexistent
+2018-12-10 16:19:54,993 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:20:03,417 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:20:06,027 INFO c.i.n.r.Halls [main] table removed: [Table{id=2, name='P02', type=POOL, hall=com.infoshareacademy.niewiem.pojo.Hall@17776a8, reservations=null}]
+2018-12-10 16:20:06,027 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:20:51,650 INFO c.i.n.r.Halls [main] initial menu loaded
+2018-12-10 16:20:54,275 INFO c.i.n.r.Halls [main] new hall created: [14;wqergt]
+2018-12-10 16:20:54,275 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:20:56,857 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:20:58,631 INFO c.i.n.r.Halls [main] table created: P03
+2018-12-10 16:20:58,634 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:21:08,564 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:21:10,880 INFO c.i.n.r.Halls [main] table removed: [Table{id=3, name='P03', type=POOL, hall=wqergt, reservations=null}]
+2018-12-10 16:21:10,881 INFO c.i.n.r.Halls [main] admin panel loaded
+2018-12-10 16:21:19,766 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:21:24,146 WARN c.i.n.r.Halls [main] table ID nonexistent
+2018-12-10 16:21:24,146 INFO c.i.n.r.Halls [main] main menu loaded
+2018-12-10 16:21:32,359 WARN c.i.n.r.Halls [main] table ID nonexistent
+2018-12-10 16:21:32,359 INFO c.i.n.r.Halls [main] main menu loaded

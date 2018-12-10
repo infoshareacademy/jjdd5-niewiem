@@ -47,7 +47,7 @@ public class ConsolePrinter {
 
     private void printRemainingTime(Long remainingSeconds) {
         if (remainingSeconds == 0) {
-            System.out.print("|       |");
+            System.out.print("o       o");
             return;
         }
 
