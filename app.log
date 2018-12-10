@@ -1228,3 +1228,47 @@
 2018-12-07 16:15:42,875 INFO c.i.n.ConsoleInterface [main] initial menu loaded
 2018-12-07 16:15:45,091 INFO c.i.n.ConsoleInterface [main] new hall created: [Hall ID: 1, name: 23regfth]
 2018-12-07 16:15:45,091 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:00:23,909 INFO c.i.n.ConsoleInterface [main] initial menu loaded
+2018-12-10 15:00:29,284 INFO c.i.n.ConsoleInterface [main] new hall created: [Hall ID: 1, name: wqerr]
+2018-12-10 15:00:29,284 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:00:32,051 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:32,776 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:33,341 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:33,540 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:33,725 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:33,883 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:34,045 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:34,202 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:34,501 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:34,626 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:39,686 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:00:40,852 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:05:02,400 INFO c.i.n.ConsoleInterface [main] initial menu loaded
+2018-12-10 15:05:05,192 INFO c.i.n.ConsoleInterface [main] new hall created: [Hall ID: 1, name: sqadfd]
+2018-12-10 15:05:05,193 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:05:07,609 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:05:09,153 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:05:09,953 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:05:10,678 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:05:55,638 INFO c.i.n.ConsoleInterface [main] initial menu loaded
+2018-12-10 15:06:02,479 INFO c.i.n.ConsoleInterface [main] new hall created: [Hall ID: 1, name: asd]
+2018-12-10 15:06:02,480 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:07:58,032 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:15:32,905 INFO c.i.n.ConsoleInterface [main] initial menu loaded
+2018-12-10 15:15:35,863 INFO c.i.n.ConsoleInterface [main] new hall created: [Hall ID: 1, name: qewfsrged]
+2018-12-10 15:15:35,864 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:15:38,769 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:15:38,769 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:15:48,650 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:15:48,651 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:15:58,249 INFO c.i.n.ConsoleInterface [main] admin panel loaded
+2018-12-10 15:15:59,529 INFO c.i.n.f.Tables [main] new table created: [hall: qewfsrged, type: POOL, table ID: 1, table name: P01]
+2018-12-10 15:15:59,529 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:16:05,562 INFO c.i.n.ConsoleInterface [main] new game started
+2018-12-10 15:16:05,563 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:17:04,435 INFO c.i.n.ConsoleInterface [main] program closed
+2018-12-10 15:17:08,768 INFO c.i.n.ConsoleInterface [main] initial menu loaded
+2018-12-10 15:17:13,721 INFO c.i.n.ConsoleInterface [main] new hall created: [Hall ID: 1, name: ewr]
+2018-12-10 15:17:13,721 INFO c.i.n.ConsoleInterface [main] main menu loaded
+2018-12-10 15:17:17,294 WARN c.i.n.ConsoleInterface [main] table ID nonexistent
+2018-12-10 15:17:17,294 INFO c.i.n.ConsoleInterface [main] main menu loaded

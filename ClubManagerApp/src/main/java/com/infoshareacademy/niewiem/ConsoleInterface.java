@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public class ConsoleInterface {
 
@@ -162,13 +163,20 @@ public class ConsoleInterface {
 
     private void startOrStopGame() {
         Table table = chooseTable();
-        if (Reservations.tableIsActive(this.hall, table)) {
-            stopGameMenu(table);
+        if (hall.getTableList().size() > 0) {
+            if (Reservations.tableIsActive(this.hall, table)) {
+                stopGameMenu(table);
+            } else {
+                startGameMenu(table);
+                LOG.info("new game started");
+            }
+            mainMenu();
+
         } else {
-            startGameMenu(table);
-            LOG.info("new game started");
+            System.out.println("no tables yet");
+            mainMenu();
         }
-        mainMenu();
+        System.out.println(hall.getReservations().size());
     }
 
     private void startGameMenu(Table table) {
@@ -197,16 +205,18 @@ public class ConsoleInterface {
     }
 
     private Table chooseTable() {
-        while (true) {
             System.out.println("Choose table ID:");
             int tableChoice = cr.enterInt();
             Table table = Tables.getTableByID(hall, tableChoice);
+
             if (table != null) {
                 return table;
             }
             System.out.println("Table with that ID doesn't exist");
             LOG.warn("table ID nonexistent");
-        }
+            mainMenu();
+            return null;
+
     }
 
     /**
