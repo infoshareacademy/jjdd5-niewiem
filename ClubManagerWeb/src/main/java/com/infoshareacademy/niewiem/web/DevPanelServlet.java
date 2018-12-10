@@ -3,8 +3,10 @@ package com.infoshareacademy.niewiem.web;
 import com.infoshareacademy.niewiem.dao.HallDao;
 import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.dao.TableDao;
+import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Table;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -40,6 +42,7 @@ public class DevPanelServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
         addThreeNewClubs();
+        addTablesToClubs();
 
         sendModelToTemplate(resp, model);
     }
@@ -48,6 +51,47 @@ public class DevPanelServlet extends HttpServlet {
         hallDao.save(new Hall("Green"));
         hallDao.save(new Hall("Ślunźkie Modżajto"));
         hallDao.save(new Hall("Timmy the Tim-Tim"));
+    }
+
+    private void addTablesToClubs(){
+        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P01"));
+        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P02"));
+        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P03"));
+        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P04"));
+
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P01"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P02"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P03"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P04"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P05"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P06"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P07"));
+        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P08"));
+
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P01"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P02"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P03"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P04"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P05"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P06"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P07"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P08"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P09"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P10"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P11"));
+        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P12"));
+    }
+
+    private void addOngoingGames(){
+
+    }
+
+    private void addHistory(){
+
+    }
+
+    private void addUpcomingReservations(){
+
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
