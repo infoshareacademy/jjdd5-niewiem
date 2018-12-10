@@ -391,7 +391,7 @@ public class ConsoleInterface {
         } else {
             Reservations.cancel(hall, reservation);
         }
-        DataProvider.removeReservationFromFile(hall,reservation);
+        DataProvider.removeReservationFromFile(reservation);
     }
 
     /**
@@ -526,116 +526,116 @@ public class ConsoleInterface {
     }
 
     private void startAllTenTables() {
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(10), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().minusMinutes(20), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(10), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(18), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(0), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(14), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 10), LocalDateTime.now().minusMinutes(59), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().minusMinutes(20), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(10), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(18), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(0), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(14), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 10), LocalDateTime.now().minusMinutes(59), 60, "");
 
     }
 
     private void add7running9withReservationsAndHistory1Free() {
         // Seven running tables
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(30), 60, "");
         //move this
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(95), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(95), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(10), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().minusMinutes(20), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(10), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(18), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().minusMinutes(20), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(10), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(18), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 60, "");
         // History
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(100), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(170), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(240), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(350), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(100), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(170), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(240), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(350), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(80), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(210), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(80), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().minusMinutes(210), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(150), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(230), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(300), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(150), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(230), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(300), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(135), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(260), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(385), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(510), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(135), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(260), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(385), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(510), 120, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(80), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(142), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(204), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(266), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(337), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(399), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(461), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(522), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(80), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(142), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(204), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(266), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(337), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(399), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(461), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().minusMinutes(522), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(85), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(310), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(85), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(310), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(80), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(180), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(280), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(80), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(180), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().minusMinutes(280), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(94), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(194), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(255), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(94), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(194), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(255), 60, "");
         // Reservations
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(160), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(230), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(160), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().plusMinutes(230), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(60), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(125), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(60), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(125), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(50), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(120), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(190), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(255), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(320), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(50), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(120), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(190), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(255), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().plusMinutes(320), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().plusMinutes(50), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().plusMinutes(50), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(120), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(190), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(320), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(120), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(190), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().plusMinutes(320), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(50), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(115), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(178), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(242), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(310), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(50), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(115), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(178), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(242), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(310), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().plusMinutes(200), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().plusMinutes(200), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(10), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(200), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(200), 60, "");
 
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().plusMinutes(200), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().plusMinutes(200), 60, "");
     }
 
     private void startOddTables() {
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(10), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(20), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 120, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(18), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 1), LocalDateTime.now().minusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 3), LocalDateTime.now().minusMinutes(15), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 5), LocalDateTime.now().minusMinutes(20), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 7), LocalDateTime.now().minusMinutes(10), 120, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 9), LocalDateTime.now().minusMinutes(18), 60, "");
     }
 
     private void reserveEvenTables() {
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(10), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().plusMinutes(30), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(60), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(120), 60, "");
-        Reservations.load(this.hall, Tables.getTableByID(this.hall, 10), LocalDateTime.now().plusMinutes(360), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 2), LocalDateTime.now().plusMinutes(10), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 4), LocalDateTime.now().plusMinutes(30), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 6), LocalDateTime.now().plusMinutes(60), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 8), LocalDateTime.now().plusMinutes(120), 60, "");
+        Reservations.create(this.hall, Tables.getTableByID(this.hall, 10), LocalDateTime.now().plusMinutes(360), 60, "");
     }
 
     /**

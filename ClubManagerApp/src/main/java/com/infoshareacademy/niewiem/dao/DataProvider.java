@@ -29,10 +29,11 @@ public class DataProvider {
     private static final int TABLE_ID_IN_TABLES = 2;
     private static final int TABLE_TYPE_IN_TABLES = 1;
     private static final int TABLE_NAME_IN_TABLES = 3;
-    private static final int TABLE_ID_IN_RESERVATIONS = 0;
-    private static final int START_TIME_IN_RESERVATIONS = 1;
-    private static final int END_TIME_IN_RESERVATIONS = 2;
-    private static final int CUSTOMER = 3;
+    private static final int TABLE_ID_IN_RESERVATIONS = 1;
+    private static final int START_TIME_IN_RESERVATIONS = 2;
+    private static final int END_TIME_IN_RESERVATIONS = 3;
+    private static final int CUSTOMER_IN_RESERVATIONS = 4;
+    public static final int RESERVATION_ID_IN_RESERVATIONS = 0;
 
 
     /*** Halls ********************************************************************************************************/
@@ -159,6 +160,19 @@ public class DataProvider {
         }
     }
 
+    public static Set<Long> getSetOfSavedResIds (){
+        List<String> rawReservationsAsStrings = getFileAsRawStringList(reservationPath);
+        Set<Long> savedHallsIds = new HashSet<>();
+
+        for (String line : rawReservationsAsStrings) {
+            String[] reservationAsArray = line.split(SEPARATOR);
+
+            Long reservationId = Long.valueOf(reservationAsArray[RESERVATION_ID_IN_RESERVATIONS].trim());
+            savedHallsIds.add(reservationId);
+        }
+        return savedHallsIds;
+    }
+
     public static List<Reservation> loadReservationsAsList(List<Table> tables) {
         List<String> rawReservationsAsStrings = getFileAsRawStringList(reservationPath);
         return getListOfReservations(tables, rawReservationsAsStrings);
@@ -170,12 +184,13 @@ public class DataProvider {
         for (String line : rawReservationsAsStrings) {
             String[] reservationAsArray = line.split(SEPARATOR);
 
+            Long reservationsId = Long.valueOf(reservationAsArray[RESERVATION_ID_IN_RESERVATIONS].trim());
             Integer tableIdFromFile = Integer.valueOf(reservationAsArray[TABLE_ID_IN_RESERVATIONS].trim());
             LocalDateTime startTime = LocalDateTime.parse(reservationAsArray[START_TIME_IN_RESERVATIONS].trim());
             LocalDateTime endTime = LocalDateTime.parse(reservationAsArray[END_TIME_IN_RESERVATIONS].trim());
             String customer;
-            if (reservationAsArray.length > CUSTOMER){
-                customer = reservationAsArray[CUSTOMER].trim();
+            if (reservationAsArray.length > CUSTOMER_IN_RESERVATIONS){
+                customer = reservationAsArray[CUSTOMER_IN_RESERVATIONS].trim();
             }else {
                 customer = "";
             }
@@ -186,18 +201,18 @@ public class DataProvider {
                     .orElse(null);
 
             if (tableFromReservation != null) {
-                reservations.add(new Reservation(tableFromReservation, startTime, endTime, customer));
+                reservations.add(new Reservation(reservationsId,tableFromReservation, startTime, endTime, customer));
             }
         }
         return reservations;
     }
 
-    public static void removeReservationFromFile(Hall hall, Reservation reservation) {
+    public static void removeReservationFromFile(Reservation reservation) {
 
         List<Reservation> reservationsAsList = loadReservationsAsList(Tables.getTables());
 
         List<Reservation> resListWithoutRemovedReservation = reservationsAsList.stream()
-                .filter(r -> !(r.getTable().getId()).equals(reservation.getTable().getId()))
+                .filter(r -> !(r.getId().equals(reservation.getId())))
                 .collect(Collectors.toList());
 
         removePreviousContentFromCsv(reservationPath);
@@ -205,6 +220,12 @@ public class DataProvider {
         for(Reservation reservationFromList : resListWithoutRemovedReservation){
             saveReservationInCsv(reservationFromList);
         }
+    }
+
+    public static void editReservationEndTime(Reservation reservation, LocalDateTime newEndTime) {
+        reservation.setEndTime(newEndTime);
+        removeReservationFromFile(reservation);
+        saveReservationInCsv(reservation);
     }
 
     /*** Files - shared functionality *********************************************************************************/

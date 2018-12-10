@@ -6,15 +6,13 @@ import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
 public class Reservations {
-    private static List<Reservation> reservations;
+    private static List<Reservation> reservations = new ArrayList<>();
 
 
     public static List<Reservation> getReservations() {
@@ -26,7 +24,8 @@ public class Reservations {
     }
 
     public static Optional<Reservation> create(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
-        Optional<Reservation> reservationOpt = load(hall, table, startDateTime, timeSpan, customer);
+        Long reservationID = getNextAvailableResId();
+        Optional<Reservation> reservationOpt = load(hall, reservationID, table, startDateTime, timeSpan, customer);
         boolean reservationWasCreated = reservationOpt.isPresent();
 
         if (reservationWasCreated) {
@@ -36,14 +35,24 @@ public class Reservations {
         return reservationOpt;
     }
 
-    public static Optional<Reservation> load(Hall hall, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
-        LocalDateTime endDateTime = startDateTime.plusMinutes(timeSpan);
-        return load(hall, table, startDateTime, endDateTime, customer);
+    public static Long getNextAvailableResId(){
+        OptionalLong nextAvailableId = DataProvider.getSetOfSavedResIds().stream()
+                .mapToLong(a -> a)
+                .max();
+        if(nextAvailableId.isPresent()){
+            return nextAvailableId.getAsLong() + 1;
+        }
+        return 1L;
     }
 
-    public static Optional<Reservation> load(Hall hall, Table table, LocalDateTime startDateTime, LocalDateTime endDateTime, String customer) {
+    public static Optional<Reservation> load(Hall hall, Long id, Table table, LocalDateTime startDateTime, Integer timeSpan, String customer) {
+        LocalDateTime endDateTime = startDateTime.plusMinutes(timeSpan);
+        return load(hall, id, table, startDateTime, endDateTime, customer);
+    }
+
+    public static Optional<Reservation> load(Hall hall, Long id, Table table, LocalDateTime startDateTime, LocalDateTime endDateTime, String customer) {
         if (isTimeSpanAvailable(hall, table, startDateTime, endDateTime)) {
-            Reservation reservation = new Reservation(table, startDateTime, endDateTime, customer);
+            Reservation reservation = new Reservation(id, table, startDateTime, endDateTime, customer);
             reservations.add(reservation);
             return Optional.of(reservation);
         }
@@ -56,11 +65,13 @@ public class Reservations {
                 .filter(Reservation::isInProgress)
                 .forEach(r -> r.setEndTime(LocalDateTime.now()));
         //todo: find record for the reservation and change history
+
     }
 
     public static void stop(Hall hall, Reservation reservation) {
-        reservation.setEndTime(LocalDateTime.now());
-        //todo: find record for the reservation and change history
+        LocalDateTime now = LocalDateTime.now();
+        reservation.setEndTime(now);
+        DataProvider.editReservationEndTime(reservation, now);
     }
 
     public static void cancelAllFutureReservationsFromTable(Hall hall, Table table) {
@@ -70,7 +81,7 @@ public class Reservations {
                 .collect(Collectors.toList());
         for (Reservation res : resToDelete){
             reservations.remove(res);
-            DataProvider.removeReservationFromFile(hall,res);
+            DataProvider.removeReservationFromFile(res);
         }
 
     }
