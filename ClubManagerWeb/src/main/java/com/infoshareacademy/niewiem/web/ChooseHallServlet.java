@@ -34,11 +34,10 @@ public class ChooseHallServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
 
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
         addListOfHallsToModel(resp, model);
-
     }
 
     @Override

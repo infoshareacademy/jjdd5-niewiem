@@ -6,6 +6,7 @@ import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,8 +40,8 @@ public class DevPanelServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Map<String, Object> model = new HashMap<>();
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+        Map<String, Object> model = new HashMap<>();
 
         addThreeNewClubs();
         addTablesToClubs();
@@ -48,42 +50,45 @@ public class DevPanelServlet extends HttpServlet {
     }
 
     private void addThreeNewClubs() {
-        hallDao.save(new Hall("Green"));
-        hallDao.save(new Hall("Ślunźkie Modżajto"));
-        hallDao.save(new Hall("Timmy the Tim-Tim"));
+        hallDao.save(new Hall("DEMO 1"));
+        hallDao.save(new Hall("DEMO 2"));
+        hallDao.save(new Hall("DEMO 3"));
     }
 
     private void addTablesToClubs(){
-        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P01"));
-        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P02"));
-        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P03"));
-        tableDao.save(new Table(hallDao.findById(1), TableType.POOL, "P04"));
+        addNTablesToHall(1, 4);
+        addNTablesToHall(2, 8);
+        addNTablesToHall(3, 12);
+    }
 
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P01"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P02"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P03"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P04"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P05"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P06"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P07"));
-        tableDao.save(new Table(hallDao.findById(2), TableType.POOL, "P08"));
-
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P01"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P02"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P03"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P04"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P05"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P06"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P07"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P08"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P09"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P10"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P11"));
-        tableDao.save(new Table(hallDao.findById(3), TableType.POOL, "P12"));
+    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
+        for (int i = 1; i <= numberOfTables; i++) {
+            tableDao.save(new Table(hallDao.findById(hallId), TableType.POOL, "P"+String.format("%02d", i)));
+        }
     }
 
     private void addOngoingGames(){
-
+        // Add reservations to hall 1 ----------------------------------------------------------------------------------
+        addReservation(1,10,60);
+        addReservation(2,10,60);
+        addReservation(3,10,60);
+        // Add reservations to hall 2 ----------------------------------------------------------------------------------
+        addReservation(5,10,60);
+        addReservation(6,10,60);
+        addReservation(7,10,60);
+        addReservation(8,10,60);
+        addReservation(9,10,60);
+        addReservation(10,10,60);
+        // Add reservations to hall 3 ----------------------------------------------------------------------------------
+        addReservation(12,10,60);
+        addReservation(13,10,60);
+        addReservation(14,10,60);
+        addReservation(15,10,60);
+        addReservation(16,10,60);
+        addReservation(17,10,60);
+        addReservation(18,10,60);
+        addReservation(19,10,60);
+        addReservation(20,10,60);
     }
 
     private void addHistory(){
@@ -92,6 +97,13 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addUpcomingReservations(){
 
+    }
+
+    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
+        Table table = tableDao.findById(tableId);
+        LocalDateTime start = LocalDateTime.now().minusMinutes(minutesBeforeNow);
+        LocalDateTime stop = start.plusMinutes(duration);
+        reservationDao.save(new Reservation(table, start, stop, ""));
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
