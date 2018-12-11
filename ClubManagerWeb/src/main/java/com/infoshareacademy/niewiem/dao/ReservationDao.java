@@ -38,7 +38,4 @@ public class ReservationDao {
         final Query query = entityManager.createQuery("SELECT reservation FROM Reservation reservation");
         return query.getResultList();
     }
-
-
-
 }

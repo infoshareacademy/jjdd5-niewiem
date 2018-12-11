@@ -26,15 +26,17 @@ import java.util.Map;
 @WebServlet("dev-panel")
 public class DevPanelServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "dev-panel";
-    private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DevPanelServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
 
     @Inject
     private HallDao hallDao;
+
     @Inject
     private TableDao tableDao;
+
     @Inject
     private ReservationDao reservationDao;
 
@@ -55,7 +57,7 @@ public class DevPanelServlet extends HttpServlet {
         hallDao.save(new Hall("DEMO 3"));
     }
 
-    private void addTablesToClubs(){
+    private void addTablesToClubs() {
         addNTablesToHall(1, 4);
         addNTablesToHall(2, 8);
         addNTablesToHall(3, 12);
@@ -63,43 +65,43 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
         for (int i = 1; i <= numberOfTables; i++) {
-            tableDao.save(new Table(hallDao.findById(hallId), TableType.POOL, "P"+String.format("%02d", i)));
+            tableDao.save(new Table(hallDao.findById(hallId), TableType.POOL, "P" + String.format("%02d", i)));
         }
     }
 
-    private void addOngoingGames(){
+    private void addOngoingGames() {
         // Add reservations to hall 1 ----------------------------------------------------------------------------------
-        addReservation(1,10,60);
-        addReservation(2,10,60);
-        addReservation(3,10,60);
+        addReservation(1, 10, 60);
+        addReservation(2, 10, 60);
+        addReservation(3, 10, 60);
         // Add reservations to hall 2 ----------------------------------------------------------------------------------
-        addReservation(5,10,60);
-        addReservation(6,10,60);
-        addReservation(7,10,60);
-        addReservation(8,10,60);
-        addReservation(9,10,60);
-        addReservation(10,10,60);
+        addReservation(5, 10, 60);
+        addReservation(6, 10, 60);
+        addReservation(7, 10, 60);
+        addReservation(8, 10, 60);
+        addReservation(9, 10, 60);
+        addReservation(10, 10, 60);
         // Add reservations to hall 3 ----------------------------------------------------------------------------------
-        addReservation(12,10,60);
-        addReservation(13,10,60);
-        addReservation(14,10,60);
-        addReservation(15,10,60);
-        addReservation(16,10,60);
-        addReservation(17,10,60);
-        addReservation(18,10,60);
-        addReservation(19,10,60);
-        addReservation(20,10,60);
+        addReservation(12, 10, 60);
+        addReservation(13, 10, 60);
+        addReservation(14, 10, 60);
+        addReservation(15, 10, 60);
+        addReservation(16, 10, 60);
+        addReservation(17, 10, 60);
+        addReservation(18, 10, 60);
+        addReservation(19, 10, 60);
+        addReservation(20, 10, 60);
     }
 
-    private void addHistory(){
-
-    }
-
-    private void addUpcomingReservations(){
+    private void addHistory() {
 
     }
 
-    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
+    private void addUpcomingReservations() {
+
+    }
+
+    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration) {
         Table table = tableDao.findById(tableId);
         LocalDateTime start = LocalDateTime.now().minusMinutes(minutesBeforeNow);
         LocalDateTime stop = start.plusMinutes(duration);
