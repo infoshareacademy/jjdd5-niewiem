@@ -9,6 +9,8 @@ public class DumyClass {
         Hall hal2 = null;
         hal2.getName();
 
+        //another commit
+
         throw new Throwable("a") {};
     }
 }
