@@ -53,6 +53,6 @@ public class Tables {
         Reservations.stop(hall, table);
         Reservations.cancelAllFutureReservationsFromTable(hall, table);
         tables.remove(table);
-        // todo: remove table from file as well
+        DataProvider.removeTableFromFile(hall,table);
     }
 }

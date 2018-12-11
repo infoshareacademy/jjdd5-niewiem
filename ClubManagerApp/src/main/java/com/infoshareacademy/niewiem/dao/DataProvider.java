@@ -1,10 +1,10 @@
 package com.infoshareacademy.niewiem.dao;
 
 import com.infoshareacademy.niewiem.enums.TableType;
-import com.infoshareacademy.niewiem.repositories.Tables;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.repositories.Tables;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataProvider {
 
@@ -28,10 +29,11 @@ public class DataProvider {
     private static final int TABLE_ID_IN_TABLES = 2;
     private static final int TABLE_TYPE_IN_TABLES = 1;
     private static final int TABLE_NAME_IN_TABLES = 3;
-    private static final int TABLE_ID_IN_RESERVATIONS = 0;
-    private static final int START_TIME_IN_RESERVATIONS = 1;
-    private static final int END_TIME_IN_RESERVATIONS = 2;
-    private static final int CUSTOMER = 3;
+    private static final int TABLE_ID_IN_RESERVATIONS = 1;
+    private static final int START_TIME_IN_RESERVATIONS = 2;
+    private static final int END_TIME_IN_RESERVATIONS = 3;
+    private static final int CUSTOMER_IN_RESERVATIONS = 4;
+    public static final int RESERVATION_ID_IN_RESERVATIONS = 0;
 
 
     /*** Halls ********************************************************************************************************/
@@ -64,6 +66,21 @@ public class DataProvider {
             savedHalls.add(new Hall(hallId, hallName));
         }
         return savedHalls;
+    }
+
+    public static void removeHallFromFile(Hall hall) {
+
+        List<Hall> hallsAsList = loadHallsAsList();
+
+        List<Hall> hallsListWithoutRemovedHall = hallsAsList.stream()
+                .filter(h -> !(h.getId().equals(hall.getId())))
+                .collect(Collectors.toList());
+
+        removePreviousContentFromCsv(hallsPath);
+
+        for(Hall hallFromList : hallsListWithoutRemovedHall){
+            saveHallInCsv(hallFromList);
+        }
     }
 
     /*** Tables *******************************************************************************************************/
@@ -115,6 +132,21 @@ public class DataProvider {
         return savedTables;
     }
 
+    public static void removeTableFromFile(Hall hall, Table table) {
+
+        List<Table> tablesAsList = loadTablesAsList(hall);
+
+        List<Table> tablesListWithoutRemovedTable = tablesAsList.stream()
+                .filter(t -> !(t.getId().equals(table.getId())))
+                .collect(Collectors.toList());
+
+        removePreviousContentFromCsv(tablesPath);
+
+        for(Table tableFromList : tablesListWithoutRemovedTable){
+            saveTableInCsv(tableFromList);
+        }
+    }
+
     /*** Reservations *************************************************************************************************/
 
     public static void saveReservationInCsv(Reservation reservation) {
@@ -128,6 +160,19 @@ public class DataProvider {
         }
     }
 
+    public static Set<Long> getSetOfSavedResIds (){
+        List<String> rawReservationsAsStrings = getFileAsRawStringList(reservationPath);
+        Set<Long> savedHallsIds = new HashSet<>();
+
+        for (String line : rawReservationsAsStrings) {
+            String[] reservationAsArray = line.split(SEPARATOR);
+
+            Long reservationId = Long.valueOf(reservationAsArray[RESERVATION_ID_IN_RESERVATIONS].trim());
+            savedHallsIds.add(reservationId);
+        }
+        return savedHallsIds;
+    }
+
     public static List<Reservation> loadReservationsAsList(List<Table> tables) {
         List<String> rawReservationsAsStrings = getFileAsRawStringList(reservationPath);
         return getListOfReservations(tables, rawReservationsAsStrings);
@@ -139,12 +184,13 @@ public class DataProvider {
         for (String line : rawReservationsAsStrings) {
             String[] reservationAsArray = line.split(SEPARATOR);
 
+            Long reservationsId = Long.valueOf(reservationAsArray[RESERVATION_ID_IN_RESERVATIONS].trim());
             Integer tableIdFromFile = Integer.valueOf(reservationAsArray[TABLE_ID_IN_RESERVATIONS].trim());
             LocalDateTime startTime = LocalDateTime.parse(reservationAsArray[START_TIME_IN_RESERVATIONS].trim());
             LocalDateTime endTime = LocalDateTime.parse(reservationAsArray[END_TIME_IN_RESERVATIONS].trim());
             String customer;
-            if (reservationAsArray.length > CUSTOMER){
-                customer = reservationAsArray[CUSTOMER].trim();
+            if (reservationAsArray.length > CUSTOMER_IN_RESERVATIONS){
+                customer = reservationAsArray[CUSTOMER_IN_RESERVATIONS].trim();
             }else {
                 customer = "";
             }
@@ -155,10 +201,31 @@ public class DataProvider {
                     .orElse(null);
 
             if (tableFromReservation != null) {
-                reservations.add(new Reservation(tableFromReservation, startTime, endTime, customer));
+                reservations.add(new Reservation(reservationsId,tableFromReservation, startTime, endTime, customer));
             }
         }
         return reservations;
+    }
+
+    public static void removeReservationFromFile(Reservation reservation) {
+
+        List<Reservation> reservationsAsList = loadReservationsAsList(Tables.getTables());
+
+        List<Reservation> resListWithoutRemovedReservation = reservationsAsList.stream()
+                .filter(r -> !(r.getId().equals(reservation.getId())))
+                .collect(Collectors.toList());
+
+        removePreviousContentFromCsv(reservationPath);
+
+        for(Reservation reservationFromList : resListWithoutRemovedReservation){
+            saveReservationInCsv(reservationFromList);
+        }
+    }
+
+    public static void editReservationEndTime(Reservation reservation, LocalDateTime newEndTime) {
+        reservation.setEndTime(newEndTime);
+        removeReservationFromFile(reservation);
+        saveReservationInCsv(reservation);
     }
 
     /*** Files - shared functionality *********************************************************************************/
@@ -170,21 +237,6 @@ public class DataProvider {
             System.out.println("Can't find this file!");
             return new ArrayList<>();
         }
-    }
-
-    /***NEW CODE******************************************************************************************************/
-
-    public static void removeTableFromFile(Hall hall, Table table) {
-
-        List<Table> tables = loadTablesAsList(hall);
-
-        Table tableToRemove = Tables.getTableByID(hall, table.getId());
-        tables.remove(tableToRemove);
-
-        for (Table tableFromNewList : tables) {
-            saveTableInCsv(tableFromNewList);
-        }
-
     }
 
     public static void checkDataStructure() {
@@ -211,6 +263,15 @@ public class DataProvider {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static void removePreviousContentFromCsv(Path path) {
+        List<String> emptyList = new ArrayList<>();
+        try {
+            Files.write(path, emptyList);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

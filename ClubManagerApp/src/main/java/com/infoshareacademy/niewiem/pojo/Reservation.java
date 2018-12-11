@@ -30,7 +30,8 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Table table, LocalDateTime startTime, LocalDateTime endTime, String customer) {
+    public Reservation(Long id, Table table, LocalDateTime startTime, LocalDateTime endTime, String customer) {
+        this.id = id;
         this.table = table;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -107,7 +108,16 @@ public class Reservation {
 
     public String toCsvString(Table table) {
         StringBuffer sb = new StringBuffer();
-        sb.append(table.getId()).append(";").append(startTime).append(";").append(endTime).append(";").append(customer);
+        sb
+                .append(this.getId())
+                .append(";")
+                .append(table.getId())
+                .append(";")
+                .append(startTime)
+                .append(";")
+                .append(endTime)
+                .append(";")
+                .append(customer);
         return sb.toString();
     }
 
