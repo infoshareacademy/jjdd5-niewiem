@@ -37,6 +37,9 @@ public class DevPanelServlet extends HttpServlet {
     @Inject
     private TableDao tableDao;
 
+    @Inject
+    private ReservationDao reservationDao;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -45,6 +48,7 @@ public class DevPanelServlet extends HttpServlet {
 
         addThreeNewClubs();
         addTablesToClubs();
+        addActiveReservations();
 
         sendModelToTemplate(resp, model);
     }
@@ -59,6 +63,43 @@ public class DevPanelServlet extends HttpServlet {
         addNTablesToHall(1, 4);
         addNTablesToHall(2, 8);
         addNTablesToHall(3, 12);
+    }
+
+    private void addActiveReservations(){
+//      Tables in Hall 1 -----------------------------------------------------------------------------------------------
+        addReservation(1, 20, 60);
+        addReservation(2, 10, 60);
+        addReservation(3, 0, 60);
+//      Tables in Hall 2 -----------------------------------------------------------------------------------------------
+        addReservation(5, 30, 60);
+        addReservation(6, 25, 60);
+        addReservation(7, 20, 60);
+        addReservation(8, 15, 60);
+        addReservation(9, 10, 60);
+        addReservation(10, 5, 60);
+//      Tables in Hall 3 -----------------------------------------------------------------------------------------------
+        addReservation(13, 50, 60);
+        addReservation(14, 45, 60);
+        addReservation(15, 40, 60);
+        addReservation(16, 30, 60);
+        addReservation(17, 20, 60);
+        addReservation(18, 10, 60);
+        addReservation(19, 5, 60);
+        addReservation(20, 0, 60);
+    }
+
+    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
+        Table table = tableDao.findById(tableId);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.minusMinutes(minutesBeforeNow);
+        LocalDateTime end = start.plusMinutes(duration);
+        Reservation reservation = new Reservation();
+
+        reservation.setTable(table);
+        reservation.setStartTime(start);
+        reservation.setEndTime(end);
+
+        reservationDao.save(reservation);
     }
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
