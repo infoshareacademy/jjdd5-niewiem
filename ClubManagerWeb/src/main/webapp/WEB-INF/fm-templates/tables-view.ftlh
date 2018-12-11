@@ -17,7 +17,7 @@
     <div class="row">
         <#list hallTables as t>
             <div class="col table-in-hall">
-                <p>id: ${t.id} name: ${t.name} </p>
+            <p>id: ${t.id} name: ${t.name} </p>
             </div>
         </#list>
     </div>

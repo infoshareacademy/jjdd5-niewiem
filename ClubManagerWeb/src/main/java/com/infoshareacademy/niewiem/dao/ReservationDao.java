@@ -1,13 +1,11 @@
 package com.infoshareacademy.niewiem.dao;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
@@ -39,14 +37,10 @@ public class ReservationDao {
     }
 
     public List<Reservation> findAll(){
-        final Query query = entityManager.createQuery("SELECT reservation FROM Reservation reservation");
+        final Query query = entityManager.createQuery("SELECT r FROM Reservation r");
         return query.getResultList();
     }
 
-    public List<Reservation> findAllActiveInHall(Hall hall){
-        final Query query = entityManager
-                .createQuery("SELECT r FROM Reservation r WHERE ((r.start <= :now) AND (r.end >= :now))");
-        query.setParameter("now", LocalDateTime.now());
-        return query.getResultList();
-    }
+    //todo: find all active reservations in given hall (needs left join)
+    //todo: find all active reservations for given table (needs left join)
 }

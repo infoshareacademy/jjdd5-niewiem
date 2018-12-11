@@ -44,9 +44,6 @@ public class TablesViewServlet extends HttpServlet {
         Hall hall = hallDao.findById(hallId);
         model.put("hall", hall);
 
-        List<Table> allTables = tableDao.findAll();
-        model.put("allTables", allTables);
-
         List<Table> hallTables = tableDao.findAllInHall(hall);
         model.put("hallTables", hallTables);
 
