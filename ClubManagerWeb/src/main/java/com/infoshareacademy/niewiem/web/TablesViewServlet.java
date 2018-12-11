@@ -1,6 +1,10 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.dao.HallDao;
+import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Table;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("tables-view")
@@ -24,12 +29,26 @@ public class TablesViewServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
 
+    @Inject
+    private TableDao tableDao;
+
+    @Inject
+    private HallDao hallDao;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, String[]> params = req.getParameterMap();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
+
+        Integer hallId = Integer.valueOf(req.getParameter("hallId"));
+        Hall hall = hallDao.findById(hallId);
+        model.put("hall", hall);
+
+        List<Table> allTables = tableDao.findAll();
+        model.put("allTables", allTables);
+
+        List<Table> hallTables = tableDao.findAllInHall(hall);
+        model.put("hallTables", hallTables);
 
         sendModelToTemplate(resp, model);
     }

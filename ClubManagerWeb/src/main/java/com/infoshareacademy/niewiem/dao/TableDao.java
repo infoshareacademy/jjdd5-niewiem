@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.dao;
 
+import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Table;
 
 import javax.ejb.Stateless;
@@ -14,29 +15,36 @@ public class TableDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Integer save(Table table){
+    public Integer save(Table table) {
         entityManager.persist(table);
         return table.getId();
     }
 
-    public Table update (Table table){
+    public Table update(Table table) {
         return entityManager.merge(table);
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         final Table table = entityManager.find(Table.class, id);
-        if(table != null){
+        if (table != null) {
             entityManager.remove(table);
         }
     }
 
-    public Table findById(Integer id){
+    public Table findById(Integer id) {
         return entityManager.find(Table.class, id);
     }
 
-    public List<Table> findAll(){
+    public List<Table> findAll() {
         final Query query = entityManager.createQuery("SELECT table FROM Table table");
         return query.getResultList();
     }
 
+    public List findAllInHall(Hall hall) {
+        final Query query = entityManager
+                .createQuery("SELECT t FROM Table t WHERE t.hall = :hall");
+        query.setParameter("hall", hall);
+
+        return query.getResultList();
+    }
 }

@@ -5,7 +5,6 @@ import com.infoshareacademy.niewiem.enums.TableType;
 import javax.persistence.*;
 import java.util.Set;
 
-
 @Entity
 @javax.persistence.Table(name = "tables")
 public class Table implements Comparable<Table> {
@@ -26,7 +25,7 @@ public class Table implements Comparable<Table> {
     @JoinColumn(name = "hall_id")
     private Hall hall;
 
-    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "table", fetch = FetchType.LAZY)
     private Set<Reservation> reservations;
 
     public Table() {
