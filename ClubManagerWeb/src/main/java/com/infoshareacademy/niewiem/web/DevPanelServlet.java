@@ -105,7 +105,7 @@ public class DevPanelServlet extends HttpServlet {
         Table table = tableDao.findById(tableId);
         LocalDateTime start = LocalDateTime.now().minusMinutes(minutesBeforeNow);
         LocalDateTime stop = start.plusMinutes(duration);
-        reservationDao.save(new Reservation(table, start, stop, ""));
+//        reservationDao.save(new Reservation(table, start, stop, ""));
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
