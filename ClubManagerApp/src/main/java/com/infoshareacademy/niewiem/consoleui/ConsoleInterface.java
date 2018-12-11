@@ -91,15 +91,20 @@ public class ConsoleInterface {
 
                 System.out.println("Choose existing hall by ID:");
                 Integer chooseHallID = cr.enterInt();
-                this.hall = Halls.load(chooseHallID, savedHalls.get((chooseHallID - 1)).getName());
+                if (chooseHallID <= savedHalls.size() && chooseHallID > 0) {
 
-                List<Table> savedTables = DataProvider.loadTablesAsList(hall);
-                Tables.setTables(savedTables);
+                    this.hall = Halls.load(chooseHallID, savedHalls.get((chooseHallID - 1)).getName());
+                    List<Table> savedTables = DataProvider.loadTablesAsList(hall);
+                    Tables.setTables(savedTables);
+                    List<Reservation> reservations = DataProvider.loadReservationsAsList(savedTables);
+                    Reservations.setReservations(reservations);
+                    mainMenu();
+                } else {
+                    System.out.println("given hall doesn't exist");
+                    LOG.warn("\"hall: [{}] nonexistent", chooseHallID);
+                    hallMenu();
+                }
 
-                List<Reservation> reservations = DataProvider.loadReservationsAsList(savedTables);
-                Reservations.setReservations(reservations);
-
-                mainMenu();
                 break;
             case 2:
                 this.hall = Halls.create(enterHallName());
@@ -238,6 +243,7 @@ public class ConsoleInterface {
         mainMenu();
         return null;
     }
+
     /**
      * Add reservations
      ******************************************************************************************************************/

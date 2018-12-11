@@ -5,6 +5,8 @@ import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.repositories.Tables;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,6 +18,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DataProvider {
+
+    private static final Logger LOG = LogManager.getLogger(DataProvider.class);
+
 
     private static final String SEPARATOR = ";";
     private static final Path path = Paths.get("data");
@@ -46,6 +51,7 @@ public class DataProvider {
 
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
+            LOG.warn("file not saved");
         }
     }
 
@@ -78,7 +84,7 @@ public class DataProvider {
 
         removePreviousContentFromCsv(hallsPath);
 
-        for(Hall hallFromList : hallsListWithoutRemovedHall){
+        for (Hall hallFromList : hallsListWithoutRemovedHall) {
             saveHallInCsv(hallFromList);
         }
     }
@@ -93,10 +99,11 @@ public class DataProvider {
 
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
+            LOG.warn("file not saved");
         }
     }
 
-    public static Set<Integer> getSetOfSavedTablesIds (){
+    public static Set<Integer> getSetOfSavedTablesIds() {
         List<String> rawTablesAsStrings = getFileAsRawStringList(tablesPath);
         Set<Integer> savedTablesIds = new HashSet<>();
 
@@ -142,7 +149,7 @@ public class DataProvider {
 
         removePreviousContentFromCsv(tablesPath);
 
-        for(Table tableFromList : tablesListWithoutRemovedTable){
+        for (Table tableFromList : tablesListWithoutRemovedTable) {
             saveTableInCsv(tableFromList);
         }
     }
@@ -157,10 +164,11 @@ public class DataProvider {
 
         } catch (IOException ex) {
             System.out.println("Can't save this file!");
+            LOG.warn("file not saved");
         }
     }
 
-    public static Set<Long> getSetOfSavedResIds (){
+    public static Set<Long> getSetOfSavedResIds() {
         List<String> rawReservationsAsStrings = getFileAsRawStringList(reservationPath);
         Set<Long> savedHallsIds = new HashSet<>();
 
@@ -189,9 +197,9 @@ public class DataProvider {
             LocalDateTime startTime = LocalDateTime.parse(reservationAsArray[START_TIME_IN_RESERVATIONS].trim());
             LocalDateTime endTime = LocalDateTime.parse(reservationAsArray[END_TIME_IN_RESERVATIONS].trim());
             String customer;
-            if (reservationAsArray.length > CUSTOMER_IN_RESERVATIONS){
+            if (reservationAsArray.length > CUSTOMER_IN_RESERVATIONS) {
                 customer = reservationAsArray[CUSTOMER_IN_RESERVATIONS].trim();
-            }else {
+            } else {
                 customer = "";
             }
 
@@ -201,7 +209,7 @@ public class DataProvider {
                     .orElse(null);
 
             if (tableFromReservation != null) {
-                reservations.add(new Reservation(reservationsId,tableFromReservation, startTime, endTime, customer));
+                reservations.add(new Reservation(reservationsId, tableFromReservation, startTime, endTime, customer));
             }
         }
         return reservations;
@@ -217,7 +225,7 @@ public class DataProvider {
 
         removePreviousContentFromCsv(reservationPath);
 
-        for(Reservation reservationFromList : resListWithoutRemovedReservation){
+        for (Reservation reservationFromList : resListWithoutRemovedReservation) {
             saveReservationInCsv(reservationFromList);
         }
     }
@@ -235,6 +243,7 @@ public class DataProvider {
             return new ArrayList<>(Files.readAllLines(path));
         } catch (IOException ex) {
             System.out.println("Can't find this file!");
+            LOG.warn("file not found");
             return new ArrayList<>();
         }
     }
@@ -268,6 +277,7 @@ public class DataProvider {
 
     private static void removePreviousContentFromCsv(Path path) {
         List<String> emptyList = new ArrayList<>();
+        LOG.info("content removed");
         try {
             Files.write(path, emptyList);
         } catch (IOException e) {

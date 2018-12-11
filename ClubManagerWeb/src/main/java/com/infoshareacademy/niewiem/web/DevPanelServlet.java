@@ -69,45 +69,6 @@ public class DevPanelServlet extends HttpServlet {
         }
     }
 
-    private void addOngoingGames() {
-        // Add reservations to hall 1 ----------------------------------------------------------------------------------
-        addReservation(1, 10, 60);
-        addReservation(2, 10, 60);
-        addReservation(3, 10, 60);
-        // Add reservations to hall 2 ----------------------------------------------------------------------------------
-        addReservation(5, 10, 60);
-        addReservation(6, 10, 60);
-        addReservation(7, 10, 60);
-        addReservation(8, 10, 60);
-        addReservation(9, 10, 60);
-        addReservation(10, 10, 60);
-        // Add reservations to hall 3 ----------------------------------------------------------------------------------
-        addReservation(12, 10, 60);
-        addReservation(13, 10, 60);
-        addReservation(14, 10, 60);
-        addReservation(15, 10, 60);
-        addReservation(16, 10, 60);
-        addReservation(17, 10, 60);
-        addReservation(18, 10, 60);
-        addReservation(19, 10, 60);
-        addReservation(20, 10, 60);
-    }
-
-    private void addHistory() {
-
-    }
-
-    private void addUpcomingReservations() {
-
-    }
-
-    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration) {
-        Table table = tableDao.findById(tableId);
-        LocalDateTime start = LocalDateTime.now().minusMinutes(minutesBeforeNow);
-        LocalDateTime stop = start.plusMinutes(duration);
-//        reservationDao.save(new /*/Reservation(table, start, stop, ""));
-    }
-
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
