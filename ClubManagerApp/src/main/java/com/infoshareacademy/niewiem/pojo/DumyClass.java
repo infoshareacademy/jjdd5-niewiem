@@ -12,6 +12,7 @@ public class DumyClass {
         //another commit
         //anoehr commit
         //one more try
+        // one more try
 
         throw new Throwable("a") {};
     }
