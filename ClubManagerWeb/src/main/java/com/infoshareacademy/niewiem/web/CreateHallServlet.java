@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@MultipartConfig
 @WebServlet("/create-hall")
 public class CreateHallServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "create-hall";
