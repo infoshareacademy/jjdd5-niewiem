@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,23 +33,15 @@ public class ChooseHallServlet extends HttpServlet {
     private HallDao hallDao;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-
-
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
 
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
         addListOfHallsToModel(resp, model);
-
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, String[]> params = req.getParameterMap();
         String action = params.get("action")[0];
 

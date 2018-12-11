@@ -32,6 +32,12 @@ public class Table implements Comparable<Table> {
     public Table() {
     }
 
+    public Table(Hall hall, TableType type, String tableName) {
+        this.hall = hall;
+        this.type = type;
+        this.name = tableName;
+    }
+
     public Table(Hall hall, TableType type, Integer Id, String tableName) {
         this.hall = hall;
         this.type = type;
