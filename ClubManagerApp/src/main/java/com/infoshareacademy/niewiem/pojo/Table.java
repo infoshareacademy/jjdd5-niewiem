@@ -103,12 +103,11 @@ public class Table implements Comparable<Table> {
 
     @Override
     public String toString() {
-        return "Table{" +
-                "id=" + id +
+        return "Table:" +
+                "ID=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", hall=" + hall.getName() +
-                ", reservations=" + reservations +
-                '}';
+                ", reservations=" + reservations;
     }
 }
