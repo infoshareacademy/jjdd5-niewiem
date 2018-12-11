@@ -10,6 +10,7 @@ public class DumyClass {
         hal2.getName();
 
         //another commit
+        //anoehr commit
 
         throw new Throwable("a") {};
     }
