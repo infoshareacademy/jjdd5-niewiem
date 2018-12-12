@@ -8,9 +8,6 @@ public class TableTimeLeft {
     private Table table;
     private Duration timeLeft;
 
-    public TableTimeLeft() {
-    }
-
     public Table getTable() {
         return table;
     }
