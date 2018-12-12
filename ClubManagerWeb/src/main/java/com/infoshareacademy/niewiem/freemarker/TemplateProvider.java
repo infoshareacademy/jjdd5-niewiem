@@ -10,6 +10,8 @@ import java.io.IOException;
 
 @ApplicationScoped
 public class TemplateProvider {
+    public static final String LAYOUT_NAME = "layout/app";
+
     private static final String TEMPLATE_EXT = ".ftlh";
     private static final String TEMPLATE_DIRECTORY_PATH = "WEB-INF/fm-templates";
 

@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("/test")
 public class TestServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "test";
-
+    private static final String VIEW_NAME = "/test";
     private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
 
 
@@ -34,12 +34,12 @@ public class TestServlet extends HttpServlet {
 
         Map<String, Object> model = new HashMap<>();
         model.put("date", LocalDateTime.now());
-
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         sendModelToTemplate(resp, model);
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
 
         try {
             template.process(model, resp.getWriter());
