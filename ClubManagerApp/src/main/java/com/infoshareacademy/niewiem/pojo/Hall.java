@@ -16,7 +16,7 @@ public class Hall {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hall", fetch = FetchType.LAZY)
     private Set<Table> tables;
 
     public Hall() {

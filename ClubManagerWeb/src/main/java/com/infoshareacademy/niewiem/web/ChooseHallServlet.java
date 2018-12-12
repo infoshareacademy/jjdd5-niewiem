@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
-
 @WebServlet("choose-hall")
 public class ChooseHallServlet extends HttpServlet {
     private static final String VIEW_NAME = "/choose-hall";

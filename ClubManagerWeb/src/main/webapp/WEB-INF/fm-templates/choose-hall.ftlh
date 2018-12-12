@@ -4,9 +4,8 @@
         <div class="row">
         <#items as h>
             <div class="col">
-            <p>${h.name}</p>
+            <a href="tables-view?hallId=${h.id}">${h.name}</a>
             </div>
-
         </#items>
         </div>
     </#list>
