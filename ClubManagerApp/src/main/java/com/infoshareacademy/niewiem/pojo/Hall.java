@@ -19,7 +19,7 @@ public class Hall {
     @Column(name = "imageURL")
     private String imageURL;
 
-    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hall", fetch = FetchType.LAZY)
     private Set<Table> tables;
 
     public Hall() {

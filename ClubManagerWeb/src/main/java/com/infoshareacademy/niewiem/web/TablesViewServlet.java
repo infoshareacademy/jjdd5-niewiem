@@ -1,6 +1,11 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.dao.HallDao;
+import com.infoshareacademy.niewiem.dao.ReservationDao;
+import com.infoshareacademy.niewiem.dao.TableDao;
+import com.infoshareacademy.niewiem.dto.TableTimeLeft;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
+import com.infoshareacademy.niewiem.pojo.Hall;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -13,33 +18,44 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
-@WebServlet("/test")
-public class TestServlet extends HttpServlet {
-
-    private static final String VIEW_NAME = "/test";
-    private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
-
+@WebServlet("tables-view")
+public class TablesViewServlet extends HttpServlet {
+    private static final String TEMPLATE_NAME = "tables-view";
+    private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
 
+    @Inject
+    private TableDao tableDao;
+
+    @Inject
+    private HallDao hallDao;
+
+    @Inject
+    private ReservationDao reservationDao;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
-
         Map<String, Object> model = new HashMap<>();
-        model.put("date", LocalDateTime.now());
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
+
+        Integer hallId = Integer.valueOf(req.getParameter("hallId"));
+        Hall hall = hallDao.findById(hallId);
+        model.put("hall", hall);
+
+        List<TableTimeLeft> ttl = tableDao.findAllTablesInHallWithTimeLeftOrZero(hall);
+        model.put("tablesTimeLeft", ttl);
+
         sendModelToTemplate(resp, model);
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
         try {
             template.process(model, resp.getWriter());
@@ -47,4 +63,5 @@ public class TestServlet extends HttpServlet {
             LOG.error("Error while processing template: " + e);
         }
     }
+
 }
