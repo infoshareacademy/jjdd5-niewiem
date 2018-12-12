@@ -25,7 +25,8 @@ import java.util.Map;
 
 @WebServlet("dev-panel")
 public class DevPanelServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "dev-panel";
+    private static final String VIEW_NAME = "/dev-panel";
+    private static final String LAYOUT_NAME = "layouts/app";
     private static final Logger LOG = LoggerFactory.getLogger(DevPanelServlet.class);
 
     @Inject
@@ -45,7 +46,7 @@ public class DevPanelServlet extends HttpServlet {
 
         addThreeNewClubs();
         addTablesToClubs();
-
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         sendModelToTemplate(resp, model);
     }
 
@@ -68,7 +69,7 @@ public class DevPanelServlet extends HttpServlet {
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
 
         try {
             template.process(model, resp.getWriter());

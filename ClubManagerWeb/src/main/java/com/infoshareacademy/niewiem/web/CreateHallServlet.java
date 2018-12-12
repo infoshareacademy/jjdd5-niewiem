@@ -17,8 +17,8 @@ import java.util.Map;
 
 @WebServlet("/create-hall")
 public class CreateHallServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "create-hall";
-
+    private static final String VIEW_NAME = "/create-hall";
+    private static final String LAYOUT_NAME = "layouts/app";
     private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
 
 
@@ -29,12 +29,12 @@ public class CreateHallServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
-
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         sendModelToTemplate(resp, model);
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
 
         try {
             template.process(model, resp.getWriter());
