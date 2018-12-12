@@ -1,10 +1,11 @@
 package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.dao.HallDao;
+import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.dao.TableDao;
+import com.infoshareacademy.niewiem.dto.TableTimeLeft;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Table;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ public class TablesViewServlet extends HttpServlet {
     @Inject
     private HallDao hallDao;
 
+    @Inject
+    private ReservationDao reservationDao;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -44,8 +48,8 @@ public class TablesViewServlet extends HttpServlet {
         Hall hall = hallDao.findById(hallId);
         model.put("hall", hall);
 
-        List<Table> hallTables = tableDao.findAllInHall(hall);
-        model.put("hallTables", hallTables);
+        List<TableTimeLeft> ttl = tableDao.findAllTablesInHallWithTimeLeftOrZero(hall);
+        model.put("tablesTimeLeft", ttl);
 
         sendModelToTemplate(resp, model);
     }

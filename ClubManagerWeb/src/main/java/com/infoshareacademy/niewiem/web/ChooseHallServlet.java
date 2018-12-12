@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
 @WebServlet("choose-hall")
 public class ChooseHallServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "choose-hall";
@@ -48,7 +47,7 @@ public class ChooseHallServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
 
-        if(action.equals(ACTION_SAVE_HALL)){
+        if (action.equals(ACTION_SAVE_HALL)) {
             String name = params.get("name")[0];
             hallDao.save(new Hall(name));
             model.put("savedSuccess", true);
@@ -68,8 +67,7 @@ public class ChooseHallServlet extends HttpServlet {
     }
 
 
-
-        private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
+    private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
         try {

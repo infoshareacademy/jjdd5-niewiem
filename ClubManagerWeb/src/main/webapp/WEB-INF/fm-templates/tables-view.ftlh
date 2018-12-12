@@ -9,19 +9,15 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="row">
-        <h1>Welcome to ${hall.name}</h1>
-    </div>
 
-    <div class="row">
-        <#list hallTables as t>
-            <div class="col table-in-hall">
-            <p>id: ${t.id} name: ${t.name} </p>
-            </div>
-        </#list>
-    </div>
+<div class="row">
+    <#list tablesTimeLeft as ttl>
+        <div class="col table-in-hall">
+        <p>id: ${ttl.table.id} name: ${ttl.table.name} duration: ${ttl.timeLeft} </p>
+        </div>
+    </#list>
 </div>
+
 </div>
 
 <#--BOOTSTRAP-->

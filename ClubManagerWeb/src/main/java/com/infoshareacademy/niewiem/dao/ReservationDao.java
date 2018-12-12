@@ -1,11 +1,15 @@
 package com.infoshareacademy.niewiem.dao;
 
+import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.pojo.Table;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
@@ -13,6 +17,9 @@ public class ReservationDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Inject
+    private TableDao tableDao;
 
     public Long save(Reservation reservation){
         // todo: check if reservation has no conflict
@@ -41,17 +48,25 @@ public class ReservationDao {
         return query.getResultList();
     }
 
-    //todo: find all active reservations for given table (needs left join)
-//    SELECT *
-//    FROM club.reservations as r
-//    LEFT JOIN club.tables as t ON r.table_id = t.id
-//    WHERE t.id = 1;
+    public List<Reservation> findAllByTable(Table table){
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE r.table = :table");
+        query.setParameter("table", table);
+        return query.getResultList();
+    }
 
-    //todo: find all active reservations in given hall (needs left join)
-//    SELECT *
-//    FROM club.reservations
-//    LEFT JOIN club.tables ON table_id = club.tables.id
-//    LEFT JOIN club.halls ON club.tables.hall_id = club.halls.id
-//    WHERE halls.id = 3;
+    public List<Reservation> findAllByHall(Hall hall){
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r  WHERE r.table.hall = :hall");
+        query.setParameter("hall", hall);
+        return query.getResultList();
+    }
 
+    public List<Reservation> findAllActiveByHall(Hall hall){
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r  WHERE (r.table.hall = :hall AND r.startTime < :now AND r.endTime > :now)");
+        query.setParameter("hall", hall);
+        query.setParameter("now", LocalDateTime.now());
+        return query.getResultList();
+    }
 }
