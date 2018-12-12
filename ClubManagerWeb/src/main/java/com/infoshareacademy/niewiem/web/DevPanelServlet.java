@@ -22,10 +22,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("dev-panel")
 public class DevPanelServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "dev-panel";
+    private static final String VIEW_NAME = "/dev-panel";
     private static final Logger LOG = LoggerFactory.getLogger(DevPanelServlet.class);
 
     @Inject
@@ -50,6 +51,7 @@ public class DevPanelServlet extends HttpServlet {
         addTablesToClubs();
         addActiveReservations();
 
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         sendModelToTemplate(resp, model);
     }
 
@@ -109,7 +111,7 @@ public class DevPanelServlet extends HttpServlet {
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
 
         try {
             template.process(model, resp.getWriter());
