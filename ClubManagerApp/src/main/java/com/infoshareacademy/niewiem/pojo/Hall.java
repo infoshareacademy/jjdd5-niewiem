@@ -16,6 +16,9 @@ public class Hall {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "imageURL")
+    private String imageURL;
+
     @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
     private Set<Table> tables;
 
@@ -45,6 +48,13 @@ public class Hall {
         this.name = name;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 
     public Set<Table> getTables() {
         return tables;
