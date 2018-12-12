@@ -17,13 +17,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 
 @WebServlet("choose-hall")
 public class ChooseHallServlet extends HttpServlet {
     private static final String VIEW_NAME = "/choose-hall";
-    private static final String LAYOUT_NAME = "layouts/app";
     private static final String ACTION_SAVE_HALL = "save-hall";
     private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
 

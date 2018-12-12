@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("dev-panel")
 public class DevPanelServlet extends HttpServlet {
     private static final String VIEW_NAME = "/dev-panel";
-    private static final String LAYOUT_NAME = "layouts/app";
     private static final Logger LOG = LoggerFactory.getLogger(DevPanelServlet.class);
 
     @Inject

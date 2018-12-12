@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("/create-hall")
 public class CreateHallServlet extends HttpServlet {
     private static final String VIEW_NAME = "/create-hall";
-    private static final String LAYOUT_NAME = "layouts/app";
     private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
 
 

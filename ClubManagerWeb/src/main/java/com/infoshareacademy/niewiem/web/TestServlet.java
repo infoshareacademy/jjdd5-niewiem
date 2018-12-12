@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("/test")
 public class TestServlet extends HttpServlet {
 
     private static final String VIEW_NAME = "/test";
-    private static final String LAYOUT_NAME = "layouts/app";
     private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
 
 
