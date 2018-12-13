@@ -17,12 +17,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("choose-hall")
 public class ChooseHallServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "choose-hall";
+    private static final String VIEW_NAME = "/choose-hall";
     private static final String ACTION_SAVE_HALL = "save-hall";
     private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
 
@@ -36,7 +35,7 @@ public class ChooseHallServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         Map<String, Object> model = new HashMap<>();
-
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         addListOfHallsToModel(resp, model);
     }
 
@@ -54,7 +53,7 @@ public class ChooseHallServlet extends HttpServlet {
             model.put("savedSuccess", true);
             model.put("savedHall", name);
         }
-
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         addListOfHallsToModel(resp, model);
     }
 
@@ -70,7 +69,7 @@ public class ChooseHallServlet extends HttpServlet {
 
 
         private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
 
         try {
             template.process(model, resp.getWriter());
