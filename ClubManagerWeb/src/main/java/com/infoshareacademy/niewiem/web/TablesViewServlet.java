@@ -1,10 +1,10 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.services.HallQueryService;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class TablesViewServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);
 
     @Inject
-    private TableDao tableDao;
+    private TableQueryService tableQueryService;
 
     @Inject
     private HallQueryService hallQueryService;
@@ -46,7 +46,7 @@ public class TablesViewServlet extends HttpServlet {
         Integer hallId = Integer.valueOf(req.getParameter("hallId"));
         Hall hall = hallQueryService.findById(hallId);
         model.put("hall", hall);
-        List<TableEndTimeInMillis> tetim = tableDao.findAllTablesInHallWithEndTimeInMillis(hall);
+        List<TableEndTimeInMillis> tetim = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hall);
         model.put("tablesEndTimeIneMillis", tetim);
 
         servletService.sendModelToTemplate(resp, context, model);

@@ -5,7 +5,6 @@ import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -17,9 +16,6 @@ public class ReservationDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Inject
-    private TableDao tableDao;
 
     public Long save(Reservation reservation){
         // todo: check if reservation has no conflict

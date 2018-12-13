@@ -15,9 +15,6 @@ public class HallSaveService {
     @Inject
     private HallDao hallDao;
 
-//    @Inject
-//    private HallValidator hallValidator;
-
     public Integer save(Hall hall){
         // todo: validate me like you validate your French girls!
         // id should be null, otherwise it's not save but update!
