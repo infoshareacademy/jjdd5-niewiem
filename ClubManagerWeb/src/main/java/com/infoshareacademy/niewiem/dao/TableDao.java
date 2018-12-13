@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.dao;
 
-import com.infoshareacademy.niewiem.dto.TableTimeLeft;
+import com.infoshareacademy.niewiem.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
@@ -10,8 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,20 +56,20 @@ public class TableDao {
         return query.getResultList();
     }
 
-    public List<TableTimeLeft> findAllTablesInHallWithTimeLeftOrZero(Hall hall) {
+    public List<TableEndTimeInMillis> findAllTablesInHallWithEndTimeInMillis(Hall hall) {
         List<Table> tables = findAllInHall(hall);
         List<Reservation> reservations = reservationDao.findAllActiveByHall(hall);
 
         return tables.stream()
                 .map(t -> {
-                    TableTimeLeft ttl = new TableTimeLeft();
+                    TableEndTimeInMillis ttl = new TableEndTimeInMillis();
                     ttl.setTable(t);
-                    Duration timeLeft = reservations.stream()
+                    Long timeLeft = reservations.stream()
                             .filter(r -> r.getTable() == t)
-                            .map(r -> Duration.between(r.getEndTime(), LocalDateTime.now()))
+                            .map(r -> r.getEndTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                             .findFirst()
-                            .orElse(Duration.ZERO);
-                    ttl.setTimeLeft(timeLeft);
+                            .orElse(Long.valueOf(0));
+                    ttl.setEndTimeInMillis(timeLeft);
                     return ttl;
                 })
                 .collect(Collectors.toList());
