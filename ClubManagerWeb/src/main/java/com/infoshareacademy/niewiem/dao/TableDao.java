@@ -4,7 +4,6 @@ import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Table;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -15,9 +14,6 @@ public class TableDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Inject
-    private ReservationDao reservationDao;
 
     public Integer save(Table table) {
         entityManager.persist(table);

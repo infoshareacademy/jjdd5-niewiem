@@ -1,6 +1,5 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
@@ -40,8 +39,7 @@ public class DevPanelServlet extends HttpServlet {
     @Inject
     private TableQueryService tableQueryService;
 
-    @Inject
-    private ReservationDao reservationDao;
+    @Inject ReservationSaveService reservationSaveService;
 
 
     @Override
@@ -94,6 +92,23 @@ public class DevPanelServlet extends HttpServlet {
         addReservation(20, 0, 60);
     }
 
+    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
+        for (int i = 1; i <= numberOfTables; i++) {
+            addTableToHall(hallId, i);
+        }
+    }
+
+    private void addTableToHall(Integer hallId, int i) {
+        Table table = new Table();
+        Hall hall = hallQueryService.findById(hallId);
+
+        table.setHall(hall);
+        table.setType(TableType.POOL);
+        table.setName("P" + String.format("%02d", i));
+
+        tableSaveService.save(table);
+    }
+
     private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
         Table table = tableQueryService.findById(tableId);
         LocalDateTime now = LocalDateTime.now();
@@ -105,19 +120,6 @@ public class DevPanelServlet extends HttpServlet {
         reservation.setStartTime(start);
         reservation.setEndTime(end);
 
-        reservationDao.save(reservation);
-    }
-
-    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
-        for (int i = 1; i <= numberOfTables; i++) {
-            Table table = new Table();
-            Hall hall = hallQueryService.findById(hallId);
-
-            table.setHall(hall);
-            table.setType(TableType.POOL);
-            table.setName("P" + String.format("%02d", i));
-
-            tableSaveService.save(table);
-        }
+        reservationSaveService.save(reservation);
     }
 }

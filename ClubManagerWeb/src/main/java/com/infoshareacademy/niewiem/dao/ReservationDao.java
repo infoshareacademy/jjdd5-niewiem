@@ -18,13 +18,11 @@ public class ReservationDao {
     private EntityManager entityManager;
 
     public Long save(Reservation reservation){
-        // todo: check if reservation has no conflict
         entityManager.persist(reservation);
         return reservation.getId();
     }
 
     public Reservation update (Reservation reservation){
-        // todo: check if reservation has no conflict
         return entityManager.merge(reservation);
     }
 

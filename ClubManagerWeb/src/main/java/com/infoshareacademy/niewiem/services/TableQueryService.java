@@ -1,6 +1,5 @@
 package com.infoshareacademy.niewiem.services;
 
-import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.pojo.Hall;
@@ -23,7 +22,7 @@ public class TableQueryService {
     private TableDao tableDao;
 
     @Inject
-    private ReservationDao reservationDao;
+    private ReservationQueryService reservationQueryService;
 
     public Table findById(Integer id) {
         return tableDao.findById(id);
@@ -40,7 +39,7 @@ public class TableQueryService {
 
     public List<TableEndTimeInMillis> findAllTablesInHallWithEndTimeInMillis(Hall hall) {
         List<Table> tables = findAllInHall(hall);
-        List<Reservation> reservations = reservationDao.findAllActiveByHall(hall);
+        List<Reservation> reservations = reservationQueryService.findAllActiveByHall(hall);
 
         return tables.stream()
                 .map(t -> {
@@ -58,5 +57,5 @@ public class TableQueryService {
     }
 
     // todo: isActive
-    // todo: findActiveReservation - maybe should be in ReservationQueryService?
+    // use reservationQueryService.findActiveForTable(table)
 }
