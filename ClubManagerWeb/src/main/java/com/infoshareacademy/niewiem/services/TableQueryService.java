@@ -56,6 +56,7 @@ public class TableQueryService {
                 .collect(Collectors.toList());
     }
 
-    // todo: isActive
-    // use reservationQueryService.findActiveForTable(table)
+    public boolean isActive(Table table) {
+        return reservationQueryService.findActiveForTable(table) != null;
+    }
 }

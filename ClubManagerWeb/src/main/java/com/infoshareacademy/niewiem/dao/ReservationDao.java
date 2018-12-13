@@ -63,4 +63,16 @@ public class ReservationDao {
         query.setParameter("now", LocalDateTime.now());
         return query.getResultList();
     }
+
+    public Reservation findActiveForTable(Table table) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (r.table = :table AND r.startTime < :now AND r.endTime > :now)");
+        query.setParameter("table", table);
+        query.setParameter("now", LocalDateTime.now());
+        List resultList = query.getResultList();
+        if(resultList == null || resultList.isEmpty()){
+            return null;
+        }
+        return (Reservation) resultList.get(0);
+    }
 }

@@ -18,26 +18,27 @@ public class ReservationQueryService {
     @Inject
     private ReservationDao reservationDao;
 
-    public Reservation findById(Long id){
+    public Reservation findById(Long id) {
         return reservationDao.findById(id);
     }
 
-    public List<Reservation> findAll(){
+    public List<Reservation> findAll() {
         return reservationDao.findAll();
     }
 
-    public List<Reservation> finaAllByHall(Hall hall){
+    public List<Reservation> finaAllByHall(Hall hall) {
         return reservationDao.findAllByHall(hall);
     }
 
-    public List<Reservation> findAllByTable(Table table){
+    public List<Reservation> findAllByTable(Table table) {
         return reservationDao.findAllByTable(table);
     }
 
-    public List<Reservation> findAllActiveByHall(Hall hall){
+    public List<Reservation> findAllActiveByHall(Hall hall) {
         return reservationDao.findAllActiveByHall(hall);
     }
 
-    // todo:
-    // public Reservation findActiveForTable(Table table){return reservationDao.findActiveForTable(table};
+    public Reservation findActiveForTable(Table table) {
+        return reservationDao.findActiveForTable(table);
+    }
 }
