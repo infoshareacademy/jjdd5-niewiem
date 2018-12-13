@@ -4,7 +4,13 @@
         <div class="row">
         <#items as h>
             <div class="col">
-            <a href="tables-view?hallId=${h.id}">${h.name}</a>
+            <#if h.imageURL??>
+                <img src="${h.imageURL}" />
+                <a href="tables-view?hallId=${h.id}">${h.name}</a>
+            <#else>
+                <img src="/default.jpeg" />
+                <a href="tables-view?hallId=${h.id}">${h.name}</a>
+            </#if>
             </div>
         </#items>
         </div>
