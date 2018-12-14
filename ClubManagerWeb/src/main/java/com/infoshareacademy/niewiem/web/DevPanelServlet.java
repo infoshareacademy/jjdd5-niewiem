@@ -94,19 +94,8 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
         for (int i = 1; i <= numberOfTables; i++) {
-            addTableToHall(hallId, i);
+            tableSaveService.addTableToHall(hallId, i);
         }
-    }
-
-    private void addTableToHall(Integer hallId, int i) {
-        Table table = new Table();
-        Hall hall = hallQueryService.findById(hallId);
-
-        table.setHall(hall);
-        table.setType(TableType.POOL);
-        table.setName("P" + String.format("%02d", i));
-
-        tableSaveService.save(table);
     }
 
     private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){

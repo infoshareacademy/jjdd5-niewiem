@@ -3,6 +3,9 @@ package com.infoshareacademy.niewiem.web;
 import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.services.TableQueryService;
+import com.infoshareacademy.niewiem.services.TableSaveService;
+import com.infoshareacademy.niewiem.services.TableUpdateService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -27,28 +30,34 @@ public class TableMenuServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
     @Inject
-    private TableDao tableDao;
+    private TableSaveService tableSaveService;
+    @Inject
+    private TableQueryService tableQueryService;
+    @Inject
+    private TableUpdateService tableUpdateService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        String tid = req.getParameter("tid");
-        Table tableById = tableDao.findById(Integer.parseInt(tid));
+        String hid = req.getParameter("hid");
+
+        Table tableById = tableQueryService.findById(Integer.parseInt(hid));
         Map<String, Object> model = new HashMap<>();
-        model.put("table", tableById);
+        model.put("hid", hid);
         sendModelToTemplate(resp, model);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer tid = Integer.parseInt(req.getParameter("tid"));
+        Integer hid = Integer.parseInt(req.getParameter("hid"));
         String name = req.getParameter("name");
 
-        Table table = tableDao.findById(tid);
+        Table table = tableQueryService.findById(hid);
 
         if (table != null) {
             table.setName(name);
-            tableDao.update(table);
+            tableUpdateService.update(table);
         }
     }
 
@@ -59,6 +68,12 @@ public class TableMenuServlet extends HttpServlet {
             template.process(model, resp.getWriter());
         } catch (TemplateException e) {
             LOG.error("Error while processing template: " + e);
+        }
+    }
+
+    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
+        for (int i = 1; i <= numberOfTables; i++) {
+            tableSaveService.addTableToHall(hallId, i);
         }
     }
 }
