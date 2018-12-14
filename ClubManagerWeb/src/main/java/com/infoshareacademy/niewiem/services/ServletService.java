@@ -1,7 +1,6 @@
 package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
-import com.infoshareacademy.niewiem.web.CreateHallServlet;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
