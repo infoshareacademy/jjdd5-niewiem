@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 public class TableQueryService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TableQueryService.class);
 
     @Inject
     private TableDao tableDao;

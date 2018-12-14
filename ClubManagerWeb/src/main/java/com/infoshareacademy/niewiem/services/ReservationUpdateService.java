@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 @Stateless
 public class ReservationUpdateService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReservationUpdateService.class);
 
     @Inject
     private ReservationDao reservationDao;

@@ -18,7 +18,7 @@ import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NA
 
 @Stateless
 public class ServletService {
-    private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ServletService.class);
 
     @Inject
     private TemplateProvider templateProvider;

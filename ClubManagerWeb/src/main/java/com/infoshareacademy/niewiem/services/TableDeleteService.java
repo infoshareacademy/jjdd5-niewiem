@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 @Stateless
 public class TableDeleteService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TableDeleteService.class);
 
     @Inject
     private TableDao tableDao;
