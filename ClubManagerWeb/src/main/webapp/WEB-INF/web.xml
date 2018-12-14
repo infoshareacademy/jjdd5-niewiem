@@ -10,13 +10,19 @@
 
     <data-source>
         <name>java:ds/clubds</name>
+
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
-        <!-- database name: club -->
+
+        <!--infoShare Academy-->
         <url>jdbc:mysql://localhost:6603/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
-        <!-- gotta have this as a user in your local database! -->
         <user>root</user>
-        <!-- gotta have this as a password in your local database! -->
         <password>pass123</password>
+
+        <!--Hubert-->
+        <!--<url>jdbc:mysql://localhost:3306/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>-->
+        <!--<user>root</user>-->
+        <!--<password>pass1234</password>-->
+
     </data-source>
 
 </web-app>

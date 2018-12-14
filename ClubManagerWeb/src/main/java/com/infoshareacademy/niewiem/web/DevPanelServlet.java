@@ -1,19 +1,15 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.dao.HallDao;
-import com.infoshareacademy.niewiem.dao.ReservationDao;
-import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.enums.TableType;
-import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import com.infoshareacademy.niewiem.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +18,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("dev-panel")
 public class DevPanelServlet extends HttpServlet {
@@ -30,35 +25,42 @@ public class DevPanelServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(DevPanelServlet.class);
 
     @Inject
-    private TemplateProvider templateProvider;
+    private ServletService servletService;
 
     @Inject
-    private HallDao hallDao;
+    private HallSaveService hallSaveService;
 
     @Inject
-    private TableDao tableDao;
+    private HallQueryService hallQueryService;
 
     @Inject
-    private ReservationDao reservationDao;
+    private TableSaveService tableSaveService;
+
+    @Inject
+    private TableQueryService tableQueryService;
+
+    @Inject ReservationSaveService reservationSaveService;
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
+
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
         addThreeNewClubs();
         addTablesToClubs();
         addActiveReservations();
 
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-        sendModelToTemplate(resp, model);
+        servletService.sendModelToTemplate(resp, context, model);
     }
 
     private void addThreeNewClubs() {
-        hallDao.save(new Hall("DEMO 1"));
-        hallDao.save(new Hall("DEMO 2"));
-        hallDao.save(new Hall("DEMO 3"));
+        hallSaveService.save(new Hall("DEMO 1"));
+        hallSaveService.save(new Hall("DEMO 2"));
+        hallSaveService.save(new Hall("DEMO 3"));
     }
 
     private void addTablesToClubs() {
@@ -90,8 +92,25 @@ public class DevPanelServlet extends HttpServlet {
         addReservation(20, 0, 60);
     }
 
+    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
+        for (int i = 1; i <= numberOfTables; i++) {
+            addTableToHall(hallId, i);
+        }
+    }
+
+    private void addTableToHall(Integer hallId, int i) {
+        Table table = new Table();
+        Hall hall = hallQueryService.findById(hallId);
+
+        table.setHall(hall);
+        table.setType(TableType.POOL);
+        table.setName("P" + String.format("%02d", i));
+
+        tableSaveService.save(table);
+    }
+
     private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
-        Table table = tableDao.findById(tableId);
+        Table table = tableQueryService.findById(tableId);
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusMinutes(minutesBeforeNow);
         LocalDateTime end = start.plusMinutes(duration);
@@ -101,24 +120,6 @@ public class DevPanelServlet extends HttpServlet {
         reservation.setStartTime(start);
         reservation.setEndTime(end);
 
-        reservationDao.save(reservation);
+        reservationSaveService.save(reservation);
     }
-
-    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
-        for (int i = 1; i <= numberOfTables; i++) {
-            tableDao.save(new Table(hallDao.findById(hallId), TableType.POOL, "P" + String.format("%02d", i)));
-        }
-    }
-
-    private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
-
-        try {
-            template.process(model, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Error while processing template: " + e);
-        }
-    }
-
-
 }

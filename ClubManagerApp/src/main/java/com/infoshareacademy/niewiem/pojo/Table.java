@@ -14,15 +14,15 @@ public class Table implements Comparable<Table> {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private TableType type;
 
     @ManyToOne
-    @JoinColumn(name = "hall_id")
+    @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
 
     @OneToMany(mappedBy = "table", fetch = FetchType.LAZY)
