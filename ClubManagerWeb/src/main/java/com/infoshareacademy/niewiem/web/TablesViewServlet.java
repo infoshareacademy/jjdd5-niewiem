@@ -22,10 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
+
 @WebServlet("tables-view")
 public class TablesViewServlet extends HttpServlet {
-    private static final String TEMPLATE_NAME = "tables-view";
+    private static final String VIEW_NAME = "/tables-view";
     private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);
+
 
     @Inject
     private TemplateProvider templateProvider;
@@ -50,12 +53,12 @@ public class TablesViewServlet extends HttpServlet {
 
         List<TableEndTimeInMillis> tetim = tableDao.findAllTablesInHallWithEndTimeInMillis(hall);
         model.put("tablesEndTimeIneMillis", tetim);
-
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
         sendModelToTemplate(resp, model);
     }
 
     private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
 
         try {
             template.process(model, resp.getWriter());

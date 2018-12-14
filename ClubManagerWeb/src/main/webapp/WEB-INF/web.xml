@@ -16,7 +16,7 @@
         <!-- gotta have this as a user in your local database! -->
         <user>root</user>
         <!-- gotta have this as a password in your local database! -->
-        <password>pass123</password>
+        <password>pass1234</password>
     </data-source>
 
 </web-app>
