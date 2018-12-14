@@ -11,9 +11,9 @@
 <body>
 
 <div class="row">
-    <#list tablesTimeLeft as ttl>
+    <#list tablesEndTimeIneMillis as tetim>
         <div class="col table-in-hall">
-        <p>id: ${ttl.table.id} name: ${ttl.table.name} duration: ${ttl.timeLeft} </p>
+        <p>id: ${tetim.table.id} name: ${tetim.table.name} duration: ${tetim.endTimeInMillis} </p>
         </div>
     </#list>
 </div>

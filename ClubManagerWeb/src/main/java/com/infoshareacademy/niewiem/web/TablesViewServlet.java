@@ -3,7 +3,7 @@ package com.infoshareacademy.niewiem.web;
 import com.infoshareacademy.niewiem.dao.HallDao;
 import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.dao.TableDao;
-import com.infoshareacademy.niewiem.dto.TableTimeLeft;
+import com.infoshareacademy.niewiem.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import freemarker.template.Template;
@@ -48,8 +48,8 @@ public class TablesViewServlet extends HttpServlet {
         Hall hall = hallDao.findById(hallId);
         model.put("hall", hall);
 
-        List<TableTimeLeft> ttl = tableDao.findAllTablesInHallWithTimeLeftOrZero(hall);
-        model.put("tablesTimeLeft", ttl);
+        List<TableEndTimeInMillis> tetim = tableDao.findAllTablesInHallWithEndTimeInMillis(hall);
+        model.put("tablesEndTimeIneMillis", tetim);
 
         sendModelToTemplate(resp, model);
     }

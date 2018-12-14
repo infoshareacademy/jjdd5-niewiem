@@ -2,11 +2,9 @@ package com.infoshareacademy.niewiem.dto;
 
 import com.infoshareacademy.niewiem.pojo.Table;
 
-import java.time.Duration;
-
-public class TableTimeLeft {
+public class TableEndTimeInMillis {
     private Table table;
-    private Duration timeLeft;
+    private Long endTimeInMillis;
 
     public Table getTable() {
         return table;
@@ -16,11 +14,11 @@ public class TableTimeLeft {
         this.table = table;
     }
 
-    public Duration getTimeLeft() {
-        return timeLeft;
+    public Long getEndTimeInMillis() {
+        return endTimeInMillis;
     }
 
-    public void setTimeLeft(Duration timeLeft) {
-        this.timeLeft = timeLeft;
+    public void setEndTimeInMillis(Long endTimeInMillis) {
+        this.endTimeInMillis = endTimeInMillis;
     }
 }
