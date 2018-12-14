@@ -1,16 +1,15 @@
 package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.cdi.FileUploadProcessor;
-import com.infoshareacademy.niewiem.dao.HallDao;
 import com.infoshareacademy.niewiem.exceptions.HallImageNotFound;
-import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
 import com.infoshareacademy.niewiem.pojo.Hall;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import com.infoshareacademy.niewiem.services.HallSaveService;
+import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @MultipartConfig
 @WebServlet("/create-hall")
@@ -31,30 +29,32 @@ public class CreateHallServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
 
     @Inject
-    FileUploadProcessor fileUploadProcessor;
+    private FileUploadProcessor fileUploadProcessor;
 
     @Inject
-    private TemplateProvider templateProvider;
+    private ServletService servletService;
 
     @Inject
-    private HallDao hallDao;
+    private HallSaveService hallSaveService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-        sendModelToTemplate(resp, model);
 
-    }
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
+
+        servletService.sendModelToTemplate(resp, context, model);
+        }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-
         Hall hall = new Hall();
         Part part = req.getPart("image");
         hall.setName(req.getParameter("name"));
 
+        //todo: this should not be here, move it to method in HallCreateService?
         try {
             File image = fileUploadProcessor.uploadImageFile(part);
             String imageName = image.getName();
@@ -63,18 +63,8 @@ public class CreateHallServlet extends HttpServlet {
             LOG.warn("Image not found");
         }
 
-        hallDao.save(hall);
+        hallSaveService.save(hall);
 
         resp.sendRedirect("/choose-hall");
-    }
-
-    private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
-
-        try {
-            template.process(model, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Error while processing template: " + e);
-        }
     }
 }

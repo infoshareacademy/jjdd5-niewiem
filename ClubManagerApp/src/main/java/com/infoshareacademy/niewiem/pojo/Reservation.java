@@ -14,17 +14,17 @@ public class Reservation {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "start")
+    @Column(name = "start", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(name = "end")
+    @Column(name = "end", nullable = false)
     private LocalDateTime endTime;
 
     @Column(name = "customer")
     private String customer;
 
     @ManyToOne
-    @JoinColumn(name = "table_id")
+    @JoinColumn(name = "table_id", nullable = false)
     private Table table;
 
     public Reservation() {
