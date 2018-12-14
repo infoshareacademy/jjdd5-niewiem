@@ -11,7 +11,7 @@ import java.util.List;
 
 @Stateless
 public class HallQueryService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HallQueryService.class);
 
     @Inject
     private HallDao hallDao;

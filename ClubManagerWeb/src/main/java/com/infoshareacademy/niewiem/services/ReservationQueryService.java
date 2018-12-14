@@ -13,7 +13,7 @@ import java.util.List;
 
 @Stateless
 public class ReservationQueryService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReservationQueryService.class);
 
     @Inject
     private ReservationDao reservationDao;
