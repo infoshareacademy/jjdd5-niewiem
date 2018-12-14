@@ -60,7 +60,7 @@ public class CreateHallServlet extends HttpServlet {
             String imageName = image.getName();
             hall.setImageURL("/images/" + imageName);
         } catch (HallImageNotFound userImageNotFound) {
-            userImageNotFound.printStackTrace();
+            LOG.warn("Image not found");
         }
 
         hallDao.save(hall);
