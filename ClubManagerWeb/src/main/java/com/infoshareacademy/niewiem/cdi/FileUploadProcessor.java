@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -17,6 +18,7 @@ public class FileUploadProcessor {
     private static final String SETTINGS_FILE = "settings.properties";
     public static final String UPLOAD_PATH_IMAGES = "Upload.Path.Images";
     public static final String NO_USER_IMAGE_HAS_BEEN_UPLOADED = "No user image has been uploaded";
+    public static final Path path = Paths.get(getUploadImageFilesPath());
 
     public String getUploadImageFilesPath() throws IOException {
 
@@ -34,17 +36,30 @@ public class FileUploadProcessor {
             throw new HallImageNotFound(NO_USER_IMAGE_HAS_BEEN_UPLOADED);
         }
 
-        File file = new File(getUploadImageFilesPath() + fileName);
+        File file = new File(getUploadImageFilesPath() + "/" + fileName);
 
         Files.deleteIfExists(file.toPath());
 
         InputStream fileContent = filePart.getInputStream();
+
+        createDirectory();
 
         Files.copy(fileContent, file.toPath());
 
         fileContent.close();
 
         return file;
+
+    }
+
+    private static void createDirectory(Path path) {
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectory(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
