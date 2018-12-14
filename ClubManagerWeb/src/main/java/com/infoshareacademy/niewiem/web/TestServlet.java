@@ -1,12 +1,11 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @WebServlet("/test")
 public class TestServlet extends HttpServlet {
@@ -26,25 +24,17 @@ public class TestServlet extends HttpServlet {
 
 
     @Inject
-    private TemplateProvider templateProvider;
+    private ServletService servletService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
-
+        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
-        model.put("date", LocalDateTime.now());
+
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-        sendModelToTemplate(resp, model);
-    }
 
-    private void sendModelToTemplate(HttpServletResponse resp, Map<String, Object> model) throws IOException {
-        Template template = templateProvider.getTemplate(getServletContext(), LAYOUT_NAME);
-
-        try {
-            template.process(model, resp.getWriter());
-        } catch (TemplateException e) {
-            LOG.error("Error while processing template: " + e);
-        }
+        model.put("date", LocalDateTime.now());
+        servletService.sendModelToTemplate(resp, context, model);
     }
 }

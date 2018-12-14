@@ -5,7 +5,6 @@ import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -18,17 +17,12 @@ public class ReservationDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Inject
-    private TableDao tableDao;
-
     public Long save(Reservation reservation){
-        // todo: check if reservation has no conflict
         entityManager.persist(reservation);
         return reservation.getId();
     }
 
     public Reservation update (Reservation reservation){
-        // todo: check if reservation has no conflict
         return entityManager.merge(reservation);
     }
 
@@ -68,5 +62,17 @@ public class ReservationDao {
         query.setParameter("hall", hall);
         query.setParameter("now", LocalDateTime.now());
         return query.getResultList();
+    }
+
+    public Reservation findActiveForTable(Table table) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (r.table = :table AND r.startTime < :now AND r.endTime > :now)");
+        query.setParameter("table", table);
+        query.setParameter("now", LocalDateTime.now());
+        List resultList = query.getResultList();
+        if(resultList == null || resultList.isEmpty()){
+            return null;
+        }
+        return (Reservation) resultList.get(0);
     }
 }
