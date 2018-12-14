@@ -35,12 +35,12 @@ public class ChooseHallServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-        addListOfHallsToModel(resp, model);
+        addListOfHallsToModel(model);
 
         servletService.sendModelToTemplate(resp, context, model);
     }
 
-    private void addListOfHallsToModel(HttpServletResponse resp, Map<String, Object> model) throws IOException {
+    private void addListOfHallsToModel(Map<String, Object> model) throws IOException {
         List<Hall> halls = hallQueryService.findAll();
         LOG.info("Found {} halls in halls table", halls.size());
 
