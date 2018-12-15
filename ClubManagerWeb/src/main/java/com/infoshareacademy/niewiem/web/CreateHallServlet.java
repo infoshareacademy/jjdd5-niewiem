@@ -50,11 +50,12 @@ public class CreateHallServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        //todo: HallSaveService.addHall(name, part);
+
         Hall hall = new Hall();
         Part part = req.getPart("image");
         hall.setName(req.getParameter("name"));
 
-        //todo: this should not be here, move it to method in HallCreateService?
         try {
             File image = fileUploadProcessor.uploadImageFile(part);
             String imageName = image.getName();

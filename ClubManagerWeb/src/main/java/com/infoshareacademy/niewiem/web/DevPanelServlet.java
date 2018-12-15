@@ -1,6 +1,5 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
@@ -29,9 +28,6 @@ public class DevPanelServlet extends HttpServlet {
 
     @Inject
     private HallSaveService hallSaveService;
-
-    @Inject
-    private HallQueryService hallQueryService;
 
     @Inject
     private TableSaveService tableSaveService;
@@ -94,19 +90,8 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
         for (int i = 1; i <= numberOfTables; i++) {
-            addTableToHall(hallId, i);
+            tableSaveService.addTablePoolToHallAutoName(hallId, i);
         }
-    }
-
-    private void addTableToHall(Integer hallId, int i) {
-        Table table = new Table();
-        Hall hall = hallQueryService.findById(hallId);
-
-        table.setHall(hall);
-        table.setType(TableType.POOL);
-        table.setName("P" + String.format("%02d", i));
-
-        tableSaveService.save(table);
     }
 
     private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
