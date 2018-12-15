@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
 @Stateless
 public class ActiveHallService {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveHallService.class);
@@ -63,8 +62,6 @@ public class ActiveHallService {
     public void setNull(HttpSession session){
         session.setAttribute("activeHall", null);
     }
-
-
 }
 
 
