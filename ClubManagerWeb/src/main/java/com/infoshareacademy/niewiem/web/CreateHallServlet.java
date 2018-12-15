@@ -1,8 +1,5 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.cdi.FileUploadProcessor;
-import com.infoshareacademy.niewiem.exceptions.HallImageNotFound;
-import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.services.HallSaveService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
@@ -16,8 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +22,6 @@ import java.util.Map;
 public class CreateHallServlet extends HttpServlet {
     private static final String VIEW_NAME = "/create-hall";
     private static final Logger LOG = LoggerFactory.getLogger(CreateHallServlet.class);
-
-    @Inject
-    private FileUploadProcessor fileUploadProcessor;
 
     @Inject
     private ServletService servletService;
@@ -50,21 +42,7 @@ public class CreateHallServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        //todo: HallSaveService.addHall(name, part);
-
-        Hall hall = new Hall();
-        Part part = req.getPart("image");
-        hall.setName(req.getParameter("name"));
-
-        try {
-            File image = fileUploadProcessor.uploadImageFile(part);
-            String imageName = image.getName();
-            hall.setImageURL("/images/" + imageName);
-        } catch (HallImageNotFound userImageNotFound) {
-            LOG.warn("Image not found");
-        }
-
-        hallSaveService.save(hall);
+        hallSaveService.addNewHall(req);
 
         resp.sendRedirect("/choose-hall");
     }
