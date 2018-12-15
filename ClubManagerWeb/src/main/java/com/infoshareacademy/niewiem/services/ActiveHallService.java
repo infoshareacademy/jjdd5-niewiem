@@ -35,14 +35,16 @@ public class ActiveHallService {
     }
 
     public Hall getActiveHallOrRedirect(HttpSession session, HttpServletResponse resp) throws IOException {
-        Hall hall = (Hall) session.getAttribute("activeHall");
-
-        if (hall == null) {
+        Object hallObj = session.getAttribute("activeHall");
+        if (hallObj == null) {
             resp.sendRedirect("/choose-hall");
         }
+
+        Hall hall = (Hall) hallObj;
         if (hallQueryService.doesNotExist(hall)) {
             resp.sendRedirect("/choose-hall");
         }
+
         return hall;
     }
 
@@ -56,6 +58,10 @@ public class ActiveHallService {
 
         session.setAttribute("activeHall", hall);
         return true;
+    }
+
+    public void setNull(HttpSession session){
+        session.setAttribute("activeHall", null);
     }
 
 
