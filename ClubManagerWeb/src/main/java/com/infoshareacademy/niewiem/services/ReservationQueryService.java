@@ -34,6 +34,12 @@ public class ReservationQueryService {
         return reservationDao.findAllByTable(table);
     }
 
+    public List<Reservation> findAllByTableAndHall(Hall hall, Table table) {
+        // todo: check if table exists in hall
+
+        return reservationDao.findAllByTable(table);
+    }
+
     public List<Reservation> findAllActiveByHall(Hall hall) {
         return reservationDao.findAllActiveByHall(hall);
     }

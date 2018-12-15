@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 
 @Stateless
@@ -28,6 +30,18 @@ public class ActiveHallService {
         }
         if (hallQueryService.doesNotExist(hall)) {
             return null;
+        }
+        return hall;
+    }
+
+    public Hall getActiveHallOrRedirect(HttpSession session, HttpServletResponse resp) throws IOException {
+        Hall hall = (Hall) session.getAttribute("activeHall");
+
+        if (hall == null) {
+            resp.sendRedirect("/choose-hall");
+        }
+        if (hallQueryService.doesNotExist(hall)) {
+            resp.sendRedirect("/choose-hall");
         }
         return hall;
     }

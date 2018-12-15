@@ -38,14 +38,7 @@ public class TablesViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        Hall hall = activeHallService.getActiveHall(session);
-
-        if(hall == null){
-            LOG.warn("No active hall found, redirect to choose-hall servlet.");
-            resp.sendRedirect("/choose-hall");
-            return;
-        }
-        LOG.info("Showing active hall: " + hall);
+        Hall hall = activeHallService.getActiveHallOrRedirect(session, resp);
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         ServletContext context = getServletContext();
