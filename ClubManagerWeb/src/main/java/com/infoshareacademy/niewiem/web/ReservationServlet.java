@@ -2,9 +2,7 @@ package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Table;
-import com.infoshareacademy.niewiem.services.ActiveHallService;
-import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.services.TableQueryService;
+import com.infoshareacademy.niewiem.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +32,12 @@ public class ReservationServlet extends HttpServlet {
     @Inject
     private TableQueryService tableQueryService;
 
+    @Inject
+    private ReservationSaveService reservationSaveService;
+
+    @Inject
+    private ReservationUpdateService reservationUpdateService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
@@ -50,5 +54,16 @@ public class ReservationServlet extends HttpServlet {
         servletService.sendModelToTemplate(resp, context, model);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        String action = req.getParameter("action");
 
+        if ("new".equals(action)) {
+            reservationSaveService.addNewReservation(req);
+        } else if ("update".equals(action)) {
+            reservationUpdateService.updateReservation(req);
+        }
+
+        resp.sendRedirect("/tables-view");
+    }
 }

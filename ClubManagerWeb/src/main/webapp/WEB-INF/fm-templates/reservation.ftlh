@@ -10,9 +10,9 @@
             <div class="form-group">
 
             <label form="chooseTable">Choose table</label>
-            <select class="form-control" id="chooseTable">
+            <select name="tid" class="form-control" id="chooseTable">
             <#items as t>
-                <option>${t.name}</option>
+                <option value="${t.id}">${t.name}</option>
             </#items>
             </select>
 
@@ -29,12 +29,8 @@
             <input id="startTime" name="startTime" type="time" class="form-control" required/>
         </div>
         <div class="form-group">
-            <label for="endDate">End date</label>
-            <input id="endDate" name="endDate" type="date" class="form-control" required/>
-        </div>
-        <div class="form-group">
-            <label for="endTime">End time</label>
-            <input id="endTime" name="endTime" type="time" class="form-control" required/>
+            <label for="timeSpan">Time span in minutes</label>
+            <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
         </div>
     <#-- todo: delete the stuff above me when you implement the right stuff -->
 
@@ -44,6 +40,7 @@
                    placeholder="Your name and phone number" required/>
         </div>
 
+        <button type="submit" class="btn btn-primary">Save!</button>
         </form>
     </#if>
 </div>
