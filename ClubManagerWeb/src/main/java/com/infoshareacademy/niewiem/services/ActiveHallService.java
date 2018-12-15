@@ -40,7 +40,6 @@ public class ActiveHallService {
             return false;
         }
 
-        // todo: what happens when attribute already exists?
         session.setAttribute("activeHall", hall);
         return true;
     }
