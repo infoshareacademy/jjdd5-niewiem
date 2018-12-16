@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.HallQueryService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
@@ -28,8 +29,31 @@ public class ChooseHallServlet extends HttpServlet {
     @Inject
     private HallQueryService hallQueryService;
 
+    @Inject
+    private ActiveHallService activeHallService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String hid = req.getParameter("hallId");
+        if(hid == null || hid.isEmpty()){
+            activeHallService.setNull(req.getSession());
+            showHallsToChoose(resp);
+            return;
+        }
+        redirectToChosenHall(req, resp, hid);
+    }
+
+    private void redirectToChosenHall(HttpServletRequest req, HttpServletResponse resp, String hid) throws IOException {
+        boolean hallExists = activeHallService.setActive(req.getSession(), hid);
+
+        if(hallExists) {
+            resp.sendRedirect("/tables-view");
+            return;
+        }
+        showHallsToChoose(resp);
+    }
+
+    private void showHallsToChoose(HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();

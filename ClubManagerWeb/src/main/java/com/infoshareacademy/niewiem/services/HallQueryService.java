@@ -23,4 +23,8 @@ public class HallQueryService {
     public List<Hall> findAll() {
         return hallDao.findAll();
     }
+
+    public boolean doesNotExist(Hall hall) {
+        return findById(hall.getId()) == null;
+    }
 }
