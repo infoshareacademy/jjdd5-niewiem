@@ -23,20 +23,25 @@ public class ReservationUpdateService {
     public Reservation update(Reservation reservation){
 
         if(!reservationValidator.isResIdNotNull(reservation)){
-            LOG.warn("Reservation didn't update because id is null");
+            throwException("Reservation didn't update because id is null");
         }
 
         if(!reservationValidator.isStartTimeNotNull(reservation)){
-            LOG.warn("Reservation didn't update because start time is null");
+            throwException("Reservation didn't update because start time is null");
         }
 
         if(reservationValidator.isEndTimeNotNull(reservation)){
-            LOG.warn("Reservation didn't update because end time is null");
+            throwException("Reservation didn't update because end time is null");
         }
 
         return reservationDao.update(reservation);
     }
 
     public void updateReservation(HttpServletRequest req) {
+    }
+
+    private void throwException(String message) {
+        LOG.warn(message);
+        throw new IllegalArgumentException(message);
     }
 }

@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.TableDao;
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.validators.TableValidator;
 import com.infoshareacademy.niewiem.enums.TableType;
@@ -28,31 +29,27 @@ public class TableSaveService {
     @Inject
     private InputValidator inputValidator;
 
-    public Integer save(Table table) {
+    public Integer save(Table table) throws SavingFailed {
 
         if (tableValidator.isTableIdNotNull(table)) {
-            LOG.warn("Table didn't save because id is not null");
-            return -1;
+            throwException("Table didn't save because id is not null");
         }
 
         if(tableValidator.isNameNotNullOrEmpty(table)){
-            LOG.warn("Table didn't save because name is not null or empty");
-            return -1;
+            throwException("Table didn't save because name is not null or empty");
         }
 
         if(tableValidator.isTypeNotNull(table)){
-            LOG.warn("Table didn't save because type is not null");
-            return -1;
+            throwException("Table didn't save because type is not null");
         }
 
         if(!tableValidator.isHallIdNotNull(table)){
-            LOG.warn("Table didn't save because hall id is null");
-            return -1;
+            throwException("Table didn't save because hall id is null");
         }
         return tableDao.save(table);
     }
 
-    public void addTablePoolToHallAutoName(Integer hallId, int i) {
+    public void addTablePoolToHallAutoName(Integer hallId, int i) throws SavingFailed {
         Table table = new Table();
         Hall hall = hallQueryService.findById(hallId);
 
@@ -63,7 +60,7 @@ public class TableSaveService {
         save(table);
     }
 
-    public void addTableToHall(String hid, String name, String type) {
+    public void addTableToHall(String hid, String name, String type) throws SavingFailed {
         Integer hallId = inputValidator.reqIntegerValidator(hid);
         TableType tableType = inputValidator.reqTableTypeValidator(type);
 
@@ -76,6 +73,11 @@ public class TableSaveService {
         table.setName(name);
 
         save(table);
+    }
+
+    private void throwException(String message) throws SavingFailed {
+        LOG.warn(message);
+        throw new SavingFailed(message);
     }
 
 }

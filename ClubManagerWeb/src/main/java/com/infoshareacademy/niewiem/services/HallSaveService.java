@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.HallDao;
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.services.validators.HallValidator;
 import com.infoshareacademy.niewiem.cdi.FileUploadProcessor;
@@ -35,22 +36,20 @@ public class HallSaveService {
     @Inject
     private InputValidator inputValidator;
 
-    public Integer save(Hall hall){
+    public Integer save(Hall hall) throws SavingFailed {
 
         if(hallValidator.isHallNotNull(hall)){
-            LOG.warn("Hall didn't save because id is not null");
-            return -1;
+            throwException("Hall didn't save because id is not null");
         }
 
         if(hallValidator.isNameNotNullOrEmpty(hall)){
-            LOG.warn("Hall didn't save because name is not null or empty");
-            return -1;
+            throwException("Hall didn't save because name is not null or empty");
         }
 
         return hallDao.save(hall);
     }
 
-    public Integer addNewHall(HttpServletRequest req) throws IOException, ServletException {
+    public Integer addNewHall(HttpServletRequest req) throws IOException, ServletException, SavingFailed {
         // todo: catch Exceptions in input validator!
         Part part = inputValidator.reqImageValidator(req);
         // todo: should we validate String in here whether it is null or not?
@@ -69,5 +68,10 @@ public class HallSaveService {
         }
 
         return save(hall);
+    }
+
+    private void throwException(String message) throws SavingFailed {
+        LOG.warn(message);
+        throw new SavingFailed(message);
     }
 }

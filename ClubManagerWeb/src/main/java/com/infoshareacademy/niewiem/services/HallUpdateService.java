@@ -22,11 +22,11 @@ public class HallUpdateService {
     public Hall update(Hall hall) {
 
         if(!hallValidator.isHallNotNull(hall)){
-            LOG.warn("Hall can't be update because id is null");
+            throwException("Hall can't be update because id is null");
         }
 
         if (!hallValidator.isNameNotNullOrEmpty(hall)) {
-            LOG.warn("Hall can't be update because name is null or empty");
+            throwException("Hall can't be update because name is null or empty");
         }
         // todo: validate me like you validate your French girls!
         // if image null or empty- put in the default image
@@ -34,4 +34,10 @@ public class HallUpdateService {
         // make sure only updated fields get changed! Maybe if null don't abort, just don't change?
         return hallDao.update(hall);
     }
+
+    private void throwException(String message) {
+        LOG.warn(message);
+        throw new IllegalArgumentException(message);
+    }
+
 }

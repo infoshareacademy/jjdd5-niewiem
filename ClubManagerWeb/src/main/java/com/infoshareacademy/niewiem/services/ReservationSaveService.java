@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.ReservationDao;
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.services.validators.ReservationValidator;
 import com.infoshareacademy.niewiem.pojo.Table;
@@ -29,37 +30,31 @@ public class ReservationSaveService {
     @Inject
     private ReservationValidator reservationValidator;
 
-    public Long save(Reservation reservation) {
+    public Long save(Reservation reservation) throws SavingFailed {
 
         if(reservationValidator.isResIdNotNull(reservation)){
-            LOG.warn("Reservation didn't save because id is not null");
-            return -1l;
+            throwException("Reservation didn't save because id is not null");
         }
 
         if(reservationValidator.isStartTimeNotNull(reservation)){
-            LOG.warn("Reservation didn't save because start time is not null");
-            return -1l;
+            throwException("Reservation didn't save because start time is not null");
         }
 
         if(reservationValidator.isEndTimeNotNull(reservation)){
-            LOG.warn("Reservation didn't save because end time is not null");
-            return -1l;
+            throwException("Reservation didn't save because end time is not null");
         }
 
         if(!reservationValidator.isEndAfterStartTime(reservation)){
-            LOG.warn("Reservation didn't save because end time is not after start time");
-            return -1l;
+            throwException("Reservation didn't save because end time is not after start time");
         }
 
         // todo: validate me like you validate your French girls!
-        // apart from usual
         // check if reservation has no conflict
-        // check if end is after start
         // time between start and end should not exceed... 24h? Some validation is needed.
         return reservationDao.save(reservation);
     }
 
-    public void addNewReservation(HttpServletRequest req) {
+    public void addNewReservation(HttpServletRequest req) throws SavingFailed {
         String tidString = req.getParameter("tid");
         String startDateString = req.getParameter("startDate");
         String startTimeString = req.getParameter("startTime");
@@ -82,5 +77,10 @@ public class ReservationSaveService {
         reservation.setCustomer(customer);
 
         save(reservation);
+    }
+
+    private void throwException(String message) throws SavingFailed {
+        LOG.warn(message);
+        throw new SavingFailed(message);
     }
 }

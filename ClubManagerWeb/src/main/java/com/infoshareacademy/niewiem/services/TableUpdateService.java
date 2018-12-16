@@ -22,23 +22,25 @@ public class TableUpdateService {
     public Table update(Table table) {
 
         if (!tableValidator.isTableIdNotNull(table)) {
-            LOG.warn("Table didn't update because id is null");
+            throwException("Table didn't update because id is null");
         }
 
         if(!tableValidator.isNameNotNullOrEmpty(table)){
-            LOG.warn("Table didn't update because name is null or empty");
+            throwException("Table didn't update because name is null or empty");
         }
 
         if(!tableValidator.isTypeNotNull(table)){
-            LOG.warn("Table didn't update because type is null");
+            throwException("Table didn't update because type is null");
         }
         // todo: validate me like you validate your French girls!
-        // id should NOT be null not empty!
         // check if table with that id already exist, it should since it's an update
-        // name should not be null or empty
         // make sure only updated fields get changed! Maybe if null don't abort, just don't change?
         return tableDao.update(table);
     }
 
+    private void throwException(String message) {
+        LOG.warn(message);
+        throw new IllegalArgumentException(message);
+    }
 
 }
