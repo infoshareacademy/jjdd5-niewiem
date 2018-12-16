@@ -18,7 +18,6 @@ public class FileUploadProcessor {
     private static final String SETTINGS_FILE = "settings.properties";
     public static final String UPLOAD_PATH_IMAGES = "Upload.Path.Images";
     public static final String NO_USER_IMAGE_HAS_BEEN_UPLOADED = "No user image has been uploaded";
-    public static final Path path = Paths.get(getUploadImageFilesPath());
 
     public String getUploadImageFilesPath() throws IOException {
 
@@ -29,6 +28,8 @@ public class FileUploadProcessor {
     }
 
     public File uploadImageFile(Part filePart) throws IOException, HallImageNotFound {
+
+        Path path = Paths.get(getUploadImageFilesPath());
 
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
@@ -42,7 +43,7 @@ public class FileUploadProcessor {
 
         InputStream fileContent = filePart.getInputStream();
 
-        createDirectory();
+        createDirectory(path);
 
         Files.copy(fileContent, file.toPath());
 
