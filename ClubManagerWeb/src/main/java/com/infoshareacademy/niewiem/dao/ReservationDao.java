@@ -75,4 +75,13 @@ public class ReservationDao {
         }
         return (Reservation) resultList.get(0);
     }
+
+    public boolean isInConflict(Reservation reservation){
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE ((:table = table) AND NOT ((:startDT > r.endTime) OR (:endDT < r.startTime)))");
+        query.setParameter("table", reservation.getTable());
+        query.setParameter("startDT", reservation.getStartTime());
+        query.setParameter("endDT", reservation.getEndTime());
+        return query.getResultList().size() > 0;
+    }
 }

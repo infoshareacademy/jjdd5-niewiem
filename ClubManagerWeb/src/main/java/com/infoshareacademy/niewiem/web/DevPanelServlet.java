@@ -1,8 +1,6 @@
 package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,8 @@ public class DevPanelServlet extends HttpServlet {
     @Inject
     private TableQueryService tableQueryService;
 
-    @Inject ReservationSaveService reservationSaveService;
+    @Inject
+    ReservationSaveService reservationSaveService;
 
 
     @Override
@@ -65,46 +64,32 @@ public class DevPanelServlet extends HttpServlet {
         addNTablesToHall(3, 12);
     }
 
-    private void addActiveReservations(){
+    private void addActiveReservations() {
 //      Tables in Hall 1 -----------------------------------------------------------------------------------------------
-        addReservation(1, 20, 60);
-        addReservation(2, 10, 60);
-        addReservation(3, 0, 60);
+        reservationSaveService.addReservation(1, LocalDateTime.now().minusMinutes(20), 60, "dev-panel");
+        reservationSaveService.addReservation(2, LocalDateTime.now().minusMinutes(10), 60, "dev-panel");
+        reservationSaveService.addReservation(3, LocalDateTime.now().minusMinutes(0), 60, "dev-panel");
 //      Tables in Hall 2 -----------------------------------------------------------------------------------------------
-        addReservation(5, 30, 60);
-        addReservation(6, 25, 60);
-        addReservation(7, 20, 60);
-        addReservation(8, 15, 60);
-        addReservation(9, 10, 60);
-        addReservation(10, 5, 60);
+        reservationSaveService.addReservation(5, LocalDateTime.now().minusMinutes(25), 60, "dev-panel");
+        reservationSaveService.addReservation(6, LocalDateTime.now().minusMinutes(20), 60, "dev-panel");
+        reservationSaveService.addReservation(7, LocalDateTime.now().minusMinutes(15), 60, "dev-panel");
+        reservationSaveService.addReservation(8, LocalDateTime.now().minusMinutes(10), 60, "dev-panel");
+        reservationSaveService.addReservation(9, LocalDateTime.now().minusMinutes(5), 60, "dev-panel");
+        reservationSaveService.addReservation(10, LocalDateTime.now().minusMinutes(0), 60, "dev-panel");
 //      Tables in Hall 3 -----------------------------------------------------------------------------------------------
-        addReservation(13, 50, 60);
-        addReservation(14, 45, 60);
-        addReservation(15, 40, 60);
-        addReservation(16, 30, 60);
-        addReservation(17, 20, 60);
-        addReservation(18, 10, 60);
-        addReservation(19, 5, 60);
-        addReservation(20, 0, 60);
+        reservationSaveService.addReservation(13, LocalDateTime.now().minusMinutes(40), 60, "dev-panel");
+        reservationSaveService.addReservation(14, LocalDateTime.now().minusMinutes(35), 60, "dev-panel");
+        reservationSaveService.addReservation(15, LocalDateTime.now().minusMinutes(30), 60, "dev-panel");
+        reservationSaveService.addReservation(16, LocalDateTime.now().minusMinutes(25), 60, "dev-panel");
+        reservationSaveService.addReservation(17, LocalDateTime.now().minusMinutes(20), 60, "dev-panel");
+        reservationSaveService.addReservation(18, LocalDateTime.now().minusMinutes(15), 60, "dev-panel");
+        reservationSaveService.addReservation(19, LocalDateTime.now().minusMinutes(10), 60, "dev-panel");
+        reservationSaveService.addReservation(20, LocalDateTime.now().minusMinutes(5), 60, "dev-panel");
     }
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
         for (int i = 1; i <= numberOfTables; i++) {
             tableSaveService.addTablePoolToHallAutoName(hallId, i);
         }
-    }
-
-    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
-        Table table = tableQueryService.findById(tableId);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = now.minusMinutes(minutesBeforeNow);
-        LocalDateTime end = start.plusMinutes(duration);
-        Reservation reservation = new Reservation();
-
-        reservation.setTable(table);
-        reservation.setStartTime(start);
-        reservation.setEndTime(end);
-
-        reservationSaveService.save(reservation);
     }
 }

@@ -27,35 +27,60 @@ public class ReservationSaveService {
 
     public Long save(Reservation reservation) {
         // todo: validate me like you validate your French girls!
-        // apart from usual
-        // check if reservation has no conflict
-        // check if end is after start
-        // time between start and end should not exceed... 24h? Some validation is needed.
+        //  apart from usual
+        //  check if reservation has no conflict
+        //  check if end is after start
+        //  check if table exist
+        //  check if it exist in given hall
+        //  time between start and end should not exceed... 24h? Some validation is needed
+        if (reservationDao.isInConflict(reservation)) {
+            LOG.info("Reservation was in conflict with one already in database. Did not save.");
+            return -1L;
+        }
+
         return reservationDao.save(reservation);
     }
 
-    public void addNewReservation(HttpServletRequest req) {
+    public void addReservationFromServlet(HttpServletRequest req) {
         String tidString = req.getParameter("tid");
+        Integer tid = inputValidator.reqIntegerValidator(tidString);
+
         String startDateString = req.getParameter("startDate");
         String startTimeString = req.getParameter("startTime");
+        LocalDateTime start = inputValidator.reqDateTime(startDateString, startTimeString);
+
         String timeSpanString = req.getParameter("timeSpan");
+        Integer timeSpan = inputValidator.reqIntegerValidator(timeSpanString);
+
         String customer = req.getParameter("customer");
 
-        Integer tid = inputValidator.reqIntegerValidator(tidString);
-        // todo: should validate if table exist
-        // todo: should validate if table exists in active hall
-        Table table = tableQueryService.findById(tid);
+        addReservation(tid, start, timeSpan, customer);
+    }
 
-        LocalDateTime startDateTime = inputValidator.reqDateTime(startDateString, startTimeString);
-        Integer timeSpan = inputValidator.reqIntegerValidator(timeSpanString);
-        LocalDateTime endDateTime = startDateTime.plusMinutes(timeSpan);
+    public void addReservation(Integer tableId, LocalDateTime start, Integer timeSpanMinutes, String customer) {
+        LocalDateTime end = start.plusMinutes(timeSpanMinutes);
+        addReservation(tableId, start, end, customer);
+    }
 
+    public void addReservation(Integer tableId, LocalDateTime start, LocalDateTime end, String customer) {
+        Table table = tableQueryService.findById(tableId);
+        addReservation(table, start, end, customer);
+    }
+
+    public void addReservation(Table table, LocalDateTime start, LocalDateTime end, String customer) {
         Reservation reservation = new Reservation();
-        reservation.setStartTime(startDateTime);
-        reservation.setEndTime(endDateTime);
+
         reservation.setTable(table);
-        reservation.setCustomer(customer);
+        reservation.setStartTime(start);
+        reservation.setEndTime(end);
+
+        if (customer == null) {
+            reservation.setCustomer("");
+        } else {
+            reservation.setCustomer(customer);
+        }
 
         save(reservation);
     }
+
 }
