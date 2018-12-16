@@ -19,6 +19,7 @@ import java.util.Map;
 @WebServlet("dev-panel")
 public class DevPanelServlet extends HttpServlet {
     private static final String VIEW_NAME = "/dev-panel";
+    public static final String DEV_PANEL = "added automagically";
     private static final Logger LOG = LoggerFactory.getLogger(DevPanelServlet.class);
 
     @Inject
@@ -29,9 +30,6 @@ public class DevPanelServlet extends HttpServlet {
 
     @Inject
     private TableSaveService tableSaveService;
-
-    @Inject
-    private TableQueryService tableQueryService;
 
     @Inject
     ReservationSaveService reservationSaveService;
@@ -66,25 +64,25 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addActiveReservations() {
 //      Tables in Hall 1 -----------------------------------------------------------------------------------------------
-        reservationSaveService.addReservation(1, LocalDateTime.now().minusMinutes(20), 60, "dev-panel");
-        reservationSaveService.addReservation(2, LocalDateTime.now().minusMinutes(10), 60, "dev-panel");
-        reservationSaveService.addReservation(3, LocalDateTime.now().minusMinutes(0), 60, "dev-panel");
+        reservationSaveService.addReservation(1, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
+        reservationSaveService.addReservation(2, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
+        reservationSaveService.addReservation(3, LocalDateTime.now().minusMinutes(0), 60, DEV_PANEL);
 //      Tables in Hall 2 -----------------------------------------------------------------------------------------------
-        reservationSaveService.addReservation(5, LocalDateTime.now().minusMinutes(25), 60, "dev-panel");
-        reservationSaveService.addReservation(6, LocalDateTime.now().minusMinutes(20), 60, "dev-panel");
-        reservationSaveService.addReservation(7, LocalDateTime.now().minusMinutes(15), 60, "dev-panel");
-        reservationSaveService.addReservation(8, LocalDateTime.now().minusMinutes(10), 60, "dev-panel");
-        reservationSaveService.addReservation(9, LocalDateTime.now().minusMinutes(5), 60, "dev-panel");
-        reservationSaveService.addReservation(10, LocalDateTime.now().minusMinutes(0), 60, "dev-panel");
+        reservationSaveService.addReservation(5, LocalDateTime.now().minusMinutes(25), 60, DEV_PANEL);
+        reservationSaveService.addReservation(6, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
+        reservationSaveService.addReservation(7, LocalDateTime.now().minusMinutes(15), 60, DEV_PANEL);
+        reservationSaveService.addReservation(8, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
+        reservationSaveService.addReservation(9, LocalDateTime.now().minusMinutes(5), 60, DEV_PANEL);
+        reservationSaveService.addReservation(10, LocalDateTime.now().minusMinutes(0), 60, DEV_PANEL);
 //      Tables in Hall 3 -----------------------------------------------------------------------------------------------
-        reservationSaveService.addReservation(13, LocalDateTime.now().minusMinutes(40), 60, "dev-panel");
-        reservationSaveService.addReservation(14, LocalDateTime.now().minusMinutes(35), 60, "dev-panel");
-        reservationSaveService.addReservation(15, LocalDateTime.now().minusMinutes(30), 60, "dev-panel");
-        reservationSaveService.addReservation(16, LocalDateTime.now().minusMinutes(25), 60, "dev-panel");
-        reservationSaveService.addReservation(17, LocalDateTime.now().minusMinutes(20), 60, "dev-panel");
-        reservationSaveService.addReservation(18, LocalDateTime.now().minusMinutes(15), 60, "dev-panel");
-        reservationSaveService.addReservation(19, LocalDateTime.now().minusMinutes(10), 60, "dev-panel");
-        reservationSaveService.addReservation(20, LocalDateTime.now().minusMinutes(5), 60, "dev-panel");
+        reservationSaveService.addReservation(13, LocalDateTime.now().minusMinutes(40), 60, DEV_PANEL);
+        reservationSaveService.addReservation(14, LocalDateTime.now().minusMinutes(35), 60, DEV_PANEL);
+        reservationSaveService.addReservation(15, LocalDateTime.now().minusMinutes(30), 60, DEV_PANEL);
+        reservationSaveService.addReservation(16, LocalDateTime.now().minusMinutes(25), 60, DEV_PANEL);
+        reservationSaveService.addReservation(17, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
+        reservationSaveService.addReservation(18, LocalDateTime.now().minusMinutes(15), 60, DEV_PANEL);
+        reservationSaveService.addReservation(19, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
+        reservationSaveService.addReservation(20, LocalDateTime.now().minusMinutes(5), 60, DEV_PANEL);
     }
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
