@@ -29,6 +29,12 @@ public class HallSaveService {
     @Inject
     private HallValidator hallValidator;
 
+    @Inject
+    private FileUploadProcessor fileUploadProcessor;
+
+    @Inject
+    private InputValidator inputValidator;
+
     public Integer save(Hall hall){
 
         if(hallValidator.isHallNotNull(hall)){
@@ -40,19 +46,7 @@ public class HallSaveService {
             LOG.warn("Hall didn't save because name is not null or empty");
             return -1;
         }
-        // todo: validate me like you validate your French girls!
-    private FileUploadProcessor fileUploadProcessor;
 
-    @Inject
-    private InputValidator inputValidator;
-
-
-    public Integer save(Hall hall){
-        // todo: validate me like you validate your French girls!
-        // id should be null, otherwise it's not save but update!
-        // name should not be null or empty
-        // if image null or empty- put in the default image
-        // check if image actually exist on disk
         return hallDao.save(hall);
     }
 

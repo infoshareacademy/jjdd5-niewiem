@@ -36,10 +36,6 @@ public class ReservationUpdateService {
 
         return reservationDao.update(reservation);
     }
-    public Reservation update(Reservation reservation){
-        // todo: validate me like you validate your French girls!
-        return reservationDao.update(reservation);
-    }
 
     public void updateReservation(HttpServletRequest req) {
     }

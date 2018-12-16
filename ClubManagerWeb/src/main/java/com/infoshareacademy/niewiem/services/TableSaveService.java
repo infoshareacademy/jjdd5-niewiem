@@ -2,11 +2,9 @@ package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.TableDao;
 import com.infoshareacademy.niewiem.pojo.Table;
-import com.infoshareacademy.niewiem.services.validators.HallValidator;
 import com.infoshareacademy.niewiem.services.validators.TableValidator;
 import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +20,35 @@ public class TableSaveService {
     private TableDao tableDao;
 
     @Inject
+    private TableValidator tableValidator;
+
+    @Inject
     private HallQueryService hallQueryService;
 
     @Inject
     private InputValidator inputValidator;
 
     public Integer save(Table table) {
-        // todo: validate me like you validate your French girls!
-        // id should be null, otherwise it's not save but update!
-        // name should not be null or empty
-        // type should not be null nor empty
-        // enum type should exist
-        // hall_id should not be null nor empty
-        // hall_id should actually exist
+
+        if (tableValidator.isTableIdNotNull(table)) {
+            LOG.warn("Table didn't save because id is not null");
+            return -1;
+        }
+
+        if(tableValidator.isNameNotNullOrEmpty(table)){
+            LOG.warn("Table didn't save because name is not null or empty");
+            return -1;
+        }
+
+        if(tableValidator.isTypeNotNull(table)){
+            LOG.warn("Table didn't save because type is not null");
+            return -1;
+        }
+
+        if(!tableValidator.isHallIdNotNull(table)){
+            LOG.warn("Table didn't save because hall id is null");
+            return -1;
+        }
         return tableDao.save(table);
     }
 
@@ -64,29 +78,4 @@ public class TableSaveService {
         save(table);
     }
 
-    private TableValidator tableValidator;
-
-    public Integer save(Table table) {
-
-        if (tableValidator.isTableIdNotNull(table)) {
-            LOG.warn("Table didn't save because id is not null");
-            return -1;
-        }
-
-        if(tableValidator.isNameNotNullOrEmpty(table)){
-            LOG.warn("Table didn't save because name is not null or empty");
-            return -1;
-        }
-
-        if(tableValidator.isTypeNotNull(table)){
-            LOG.warn("Table didn't save because type is not null");
-            return -1;
-        }
-
-        if(!tableValidator.isHallIdNotNull(table)){
-            LOG.warn("Table didn't save because hall id is null");
-            return -1;
-        }
-        return tableDao.save(table);
-    }
 }

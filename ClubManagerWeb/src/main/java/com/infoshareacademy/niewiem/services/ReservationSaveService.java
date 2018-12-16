@@ -26,7 +26,7 @@ public class ReservationSaveService {
     @Inject
     private TableQueryService tableQueryService;
 
-    public Long save(Reservation reservation) {
+    @Inject
     private ReservationValidator reservationValidator;
 
     public Long save(Reservation reservation) {
