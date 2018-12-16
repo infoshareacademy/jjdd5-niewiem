@@ -1,6 +1,8 @@
 package com.infoshareacademy.niewiem.cdi;
 
 import com.infoshareacademy.niewiem.exceptions.HallImageNotFound;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.servlet.http.Part;
@@ -14,6 +16,8 @@ import java.util.Properties;
 
 @RequestScoped
 public class FileUploadProcessor {
+
+    private static final Logger LOG = LogManager.getLogger(FileUploadProcessor.class);
 
     private static final String SETTINGS_FILE = "settings.properties";
     public static final String UPLOAD_PATH_IMAGES = "Upload.Path.Images";
@@ -58,6 +62,7 @@ public class FileUploadProcessor {
             try {
                 Files.createDirectory(path);
             } catch (IOException e) {
+                LOG.warn("Directory not created");
                 e.printStackTrace();
             }
         }
