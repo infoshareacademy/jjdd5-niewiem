@@ -13,7 +13,7 @@ import java.util.List;
 
 @Stateless
 public class ReservationQueryService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReservationQueryService.class);
 
     @Inject
     private ReservationDao reservationDao;
@@ -31,6 +31,12 @@ public class ReservationQueryService {
     }
 
     public List<Reservation> findAllByTable(Table table) {
+        return reservationDao.findAllByTable(table);
+    }
+
+    public List<Reservation> findAllByTableAndHall(Hall hall, Table table) {
+        // todo: check if table exists in hall
+
         return reservationDao.findAllByTable(table);
     }
 

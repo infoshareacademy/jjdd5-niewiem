@@ -1,10 +1,8 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.services.ActiveHallService;
-import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.services.TableQueryService;
+import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,24 +18,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("tables-view")
-public class TablesViewServlet extends HttpServlet {
-    private static final String VIEW_NAME = "/tables-view";
-    private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);
+@WebServlet("/reservation")
+public class ReservationServlet extends HttpServlet {
+    private static final String VIEW_NAME = "/reservation";
+    private static final Logger LOG = LoggerFactory.getLogger(ReservationServlet.class);
 
     @Inject
-    private TableQueryService tableQueryService;
+    private ServletService servletService;
 
     @Inject
     private ActiveHallService activeHallService;
 
     @Inject
-    private ServletService servletService;
+    private TableQueryService tableQueryService;
+
+    @Inject
+    private ReservationSaveService reservationSaveService;
+
+    @Inject
+    private ReservationUpdateService reservationUpdateService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // todo: throws nulls in LOG when hall is not active. Otherwise works, but fix it.
-
         Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -46,9 +48,22 @@ public class TablesViewServlet extends HttpServlet {
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
-        List<TableEndTimeInMillis> tetim = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hall);
-        model.put("tablesEndTimeIneMillis", tetim);
+        List<Table> tables = tableQueryService.findAllInHall(hall);
+        model.put("tables", tables);
 
         servletService.sendModelToTemplate(resp, context, model);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        String action = req.getParameter("action");
+
+        if ("new".equals(action)) {
+            reservationSaveService.addNewReservation(req);
+        } else if ("update".equals(action)) {
+            reservationUpdateService.updateReservation(req);
+        }
+
+        resp.sendRedirect("/tables-view");
     }
 }

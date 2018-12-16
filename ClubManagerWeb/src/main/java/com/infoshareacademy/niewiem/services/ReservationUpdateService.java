@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 @Stateless
 public class ReservationUpdateService {
@@ -34,5 +35,12 @@ public class ReservationUpdateService {
         }
 
         return reservationDao.update(reservation);
+    }
+    public Reservation update(Reservation reservation){
+        // todo: validate me like you validate your French girls!
+        return reservationDao.update(reservation);
+    }
+
+    public void updateReservation(HttpServletRequest req) {
     }
 }

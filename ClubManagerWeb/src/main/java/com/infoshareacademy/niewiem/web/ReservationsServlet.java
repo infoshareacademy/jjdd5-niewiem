@@ -1,10 +1,10 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.services.ActiveHallService;
+import com.infoshareacademy.niewiem.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,24 +20,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("tables-view")
-public class TablesViewServlet extends HttpServlet {
-    private static final String VIEW_NAME = "/tables-view";
-    private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);
-
-    @Inject
-    private TableQueryService tableQueryService;
+@WebServlet("/reservations")
+public class ReservationsServlet extends HttpServlet {
+    private static final String VIEW_NAME = "/reservations";
+    private static final Logger LOG = LoggerFactory.getLogger(ReservationsServlet.class);
 
     @Inject
     private ActiveHallService activeHallService;
+
+    @Inject
+    private ReservationQueryService reservationQueryService;
 
     @Inject
     private ServletService servletService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // todo: throws nulls in LOG when hall is not active. Otherwise works, but fix it.
-
         Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -46,8 +44,8 @@ public class TablesViewServlet extends HttpServlet {
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
-        List<TableEndTimeInMillis> tetim = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hall);
-        model.put("tablesEndTimeIneMillis", tetim);
+        List<Reservation> reservations = reservationQueryService.finaAllByHall(hall);
+        model.put("reservations", reservations);
 
         servletService.sendModelToTemplate(resp, context, model);
     }

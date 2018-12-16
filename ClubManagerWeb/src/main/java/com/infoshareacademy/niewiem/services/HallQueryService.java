@@ -12,7 +12,7 @@ import java.util.List;
 
 @Stateless
 public class HallQueryService {
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HallQueryService.class);
 
     @Inject
     private HallDao hallDao;
@@ -32,5 +32,9 @@ public class HallQueryService {
     public List<Hall> findAll() {
 
         return hallDao.findAll();
+    }
+
+    public boolean doesNotExist(Hall hall) {
+        return findById(hall.getId()) == null;
     }
 }
