@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.services.TableSaveService;
 import org.slf4j.Logger;
@@ -48,7 +49,11 @@ public class TableNewServlet extends HttpServlet {
         String hid = req.getParameter("hid");
         String name = req.getParameter("name");
         String type = req.getParameter("type");
-        tableSaveService.addTableToHall(hid, name, type);
+        try {
+            tableSaveService.addTableToHall(hid, name, type);
+        } catch (SavingFailed savingFailed) {
+            LOG.warn("Table not saved");
+        }
 
         resp.sendRedirect("/tables-view?hallId="+hid);
     }

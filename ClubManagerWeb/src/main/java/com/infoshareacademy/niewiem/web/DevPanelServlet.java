@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
@@ -46,26 +47,38 @@ public class DevPanelServlet extends HttpServlet {
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
-        addThreeNewClubs();
-        addTablesToClubs();
-        addActiveReservations();
+        try {
+            addThreeNewClubs();
+        } catch (SavingFailed savingFailed) {
+            LOG.warn("Clubs not saved");
+        }
+        try {
+            addTablesToClubs();
+        } catch (SavingFailed savingFailed) {
+            LOG.warn("Tables not saved");
+        }
+        try {
+            addActiveReservations();
+        } catch (SavingFailed savingFailed) {
+            LOG.warn("Reservations not saved");
+        }
 
         servletService.sendModelToTemplate(resp, context, model);
     }
 
-    private void addThreeNewClubs() {
+    private void addThreeNewClubs() throws SavingFailed {
         hallSaveService.save(new Hall("DEMO 1"));
         hallSaveService.save(new Hall("DEMO 2"));
         hallSaveService.save(new Hall("DEMO 3"));
     }
 
-    private void addTablesToClubs() {
+    private void addTablesToClubs() throws SavingFailed {
         addNTablesToHall(1, 4);
         addNTablesToHall(2, 8);
         addNTablesToHall(3, 12);
     }
 
-    private void addActiveReservations(){
+    private void addActiveReservations() throws SavingFailed {
 //      Tables in Hall 1 -----------------------------------------------------------------------------------------------
         addReservation(1, 20, 60);
         addReservation(2, 10, 60);
@@ -88,13 +101,13 @@ public class DevPanelServlet extends HttpServlet {
         addReservation(20, 0, 60);
     }
 
-    private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
+    private void addNTablesToHall(Integer hallId, Integer numberOfTables) throws SavingFailed {
         for (int i = 1; i <= numberOfTables; i++) {
             tableSaveService.addTablePoolToHallAutoName(hallId, i);
         }
     }
 
-    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration){
+    private void addReservation(Integer tableId, Integer minutesBeforeNow, Integer duration) throws SavingFailed {
         Table table = tableQueryService.findById(tableId);
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = now.minusMinutes(minutesBeforeNow);

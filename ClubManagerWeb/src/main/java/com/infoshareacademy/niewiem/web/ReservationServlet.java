@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.*;
@@ -59,7 +60,11 @@ public class ReservationServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
-            reservationSaveService.addNewReservation(req);
+            try {
+                reservationSaveService.addNewReservation(req);
+            } catch (SavingFailed savingFailed) {
+                LOG.warn("Reservation not saved");
+            }
         } else if ("update".equals(action)) {
             reservationUpdateService.updateReservation(req);
         }

@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.web;
 
+import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.services.HallSaveService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
@@ -42,7 +43,11 @@ public class CreateHallServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        hallSaveService.addNewHall(req);
+        try {
+            hallSaveService.addNewHall(req);
+        } catch (SavingFailed savingFailed) {
+            LOG.warn("Hall not saved");
+        }
 
         resp.sendRedirect("/choose-hall");
     }
