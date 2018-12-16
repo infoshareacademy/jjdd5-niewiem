@@ -1,10 +1,8 @@
 <div>
-    <#if reservation??>
-        <p>Not yet available</p>
-    <#-- SHOULD HAVE TWO BUTTONS UPDATE AND DELETE -->
-
-    <#else>
-        <form method="post" action="/reservation?action=new">
+    <form method="post" action="/reservation?action=<#if reservation??>update<#else>new</#if>">
+        <#if reservation??>
+            <input type="hidden" name="rid" value="${reservation.id}">
+        </#if>
 
         <#list tables>
             <div class="form-group">
@@ -19,20 +17,20 @@
             </div>
         </#list>
 
-    <#-- todo: Date input should be done by eg. datepicker in bootsrap. Solution below is just for now -->
-        <div class="form-group">
-            <label for="startDate">Start date</label>
-            <input id="startDate" name="startDate" type="date" class="form-control" required/>
-        </div>
-        <div class="form-group">
-            <label for="startTime">Start time</label>
-            <input id="startTime" name="startTime" type="time" class="form-control" required/>
-        </div>
-        <div class="form-group">
-            <label for="timeSpan">Time span in minutes</label>
-            <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
-        </div>
-    <#-- todo: delete the stuff above me when you implement the right stuff -->
+        <#-- todo: Date input should be done by eg. datepicker in bootsrap. Solution below is just for now -->
+            <div class="form-group">
+                <label for="startDate">Start date</label>
+                <input id="startDate" name="startDate" type="date" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label for="startTime">Start time</label>
+                <input id="startTime" name="startTime" type="time" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label for="timeSpan">Time span in minutes</label>
+                <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
+            </div>
+        <#-- todo: delete the stuff above me when you implement the right stuff -->
 
         <div class="form-group">
             <label for="customerInfo">Customer</label>
@@ -41,6 +39,5 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Save!</button>
-        </form>
-    </#if>
+    </form>
 </div>

@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.web;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.*;
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class ReservationServlet extends HttpServlet {
     @Inject
     private ReservationUpdateService reservationUpdateService;
 
+    @Inject
+    private ReservationQueryService reservationQueryService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
@@ -47,6 +51,15 @@ public class ReservationServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
+
+        String idParam = req.getParameter("id");
+        if(idParam == null || idParam.isEmpty()){
+            LOG.info("Recieved no reservation id. Creating a new one.");
+        }else{
+            LOG.info("Recieved reservation id: " + idParam);
+            Reservation reservation = reservationQueryService.findById(idParam);
+            model.put("reservation", reservation);
+        }
 
         List<Table> tables = tableQueryService.findAllInHall(hall);
         model.put("tables", tables);
@@ -61,9 +74,9 @@ public class ReservationServlet extends HttpServlet {
         if ("new".equals(action)) {
             reservationSaveService.addReservationFromServlet(req);
         } else if ("update".equals(action)) {
-            reservationUpdateService.updateReservation(req);
+            resp.sendRedirect("/reservations");
+//            reservationUpdateService.updateReservation(req);
         }
-
         resp.sendRedirect("/tables-view");
     }
 }

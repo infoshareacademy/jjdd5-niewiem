@@ -46,13 +46,16 @@ public class TableSaveService {
         save(table);
     }
 
-    public void addTableToHall(String hid, String name, String type) {
+    public void addTableToHall(String hid, String name, String type){
         Integer hallId = inputValidator.reqIntegerValidator(hid);
+        Hall hall = hallQueryService.findById(hallId);
+        addTableToHall(hall, name, type);
+    }
+
+    public void addTableToHall(Hall hall, String name, String type) {
         TableType tableType = inputValidator.reqTableTypeValidator(type);
 
         Table table = new Table();
-        // todo: validate if hall is the active one
-        Hall hall = hallQueryService.findById(hallId);
 
         table.setHall(hall);
         table.setType(tableType);

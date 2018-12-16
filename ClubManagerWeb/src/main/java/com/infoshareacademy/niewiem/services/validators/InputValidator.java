@@ -43,4 +43,9 @@ public class InputValidator {
 
         return LocalDateTime.of(ld, lt);
     }
+
+    public Long reqLongValidator(String longString) {
+        // todo: validate me!
+        return Long.valueOf(longString);
+    }
 }

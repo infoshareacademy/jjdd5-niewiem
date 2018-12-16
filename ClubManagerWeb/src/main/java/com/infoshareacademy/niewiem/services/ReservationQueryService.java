@@ -4,6 +4,7 @@ import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,14 @@ public class ReservationQueryService {
 
     @Inject
     private ReservationDao reservationDao;
+
+    @Inject
+    private InputValidator inputValidator;
+
+    public Reservation findById(String idString){
+        Long rid = inputValidator.reqLongValidator(idString);
+        return findById(rid);
+    }
 
     public Reservation findById(Long id) {
         return reservationDao.findById(id);
