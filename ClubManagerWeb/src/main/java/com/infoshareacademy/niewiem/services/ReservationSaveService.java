@@ -46,6 +46,11 @@ public class ReservationSaveService {
             return -1l;
         }
 
+        if(!reservationValidator.isEndAfterStartTime(reservation)){
+            LOG.warn("Reservation didn't save because end time is not after start time");
+            return -1l;
+        }
+
         // todo: validate me like you validate your French girls!
         // apart from usual
         // check if reservation has no conflict

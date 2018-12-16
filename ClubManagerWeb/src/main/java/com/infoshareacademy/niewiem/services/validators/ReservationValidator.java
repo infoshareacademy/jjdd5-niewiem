@@ -20,4 +20,8 @@ public class ReservationValidator {
         return reservation.getEndTime() != null;
     }
 
+    public boolean isEndAfterStartTime(Reservation reservation){
+        return reservation.getEndTime().isAfter(reservation.getStartTime());
+    }
+
 }
