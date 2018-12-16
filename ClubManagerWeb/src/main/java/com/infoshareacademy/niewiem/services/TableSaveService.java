@@ -50,8 +50,8 @@ public class TableSaveService {
         Integer hallId = inputValidator.reqIntegerValidator(hid);
         TableType tableType = inputValidator.reqTableTypeValidator(type);
 
-
         Table table = new Table();
+        // todo: validate if hall is the active one
         Hall hall = hallQueryService.findById(hallId);
 
         table.setHall(hall);
