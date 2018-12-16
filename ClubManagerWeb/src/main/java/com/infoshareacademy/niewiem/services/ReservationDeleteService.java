@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.ReservationDao;
+import com.infoshareacademy.niewiem.services.validators.ReservationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +15,15 @@ public class ReservationDeleteService {
     @Inject
     private ReservationDao reservationDao;
 
+    @Inject
+    private ReservationValidator reservationValidator;
+
     public void delete(Long id) {
-        // todo: validate me like you validate your French girls!
-        reservationDao.delete(id);
+
+        if(reservationValidator.isIdNotNull(id)){
+            reservationDao.delete(id);
+        }
+        LOG.warn("Reservation didn't delete because id is null");
+        throw new IllegalArgumentException("Reservation with id '" + id + "' doesn't exist");
     }
 }

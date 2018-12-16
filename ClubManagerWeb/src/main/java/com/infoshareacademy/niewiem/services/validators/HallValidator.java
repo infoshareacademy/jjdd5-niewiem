@@ -7,16 +7,17 @@ import org.slf4j.LoggerFactory;
 
 public class HallValidator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HallSaveService.class);
-
-    public boolean isIdNotNull(Hall hall){
-        LOG.debug("");
+    public boolean isHallNotNull(Hall hall){
         return hall.getId() != null;
     }
 
+    public boolean isIdNotNull(Integer id){
+        return id != null;
+    }
+
     public boolean isNameNotNullOrEmpty(Hall hall) {
-        LOG.debug("");
         return hall.getName() != null
                 && !hall.getName().isEmpty();
     }
+
 }

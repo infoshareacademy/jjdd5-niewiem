@@ -21,13 +21,13 @@ public class HallSaveService {
 
     public Integer save(Hall hall){
 
-        if(hallValidator.isIdNotNull(hall)){
-            LOG.warn("Hall didn't save because id is null");
+        if(hallValidator.isHallNotNull(hall)){
+            LOG.warn("Hall didn't save because id is not null");
             return -1;
         }
 
         if(hallValidator.isNameNotNullOrEmpty(hall)){
-            LOG.warn("Hall didn't save because name is null or empty");
+            LOG.warn("Hall didn't save because name is not null or empty");
             return -1;
         }
         // todo: validate me like you validate your French girls!

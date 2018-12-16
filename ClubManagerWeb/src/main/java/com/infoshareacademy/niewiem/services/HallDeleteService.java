@@ -1,6 +1,8 @@
 package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.HallDao;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.services.validators.HallValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +16,15 @@ public class HallDeleteService {
     @Inject
     private HallDao hallDao;
 
+    @Inject
+    private HallValidator hallValidator;
+
     public void deleteById(Integer id) {
-        // todo: validate me like you validate your French girls!
-        hallDao.delete(id);
+
+        if(hallValidator.isIdNotNull(id)){
+            hallDao.delete(id);
+        }
+        LOG.warn("Hall didn't delete because id is null");
+        throw new IllegalArgumentException("Hall with id '" + id + "' doesn't exist");
     }
 }
