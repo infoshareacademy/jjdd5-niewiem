@@ -41,7 +41,7 @@ public class FileUploadProcessor {
             throw new HallImageNotFound(NO_USER_IMAGE_HAS_BEEN_UPLOADED);
         }
 
-        File file = new File(getUploadImageFilesPath() + "/" + fileName);
+        File file = new File(getUploadImageFilesPath()+ File.separator + fileName);
 
         Files.deleteIfExists(file.toPath());
 
@@ -63,7 +63,6 @@ public class FileUploadProcessor {
                 Files.createDirectory(path);
             } catch (IOException e) {
                 LOG.warn("Directory not created");
-                e.printStackTrace();
             }
         }
 
