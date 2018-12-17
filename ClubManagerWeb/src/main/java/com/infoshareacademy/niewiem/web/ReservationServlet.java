@@ -40,6 +40,9 @@ public class ReservationServlet extends HttpServlet {
     private ReservationUpdateService reservationUpdateService;
 
     @Inject
+    private ReservationDeleteService reservationDeleteService;
+
+    @Inject
     private ReservationQueryService reservationQueryService;
 
     @Override
@@ -51,6 +54,8 @@ public class ReservationServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
+
+        model.put("hall", hall);
 
         String idParam = req.getParameter("id");
         if(idParam == null || idParam.isEmpty()){
@@ -76,6 +81,8 @@ public class ReservationServlet extends HttpServlet {
         } else if ("update".equals(action)) {
             resp.sendRedirect("/reservations");
 //            reservationUpdateService.updateReservation(req);
+        }else if ("delete".equals(action)) {
+            reservationDeleteService.delete(req);
         }
         resp.sendRedirect("/tables-view");
     }
