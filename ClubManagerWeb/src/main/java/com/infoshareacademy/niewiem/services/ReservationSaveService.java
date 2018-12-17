@@ -2,8 +2,6 @@ package com.infoshareacademy.niewiem.services;
 
 import com.infoshareacademy.niewiem.dao.ReservationDao;
 import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.pojo.Table;
-import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +18,7 @@ public class ReservationSaveService {
     private ReservationDao reservationDao;
 
     @Inject
-    private InputValidator inputValidator;
-
-    @Inject
-    private TableQueryService tableQueryService;
+    private RequestService requestService;
 
     public Long save(Reservation reservation) {
         // todo: validate me like you validate your French girls!
@@ -42,45 +37,11 @@ public class ReservationSaveService {
     }
 
     public void addReservationFromServlet(HttpServletRequest req) {
-        String tidString = req.getParameter("tid");
-        Integer tid = inputValidator.reqIntegerValidator(tidString);
-
-        String startDateString = req.getParameter("startDate");
-        String startTimeString = req.getParameter("startTime");
-        LocalDateTime start = inputValidator.reqDateTime(startDateString, startTimeString);
-
-        String timeSpanString = req.getParameter("timeSpan");
-        Integer timeSpan = inputValidator.reqIntegerValidator(timeSpanString);
-
-        String customer = req.getParameter("customer");
-
-        addReservation(tid, start, timeSpan, customer);
+        save(requestService.getReservation(req));
     }
 
     public void addReservation(Integer tableId, LocalDateTime start, Integer timeSpanMinutes, String customer) {
-        LocalDateTime end = start.plusMinutes(timeSpanMinutes);
-        addReservation(tableId, start, end, customer);
-    }
-
-    public void addReservation(Integer tableId, LocalDateTime start, LocalDateTime end, String customer) {
-        Table table = tableQueryService.findById(tableId);
-        addReservation(table, start, end, customer);
-    }
-
-    public void addReservation(Table table, LocalDateTime start, LocalDateTime end, String customer) {
-        Reservation reservation = new Reservation();
-
-        reservation.setTable(table);
-        reservation.setStartTime(start);
-        reservation.setEndTime(end);
-
-        if (customer == null) {
-            reservation.setCustomer("");
-        } else {
-            reservation.setCustomer(customer);
-        }
-
+        Reservation reservation = requestService.getReservation(tableId, start, timeSpanMinutes, customer);
         save(reservation);
     }
-
 }

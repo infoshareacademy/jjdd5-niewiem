@@ -20,10 +20,10 @@
                 <div class="inner">
                     <h3 class="masthead-brand">ClubManager</h3>
                     <nav class="nav nav-masthead">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                         <a class="nav-link" href="#">Settings</a>
-                        <a class="nav-link" href="#">Tables</a>
-                        <a class="nav-link" href="#">Reservations</a>
+                        <a class="nav-link" href="/tables-view">Tables</a>
+                        <a class="nav-link" href="/reservations">Reservations</a>
                     </nav>
                 </div>
             </div>

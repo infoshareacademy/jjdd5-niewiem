@@ -1,4 +1,8 @@
 <div class="row">
+    <a class="btn btn-light btn-lg btn-block" href="/reservation" role="button">Add new reservation</a>
+</div>
+
+<div class="row">
     <#list reservations>
         <table class="table table-bordered table-hover table-striped">
 

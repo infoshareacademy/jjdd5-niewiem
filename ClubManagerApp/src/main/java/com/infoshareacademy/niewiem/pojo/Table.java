@@ -3,6 +3,7 @@ package com.infoshareacademy.niewiem.pojo;
 import com.infoshareacademy.niewiem.enums.TableType;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -84,15 +85,24 @@ public class Table implements Comparable<Table> {
         this.reservations = reservations;
     }
 
-    // Business logic for Console UI -----------------------------------------------------------------------------------
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Table)) return false;
         Table table = (Table) o;
-        return this.id == table.getId();
+        return Objects.equals(getId(), table.getId()) &&
+                Objects.equals(getName(), table.getName()) &&
+                getType() == table.getType() &&
+                Objects.equals(getHall(), table.getHall()) &&
+                Objects.equals(getReservations(), table.getReservations());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getType(), getHall(), getReservations());
+    }
+
+    // Business logic for Console UI -----------------------------------------------------------------------------------
 
     @Override
     public int compareTo(Table t) {
