@@ -59,7 +59,7 @@ public class ReservationServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
-            reservationSaveService.addNewReservation(req);
+            reservationSaveService.addReservationFromServlet(req);
         } else if ("update".equals(action)) {
             reservationUpdateService.updateReservation(req);
         }
