@@ -16,11 +16,23 @@ public class ReservationUpdateService {
     @Inject
     private ReservationDao reservationDao;
 
-    public Reservation update(Reservation reservation){
+    @Inject
+    private RequestService requestService;
+
+    public Reservation update(Reservation reservation) {
         // todo: validate me like you validate your French girls!
+
+        if (reservationDao.isInConflict(reservation)) {
+            // todo: if reservation is in conflict only with itself it should allow it.
+            //  it could be in conflict with more than one entity though.
+            LOG.info("Reservation was in conflict with one already in database.");
+//            LOG.info("Reservation: " + reservation);
+            return reservation;
+        }
         return reservationDao.update(reservation);
     }
 
     public void updateReservation(HttpServletRequest req) {
+        update(requestService.getReservationWithId(req));
     }
 }

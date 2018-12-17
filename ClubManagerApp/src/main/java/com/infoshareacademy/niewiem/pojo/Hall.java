@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.pojo;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -62,6 +63,22 @@ public class Hall {
 
     public void setTables(Set<Table> tables) {
         this.tables = tables;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Hall)) return false;
+        Hall hall = (Hall) o;
+        return Objects.equals(getId(), hall.getId()) &&
+                Objects.equals(getName(), hall.getName()) &&
+                Objects.equals(getImageURL(), hall.getImageURL()) &&
+                Objects.equals(getTables(), hall.getTables());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getImageURL(), getTables());
     }
 
     // Business logic for Console UI -----------------------------------------------------------------------------------

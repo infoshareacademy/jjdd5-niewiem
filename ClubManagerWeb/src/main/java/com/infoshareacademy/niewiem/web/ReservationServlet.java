@@ -77,11 +77,13 @@ public class ReservationServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
+            LOG.info("Adding new reservation.");
             reservationSaveService.addReservationFromServlet(req);
         } else if ("update".equals(action)) {
-            resp.sendRedirect("/reservations");
-//            reservationUpdateService.updateReservation(req);
+            LOG.info("Updating reservation.");
+            reservationUpdateService.updateReservation(req);
         }else if ("delete".equals(action)) {
+            LOG.info("Deleting reservation.");
             reservationDeleteService.delete(req);
         }
         resp.sendRedirect("/tables-view");

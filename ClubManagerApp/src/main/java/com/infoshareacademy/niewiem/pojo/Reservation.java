@@ -3,6 +3,7 @@ package com.infoshareacademy.niewiem.pojo;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 
 @Entity
@@ -76,6 +77,23 @@ public class Reservation {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reservation)) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getStartTime(), that.getStartTime()) &&
+                Objects.equals(getEndTime(), that.getEndTime()) &&
+                Objects.equals(getCustomer(), that.getCustomer()) &&
+                Objects.equals(getTable(), that.getTable());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getStartTime(), getEndTime(), getCustomer(), getTable());
     }
 
     // Business logic for Console UI -----------------------------------------------------------------------------------

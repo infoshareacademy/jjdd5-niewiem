@@ -3,6 +3,8 @@ package com.infoshareacademy.niewiem.dao;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @Stateless
 public class ReservationDao {
+    private static final Logger LOG = LoggerFactory.getLogger(ReservationDao.class);
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -23,6 +27,7 @@ public class ReservationDao {
     }
 
     public Reservation update (Reservation reservation){
+        LOG.info("Updating: ");
         return entityManager.merge(reservation);
     }
 
@@ -74,6 +79,16 @@ public class ReservationDao {
             return null;
         }
         return (Reservation) resultList.get(0);
+    }
+
+    public Reservation getConflictingReservation(Reservation reservation){
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE ((:table = table) AND NOT ((:startDT > r.endTime) OR (:endDT < r.startTime)))");
+        query.setParameter("table", reservation.getTable());
+        query.setParameter("startDT", reservation.getStartTime());
+        query.setParameter("endDT", reservation.getEndTime());
+
+        return (Reservation) query.getSingleResult();
     }
 
     public boolean isInConflict(Reservation reservation){
