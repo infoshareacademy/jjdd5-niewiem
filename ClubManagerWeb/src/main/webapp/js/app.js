@@ -2,7 +2,9 @@ let count = document.getElementsByClassName('table-in-hall').length;
 
 function countdown(id) {
     let str = document.getElementById("end" + id).value;
-    let strRpl = str.replace(new RegExp(String.fromCharCode(160), "g"), "");
+    let strRpl = str
+        .replace(new RegExp(String.fromCharCode(160), "g"), "")
+        .replace(new RegExp(String.fromCharCode(44), "g"), "");
     let countDownDate = new Date(parseInt(strRpl, 10));
     let x = setInterval(function () {
         let now = new Date().getTime();
