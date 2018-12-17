@@ -23,11 +23,19 @@ public class ReservationUpdateService {
         // todo: validate me like you validate your French girls!
 
         if (reservationDao.isInConflict(reservation)) {
-            // todo: if reservation is in conflict only with itself it should allow it.
-            //  it could be in conflict with more than one entity though.
-            LOG.info("Reservation was in conflict with one already in database.");
-//            LOG.info("Reservation: " + reservation);
-            return reservation;
+            Reservation conflict = reservationDao.getConflictingReservation(reservation);
+
+            LOG.info("Reservation to update: " + reservation.getId());
+            LOG.info("Conflicting reservation to update: " + conflict.getId());
+
+            boolean isNotTheSameReservation = !conflict.getId().equals(reservation.getId());
+
+            if(isNotTheSameReservation) {
+                LOG.info("Reservation was in conflict with one already in database. Did not save or delete.");
+                return reservation;
+            }
+            LOG.info("Reservation was in conflict with itself. Silly reservation.");
+
         }
         return reservationDao.update(reservation);
     }
