@@ -18,10 +18,13 @@ public class ReservationUpdateService {
     private ReservationDao reservationDao;
 
     @Inject
+    private RequestService requestService;
+
+    @Inject
     private ReservationValidator reservationValidator;
 
-    public Reservation update(Reservation reservation){
-
+    public Reservation update(Reservation reservation) {
+        // todo: validate me like you validate your French girls!
         if(!reservationValidator.isResIdNotNull(reservation)){
             throwException("Reservation didn't update because id is null");
         }
@@ -33,11 +36,26 @@ public class ReservationUpdateService {
         if(reservationValidator.isEndTimeNotNull(reservation)){
             throwException("Reservation didn't update because end time is null");
         }
+        if (reservationDao.isInConflict(reservation)) {
+            Reservation conflict = reservationDao.getConflictingReservation(reservation);
 
+            LOG.info("Reservation to update: " + reservation.getId());
+            LOG.info("Conflicting reservation to update: " + conflict.getId());
+
+            boolean isNotTheSameReservation = !conflict.getId().equals(reservation.getId());
+
+            if (isNotTheSameReservation) {
+                LOG.info("Reservation was in conflict with one already in database. Did not save or delete.");
+                return reservation;
+            }
+            LOG.info("Reservation was in conflict with itself. Silly reservation.");
+
+        }
         return reservationDao.update(reservation);
     }
 
     public void updateReservation(HttpServletRequest req) {
+        update(requestService.getReservationWithId(req));
     }
 
     private void throwException(String message) {

@@ -1,11 +1,5 @@
 <form method="post" action="table-new">
     <form method="post" action="/table-new">
-        <#--HUBERT, you fuck - Delete below when you implement hid in session -->
-            <div class="form-group">
-                <label for="hallId">Id</label>
-                <input id="hallId" name="hid" type="number" class="form-control"/>
-            </div>
-        <#--HUBERT, you fuck - Delete above when you implement hid in session, make it type=hidden -->
             <div class="form-group">
                 <label for="tableName">Name</label>
                 <input id="tableName" name="name" type="text" class="form-control"/>

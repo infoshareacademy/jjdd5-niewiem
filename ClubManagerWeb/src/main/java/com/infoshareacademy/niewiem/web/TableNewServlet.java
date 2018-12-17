@@ -1,7 +1,9 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.exceptions.SavingFailed;
+import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.services.TableSaveService;
 import org.slf4j.Logger;
@@ -30,6 +32,9 @@ public class TableNewServlet extends HttpServlet {
     @Inject
     private TableSaveService tableSaveService;
 
+    @Inject
+    private ActiveHallService activeHallService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -46,15 +51,15 @@ public class TableNewServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String hid = req.getParameter("hid");
+        Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
         String name = req.getParameter("name");
         String type = req.getParameter("type");
         try {
-            tableSaveService.addTableToHall(hid, name, type);
+            tableSaveService.addTableToHall(hall, name, type);
         } catch (SavingFailed savingFailed) {
             LOG.warn("Table not saved");
         }
 
-        resp.sendRedirect("/tables-view?hallId="+hid);
+        resp.sendRedirect("/tables-view?hallId=" + hall.getId());
     }
 }

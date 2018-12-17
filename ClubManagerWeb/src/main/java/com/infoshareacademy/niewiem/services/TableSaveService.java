@@ -35,15 +35,15 @@ public class TableSaveService {
             throwException("Table didn't save because id is not null");
         }
 
-        if(tableValidator.isNameNotNullOrEmpty(table)){
+        if (tableValidator.isNameNotNullOrEmpty(table)) {
             throwException("Table didn't save because name is not null or empty");
         }
 
-        if(tableValidator.isTypeNotNull(table)){
+        if (tableValidator.isTypeNotNull(table)) {
             throwException("Table didn't save because type is not null");
         }
 
-        if(!tableValidator.isHallIdNotNull(table)){
+        if (!tableValidator.isHallIdNotNull(table)) {
             throwException("Table didn't save because hall id is null");
         }
         return tableDao.save(table);
@@ -62,11 +62,14 @@ public class TableSaveService {
 
     public void addTableToHall(String hid, String name, String type) throws SavingFailed {
         Integer hallId = inputValidator.reqIntegerValidator(hid);
+        Hall hall = hallQueryService.findById(hallId);
+        addTableToHall(hall, name, type);
+    }
+
+    public void addTableToHall(Hall hall, String name, String type) throws SavingFailed {
         TableType tableType = inputValidator.reqTableTypeValidator(type);
 
         Table table = new Table();
-        // todo: validate if hall is the active one
-        Hall hall = hallQueryService.findById(hallId);
 
         table.setHall(hall);
         table.setType(tableType);

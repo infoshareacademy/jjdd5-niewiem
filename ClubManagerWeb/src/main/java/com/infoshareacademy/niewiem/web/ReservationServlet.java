@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.web;
 
-import com.infoshareacademy.niewiem.exceptions.SavingFailed;
 import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.*;
 import org.slf4j.Logger;
@@ -39,6 +39,12 @@ public class ReservationServlet extends HttpServlet {
     @Inject
     private ReservationUpdateService reservationUpdateService;
 
+    @Inject
+    private ReservationDeleteService reservationDeleteService;
+
+    @Inject
+    private ReservationQueryService reservationQueryService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
@@ -48,6 +54,17 @@ public class ReservationServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
+
+        model.put("hall", hall);
+
+        String idParam = req.getParameter("id");
+        if(idParam == null || idParam.isEmpty()){
+            LOG.info("Recieved no reservation id. Creating a new one.");
+        }else{
+            LOG.info("Recieved reservation id: " + idParam);
+            Reservation reservation = reservationQueryService.findById(idParam);
+            model.put("reservation", reservation);
+        }
 
         List<Table> tables = tableQueryService.findAllInHall(hall);
         model.put("tables", tables);
@@ -60,15 +77,15 @@ public class ReservationServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("new".equals(action)) {
-            try {
-                reservationSaveService.addNewReservation(req);
-            } catch (SavingFailed savingFailed) {
-                LOG.warn("Reservation not saved");
-            }
+            LOG.info("Adding new reservation.");
+            reservationSaveService.addReservationFromServlet(req);
         } else if ("update".equals(action)) {
+            LOG.info("Updating reservation.");
             reservationUpdateService.updateReservation(req);
+        }else if ("delete".equals(action)) {
+            LOG.info("Deleting reservation.");
+            reservationDeleteService.delete(req);
         }
-
         resp.sendRedirect("/tables-view");
     }
 }
