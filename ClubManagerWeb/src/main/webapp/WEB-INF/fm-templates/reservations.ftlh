@@ -19,7 +19,7 @@
         <tbody>
         <#items as r>
             <tr>
-            <td>${r.table.name}</th>
+            <td>${r.table.name}</td>
             <td>${r.startTime}</td>
             <td>${r.endTime}</td>
             <td>${r.customer ! ""}</td>
