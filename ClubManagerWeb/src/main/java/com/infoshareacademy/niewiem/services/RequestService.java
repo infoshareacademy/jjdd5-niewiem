@@ -3,6 +3,7 @@ package com.infoshareacademy.niewiem.services;
 import com.infoshareacademy.niewiem.pojo.Reservation;
 import com.infoshareacademy.niewiem.pojo.Table;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
+import com.infoshareacademy.niewiem.tables.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

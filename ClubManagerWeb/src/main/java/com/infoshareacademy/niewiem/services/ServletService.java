@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.services;
 
-import com.infoshareacademy.niewiem.freemarker.TemplateProvider;
+import com.infoshareacademy.niewiem.shared.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.infoshareacademy.niewiem.freemarker.TemplateProvider.LAYOUT_NAME;
+import static com.infoshareacademy.niewiem.shared.freemarker.TemplateProvider.LAYOUT_NAME;
 
 @Stateless
 public class ServletService {
