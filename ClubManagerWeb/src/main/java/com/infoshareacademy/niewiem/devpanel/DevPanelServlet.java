@@ -4,7 +4,7 @@ import com.infoshareacademy.niewiem.halls.services.HallSaveService;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.services.*;
-import com.infoshareacademy.niewiem.tables.TableSaveService;
+import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

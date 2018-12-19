@@ -1,8 +1,10 @@
-package com.infoshareacademy.niewiem.tables;
+package com.infoshareacademy.niewiem.tables.servlets;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.tables.dto.TableEndTimeInMillis;
+import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -9,7 +9,7 @@ import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService
 import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
 import com.infoshareacademy.niewiem.services.*;
 import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
-import com.infoshareacademy.niewiem.tables.TableQueryService;
+import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.tables;
+package com.infoshareacademy.niewiem.tables.dao;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Table;

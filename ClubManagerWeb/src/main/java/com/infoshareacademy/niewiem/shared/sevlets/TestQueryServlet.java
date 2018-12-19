@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.shared.sevlets;
 
 import com.infoshareacademy.niewiem.pojo.Table;
-import com.infoshareacademy.niewiem.tables.TableQueryService;
+import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

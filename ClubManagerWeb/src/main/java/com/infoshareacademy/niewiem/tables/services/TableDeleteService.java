@@ -1,5 +1,6 @@
-package com.infoshareacademy.niewiem.tables;
+package com.infoshareacademy.niewiem.tables.services;
 
+import com.infoshareacademy.niewiem.tables.dao.TableDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
