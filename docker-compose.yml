@@ -1,0 +1,23 @@
+version: "2"
+services:
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass123
+      - MYSQL_DATABASE=club
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=pass123
+    ports:
+      - 4292:3306
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+  app:
+    build:
+      context: ./ClubManagerWeb
+    ports:
+      - 4290:8080
+      - 4291:9990
+    depends_on:
+      - db
+    links:
+      - db
+    dns: 8.8.8.8
