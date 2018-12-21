@@ -5,6 +5,7 @@ import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.services.TableQueryService;
+import com.sun.javaws.exceptions.ErrorCodeResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,9 @@ public class TablesViewServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
-
+        if(resp.getStatus()==404){
+        model.put("error", "CHUJ CI W DUPE NIE MA STRONY KURWIU");
+        }
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
         List<TableEndTimeInMillis> tetim = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hall);

@@ -13,6 +13,11 @@
     <link href="../../css/cover.css" rel="stylesheet">
 </head>
 <body>
+<#if error??>
+${error}
+</#if>
+
+
 <div class="site-wrapper">
     <div class="site-wrapper-inner">
         <div class="cover-container">
@@ -36,6 +41,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
