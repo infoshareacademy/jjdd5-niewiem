@@ -34,7 +34,26 @@ public class ActiveHallFilter implements Filter {
 
     private void checkIfOnWelcomePage(ServletRequest servletRequest) {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
+
+        LOG.info("========================");
         String url = req.getRequestURL().toString();
         LOG.info("Requested URL: {}", url);
+        LOG.info("-----------------------");
+        String sub1 = req.getRequestURL().substring(1);
+        LOG.info("Requested sub URL: {}", sub1);
+        LOG.info("-----------------------");
+        String contextPath = req.getContextPath();
+        LOG.info("Requested context path: {}", contextPath);
+        LOG.info("-----------------------");
+        String pathInfo = req.getPathInfo();
+        LOG.info("Requested path info: {}", pathInfo);
+        LOG.info("-----------------------");
+        String uri = req.getRequestURI();
+        LOG.info("Requested URI: {}", uri);
+        LOG.info("========================");
+    }
+
+    private boolean isURIExcludedFromFilter(){
+
     }
 }
