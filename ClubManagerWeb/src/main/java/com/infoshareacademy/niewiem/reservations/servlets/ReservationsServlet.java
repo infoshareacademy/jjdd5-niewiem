@@ -44,9 +44,25 @@ public class ReservationsServlet extends HttpServlet {
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
+        Map<String, String[]> params = req.getParameterMap();
+        handleTidParam(params);
+
         List<Reservation> reservations = reservationQueryService.finaAllByHall(hall);
         model.put("reservations", reservations);
 
         servletService.sendModelToTemplate(resp, context, model);
+    }
+
+    private void handleTidParam(Map<String, String[]> paramsMap) {
+        String tidParam = paramsMap.get("tid")[0];
+        // todo: check for:         
+        // tid is present
+        // tid is not present
+        // tid is not numbers
+        // tid does not exist
+        // tid does not exist in active hall
+
+
+
     }
 }
