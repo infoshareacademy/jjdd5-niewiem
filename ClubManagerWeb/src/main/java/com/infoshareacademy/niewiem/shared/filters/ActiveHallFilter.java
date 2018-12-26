@@ -1,11 +1,15 @@
 package com.infoshareacademy.niewiem.shared.filters;
 
+import com.infoshareacademy.niewiem.halls.services.HallQueryService;
+import com.infoshareacademy.niewiem.pojo.Hall;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter(
@@ -13,6 +17,24 @@ import java.io.IOException;
         urlPatterns = {"/*"})
 public class ActiveHallFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveHallFilter.class);
+
+    private static final String ROOT_PATH = "/";
+    private static final String[] EXCLUDED_PATHS = new String[]{
+            "/choose-hall",
+            "/dev-panel",
+            "/images",
+    };
+    private static final String[] EXCLUDED_EXTENSIONS = new String[]{
+            ".css",
+            ".js",
+            ".ico",
+            ".jpeg",
+            ".jpg",
+            ".png"
+    };
+
+    @Inject
+    private HallQueryService hallQueryService;
 
 
     @Override
@@ -27,33 +49,59 @@ public class ActiveHallFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        checkIfOnWelcomePage(servletRequest);
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        String reqUri = req.getRequestURI();
 
+        if(isURIExcludedFromFilter(reqUri)){
+            LOG.info("Requested URI is excluded from active hall filter. ({})", reqUri);
+            filterChain.doFilter(servletRequest, servletResponse);
+            // todo: check if return is needed
+            return;
+        }
+
+        Object hallObj = req.getSession().getAttribute("activeHall");
+
+        if(hallObj == null){
+            LOG.info("There was no active hall in session. Redirected to hall chooser.");
+            resp.sendRedirect("/choose-hall");
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        Hall hall = (Hall) hallObj;
+
+        if(hallQueryService.doesNotExist(hall)){
+            LOG.info("Active hall does not exist in database. Redirected to hall chooser.");
+            resp.sendRedirect("/choose-hall");
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        LOG.debug("Active hall is in session. Proceeding to chosen URI. ({})", reqUri);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private void checkIfOnWelcomePage(ServletRequest servletRequest) {
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
+    private boolean isURIExcludedFromFilter(String reqUri){
 
-        LOG.info("========================");
-        String url = req.getRequestURL().toString();
-        LOG.info("Requested URL: {}", url);
-        LOG.info("-----------------------");
-        String sub1 = req.getRequestURL().substring(1);
-        LOG.info("Requested sub URL: {}", sub1);
-        LOG.info("-----------------------");
-        String contextPath = req.getContextPath();
-        LOG.info("Requested context path: {}", contextPath);
-        LOG.info("-----------------------");
-        String pathInfo = req.getPathInfo();
-        LOG.info("Requested path info: {}", pathInfo);
-        LOG.info("-----------------------");
-        String uri = req.getRequestURI();
-        LOG.info("Requested URI: {}", uri);
-        LOG.info("========================");
-    }
+        LOG.info("Requested URI: {}", reqUri);
 
-    private boolean isURIExcludedFromFilter(){
+        if(reqUri.equals(ROOT_PATH)){
+            return true;
+        }
 
+        for(String s : EXCLUDED_PATHS){
+            if(reqUri.startsWith(s)){
+                return true;
+            }
+        }
+
+        for(String s : EXCLUDED_EXTENSIONS){
+            if(reqUri.endsWith(s)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

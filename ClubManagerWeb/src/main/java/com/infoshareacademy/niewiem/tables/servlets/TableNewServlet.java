@@ -50,7 +50,7 @@ public class TableNewServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
+        Hall hall = activeHallService.getActiveHall(req.getSession());
         String name = req.getParameter("name");
         String type = req.getParameter("type");
         tableSaveService.addTableToHall(hall, name, type);

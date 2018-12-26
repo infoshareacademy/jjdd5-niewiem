@@ -36,7 +36,7 @@ public class ReservationsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Hall hall = activeHallService.getActiveHallOrRedirect(req.getSession(), resp);
+        Hall hall = activeHallService.getActiveHall(req.getSession());
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         ServletContext context = getServletContext();

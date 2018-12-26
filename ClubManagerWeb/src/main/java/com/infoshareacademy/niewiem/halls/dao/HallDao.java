@@ -38,4 +38,11 @@ public class HallDao {
         final Query query = entityManager.createQuery("SELECT hall FROM Hall hall");
         return query.getResultList();
     }
+
+    public boolean contains(Hall hall){
+        final Query query = entityManager.createQuery("SELECT h FROM Hall h WHERE h = :hall");
+        query.setParameter("hall", hall);
+
+        return query.getResultList().size() > 0;
+    }
 }

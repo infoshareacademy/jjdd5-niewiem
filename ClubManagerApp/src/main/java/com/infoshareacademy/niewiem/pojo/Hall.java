@@ -81,6 +81,14 @@ public class Hall {
         return Objects.hash(getId(), getName(), getImageURL(), getTables());
     }
 
+    @Override
+    public String toString() {
+        return "Hall{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     // Business logic for Console UI -----------------------------------------------------------------------------------
     // Needed for console app - DataProvider ---------------------------------------------------------------------------
 
