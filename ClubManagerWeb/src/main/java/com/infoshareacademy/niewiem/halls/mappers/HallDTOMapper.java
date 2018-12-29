@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.halls.mappers;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 
 import javax.ejb.Stateless;
 

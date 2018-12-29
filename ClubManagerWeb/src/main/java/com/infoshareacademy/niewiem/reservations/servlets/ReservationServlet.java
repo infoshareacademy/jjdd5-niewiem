@@ -1,8 +1,8 @@
 package com.infoshareacademy.niewiem.reservations.servlets;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Reservation;
+import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.reservations.services.ReservationDeleteService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;

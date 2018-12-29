@@ -3,7 +3,7 @@ package com.infoshareacademy.niewiem.halls.services;
 import com.infoshareacademy.niewiem.images.cdi.FileUploadProcessor;
 import com.infoshareacademy.niewiem.halls.dao.HallDao;
 import com.infoshareacademy.niewiem.halls.exceptions.HallImageNotFound;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

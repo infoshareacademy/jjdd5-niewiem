@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.halls.servlets;
 
 import com.infoshareacademy.niewiem.halls.services.HallQueryService;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import org.slf4j.Logger;

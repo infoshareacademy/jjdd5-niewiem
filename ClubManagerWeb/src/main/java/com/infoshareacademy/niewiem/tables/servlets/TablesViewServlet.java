@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.tables.servlets;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.tables.dto.TableEndTimeInMillis;

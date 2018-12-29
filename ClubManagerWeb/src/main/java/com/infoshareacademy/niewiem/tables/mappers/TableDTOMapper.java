@@ -2,7 +2,7 @@ package com.infoshareacademy.niewiem.tables.mappers;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.mappers.HallDTOMapper;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.tables.dto.TableDTO;
 
 import javax.ejb.Stateless;

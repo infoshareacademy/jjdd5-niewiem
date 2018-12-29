@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.reservations.servlets;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;

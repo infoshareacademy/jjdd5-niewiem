@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.shared.filters;
 
 import com.infoshareacademy.niewiem.halls.services.HallQueryService;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

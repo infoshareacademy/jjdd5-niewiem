@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.pojo;
+package com.infoshareacademy.niewiem.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

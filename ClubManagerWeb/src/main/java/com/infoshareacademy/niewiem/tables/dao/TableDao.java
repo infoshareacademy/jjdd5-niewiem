@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.tables.dao;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Table;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

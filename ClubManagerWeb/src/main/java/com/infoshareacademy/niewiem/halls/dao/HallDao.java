@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.halls.dao;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

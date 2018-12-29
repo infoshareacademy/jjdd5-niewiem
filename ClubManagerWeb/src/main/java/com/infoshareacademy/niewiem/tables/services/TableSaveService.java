@@ -2,8 +2,8 @@ package com.infoshareacademy.niewiem.tables.services;
 
 import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.services.HallQueryService;
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import com.infoshareacademy.niewiem.tables.dao.TableDao;
 import org.slf4j.Logger;

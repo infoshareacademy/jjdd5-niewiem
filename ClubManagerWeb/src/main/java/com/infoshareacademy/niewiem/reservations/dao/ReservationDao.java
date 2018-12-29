@@ -1,8 +1,8 @@
 package com.infoshareacademy.niewiem.reservations.dao;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Reservation;
+import com.infoshareacademy.niewiem.domain.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

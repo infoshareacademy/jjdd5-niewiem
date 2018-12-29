@@ -8,9 +8,9 @@
     <persistence-unit name="clubManagerPU" transaction-type="JTA">
         <jta-data-source>java:ds/clubds</jta-data-source>
 
-        <class>com.infoshareacademy.niewiem.pojo.Hall</class>
-        <class>com.infoshareacademy.niewiem.pojo.Table</class>
-        <class>com.infoshareacademy.niewiem.pojo.Reservation</class>
+        <class>com.infoshareacademy.niewiem.domain.Hall</class>
+        <class>com.infoshareacademy.niewiem.domain.Table</class>
+        <class>com.infoshareacademy.niewiem.domain.Reservation</class>
 
         <properties>
             <!-- Hibernate settings -->

@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.halls.services;
 
 import com.infoshareacademy.niewiem.halls.dao.HallDao;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

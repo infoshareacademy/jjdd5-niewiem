@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.devpanel;
 
 import com.infoshareacademy.niewiem.halls.services.HallSaveService;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;

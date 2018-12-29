@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.tables.dto;
 
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Table;
 
 public class TableEndTimeInMillis {
     private Table table;

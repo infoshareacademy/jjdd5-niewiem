@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.reservations.services;
 
 import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
-import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.services.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

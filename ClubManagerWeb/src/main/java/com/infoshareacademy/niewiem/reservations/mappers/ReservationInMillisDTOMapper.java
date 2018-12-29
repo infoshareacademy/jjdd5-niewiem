@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.reservations.mappers;
 
-import com.infoshareacademy.niewiem.pojo.Reservation;
+import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
 import com.infoshareacademy.niewiem.tables.dto.TableDTO;
 import com.infoshareacademy.niewiem.tables.mappers.TableDTOMapper;
