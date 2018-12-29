@@ -99,4 +99,10 @@ public class ReservationDao {
         query.setParameter("endDT", reservation.getEndTime());
         return query.getResultList().size() > 0;
     }
+
+    public List<Reservation> findAllByTableId(Integer tid) {
+        final Query query = entityManager.createQuery("SELECT r FROM Reservation r WHERE r.table.id = :tid");
+        query.setParameter("tid", tid);
+        return query.getResultList();
+    }
 }

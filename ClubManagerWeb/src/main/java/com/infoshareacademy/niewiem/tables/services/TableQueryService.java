@@ -38,6 +38,28 @@ public class TableQueryService {
 
     }
 
+    public boolean doesExist(Table table) {
+        boolean doesExist = tableDao.contains(table);
+        LOG.info("Checking for existence of the table. Result: {} for table: {}.", doesExist, table);
+        return doesExist;
+    }
+
+    public boolean doesExist(Integer tid) {
+        boolean doesExist = tableDao.contains(tid);
+        LOG.info("Checking for existence of the table ID. Result: {} for table ID: {}.", doesExist, tid);
+        return doesExist;
+    }
+
+    public boolean doesNotExist(Table table) {
+        return !doesExist(table);
+    }
+
+    public boolean doesNotExist(Integer tid) {
+        return !doesExist(tid);
+    }
+
+
+
     public List<TableEndTimeInMillis> findAllTablesInHallWithEndTimeInMillis(Hall hall) {
         List<Table> tables = findAllInHall(hall);
         List<Reservation> reservations = reservationQueryService.findAllActiveByHall(hall);

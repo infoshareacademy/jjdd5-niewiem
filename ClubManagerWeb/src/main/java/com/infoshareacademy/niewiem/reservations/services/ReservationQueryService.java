@@ -56,4 +56,8 @@ public class ReservationQueryService {
     public Reservation findActiveForTable(Table table) {
         return reservationDao.findActiveForTable(table);
     }
+
+    public List<Reservation> findAllByTableId(Integer tid) {
+        return reservationDao.findAllByTableId(tid);
+    }
 }

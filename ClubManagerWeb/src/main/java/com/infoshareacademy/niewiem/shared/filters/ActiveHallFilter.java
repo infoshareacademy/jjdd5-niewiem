@@ -56,7 +56,6 @@ public class ActiveHallFilter implements Filter {
         if(isURIExcludedFromFilter(reqUri)){
             LOG.info("Requested URI is excluded from active hall filter. ({})", reqUri);
             filterChain.doFilter(servletRequest, servletResponse);
-            // todo: check if return is needed
             return;
         }
 
@@ -69,8 +68,10 @@ public class ActiveHallFilter implements Filter {
             return;
         }
 
+        // todo: probably should not store the whole entity, just the DTO...
         Hall hall = (Hall) hallObj;
 
+        // todo: validate by hallValidator
         if(hallQueryService.doesNotExist(hall)){
             LOG.info("Active hall does not exist in database. Redirected to hall chooser.");
             resp.sendRedirect("/choose-hall");

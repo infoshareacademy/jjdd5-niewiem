@@ -47,4 +47,18 @@ public class TableDao {
 
         return query.getResultList();
     }
+
+    public boolean contains(Table table) {
+        final Query query = entityManager.createQuery("SELECT t FROM Table t WHERE t = :table");
+        query.setParameter("table", table);
+
+        return query.getResultList().size() > 0;
+    }
+
+    public boolean contains(Integer tid) {
+        final Query query = entityManager.createQuery("SELECT t FROM Table t WHERE t.id = :tid");
+        query.setParameter("tid", tid);
+
+        return query.getResultList().size() > 0;
+    }
 }

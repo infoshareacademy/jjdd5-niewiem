@@ -102,6 +102,15 @@ public class Table implements Comparable<Table> {
         return Objects.hash(getId(), getName(), getType(), getHall(), getReservations());
     }
 
+    @Override
+    public String toString() {
+        return "Table{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
     // Business logic for Console UI -----------------------------------------------------------------------------------
 
     @Override
@@ -116,13 +125,4 @@ public class Table implements Comparable<Table> {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        return "Table:" +
-                "ID=" + id +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", hall=" + hall.getName() +
-                ", reservations=" + reservations;
-    }
 }
