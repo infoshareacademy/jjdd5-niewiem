@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -31,13 +30,9 @@ public class CreateHallServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
 
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-
-        servletService.sendModelToTemplate(resp, context, model);
+        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
         }
 
     @Override

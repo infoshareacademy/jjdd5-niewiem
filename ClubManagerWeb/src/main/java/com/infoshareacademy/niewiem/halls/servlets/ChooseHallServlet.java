@@ -1,14 +1,13 @@
 package com.infoshareacademy.niewiem.halls.servlets;
 
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.halls.services.HallQueryService;
+import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,37 +36,28 @@ public class ChooseHallServlet extends HttpServlet {
         String hid = req.getParameter("hallId");
         if(hid == null || hid.isEmpty()){
             activeHallService.setNull(req.getSession());
-            showHallsToChoose(resp);
+            printHallChoice(resp);
             return;
         }
-        redirectToChosenHall(req, resp, hid);
+
+        redirectToTablesInChosenHall(req, resp, hid);
     }
 
-    private void redirectToChosenHall(HttpServletRequest req, HttpServletResponse resp, String hid) throws IOException {
+    private void redirectToTablesInChosenHall(HttpServletRequest req, HttpServletResponse resp, String hid) throws IOException {
         boolean hallExists = activeHallService.setActive(req.getSession(), hid);
-
         if(hallExists) {
             resp.sendRedirect("/tables-view");
             return;
         }
-        showHallsToChoose(resp);
+        printHallChoice(resp);
     }
 
-    private void showHallsToChoose(HttpServletResponse resp) throws IOException {
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        ServletContext context = getServletContext();
+    private void printHallChoice(HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
-
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-        addListOfHallsToModel(model);
-
-        servletService.sendModelToTemplate(resp, context, model);
-    }
-
-    private void addListOfHallsToModel(Map<String, Object> model) throws IOException {
         List<Hall> halls = hallQueryService.findAll();
         LOG.info("Found {} halls in halls table", halls.size());
 
         model.put("halls", halls);
+        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
 }

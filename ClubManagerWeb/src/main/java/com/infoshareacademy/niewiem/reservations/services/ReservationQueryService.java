@@ -35,7 +35,7 @@ public class ReservationQueryService {
         return reservationDao.findAll();
     }
 
-    public List<Reservation> finaAllByHall(Hall hall) {
+    public List<Reservation> findAllByHall(Hall hall) {
         return reservationDao.findAllByHall(hall);
     }
 

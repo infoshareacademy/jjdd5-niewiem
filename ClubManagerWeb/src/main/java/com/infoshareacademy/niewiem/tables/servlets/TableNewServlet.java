@@ -2,14 +2,13 @@ package com.infoshareacademy.niewiem.tables.servlets;
 
 import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,16 +35,12 @@ public class TableNewServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
-
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
         EnumSet<TableType> types = EnumSet.allOf(TableType.class);
         model.put("types", types);
 
-        servletService.sendModelToTemplate(resp, context, model);
+        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
 
     @Override

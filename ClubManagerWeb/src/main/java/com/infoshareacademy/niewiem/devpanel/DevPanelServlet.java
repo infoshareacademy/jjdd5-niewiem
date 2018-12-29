@@ -3,13 +3,12 @@ package com.infoshareacademy.niewiem.devpanel;
 import com.infoshareacademy.niewiem.halls.services.HallSaveService;
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
-import com.infoshareacademy.niewiem.services.*;
+import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,17 +39,13 @@ public class DevPanelServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
-
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
         addThreeNewClubs();
         addTablesToClubs();
         addActiveReservations();
 
-        servletService.sendModelToTemplate(resp, context, model);
+        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
 
     private void addThreeNewClubs() {

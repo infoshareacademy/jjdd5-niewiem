@@ -7,14 +7,13 @@ import com.infoshareacademy.niewiem.reservations.services.ReservationDeleteServi
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
-import com.infoshareacademy.niewiem.services.*;
+import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,15 +52,9 @@ public class ReservationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Hall hall = activeHallService.getActiveHall(req.getSession());
-
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
 
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-
-        model.put("hall", hall);
+        Hall hall = activeHallService.getActiveHall(req.getSession());
 
         String idParam = req.getParameter("id");
         if(idParam == null || idParam.isEmpty()){
@@ -75,7 +68,7 @@ public class ReservationServlet extends HttpServlet {
         List<Table> tables = tableQueryService.findAllInHall(hall);
         model.put("tables", tables);
 
-        servletService.sendModelToTemplate(resp, context, model);
+        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
 
     @Override

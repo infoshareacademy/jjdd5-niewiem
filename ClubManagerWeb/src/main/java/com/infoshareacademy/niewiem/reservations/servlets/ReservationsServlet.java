@@ -2,14 +2,13 @@ package com.infoshareacademy.niewiem.reservations.servlets;
 
 import com.infoshareacademy.niewiem.pojo.Hall;
 import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,26 +35,18 @@ public class ReservationsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Hall hall = activeHallService.getActiveHall(req.getSession());
-
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        ServletContext context = getServletContext();
         Map<String, Object> model = new HashMap<>();
 
-        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
-
-        Map<String, String[]> params = req.getParameterMap();
-        handleTidParam(params);
-
-        List<Reservation> reservations = reservationQueryService.finaAllByHall(hall);
+        Hall hall = activeHallService.getActiveHall(req.getSession());
+        List<Reservation> reservations = reservationQueryService.findAllByHall(hall);
         model.put("reservations", reservations);
 
-        servletService.sendModelToTemplate(resp, context, model);
+        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
 
     private void handleTidParam(Map<String, String[]> paramsMap) {
         String tidParam = paramsMap.get("tid")[0];
-        // todo: check for:         
+        // todo: check for:
         // tid is present
         // tid is not present
         // tid is not numbers

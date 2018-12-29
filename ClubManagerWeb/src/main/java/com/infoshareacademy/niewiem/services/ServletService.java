@@ -22,7 +22,10 @@ public class ServletService {
     @Inject
     private TemplateProvider templateProvider;
 
-    public void sendModelToTemplate(HttpServletResponse resp, ServletContext context, Map<String, Object> model) throws IOException {
+    public void sendModelToTemplate(HttpServletResponse resp, ServletContext context, Map<String, Object> model, String VIEW_NAME) throws IOException {
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
+
+        model.put("bodyTemplate", VIEW_NAME + ".ftlh");
 
         Template template = templateProvider.getTemplate(context, LAYOUT_NAME);
 
