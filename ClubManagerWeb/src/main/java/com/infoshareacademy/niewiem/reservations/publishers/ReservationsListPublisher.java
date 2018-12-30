@@ -45,7 +45,7 @@ public class ReservationsListPublisher {
             LOG.info("No table id parameter in request.");
             return false;
         }
-        if (tableValidator.validateParamIdIsNotNumeric(tidParam, errors)) {
+        if (tableValidator.validateIsNotNumeric(tidParam, "table ID" , errors)) {
             return false;
         }
 

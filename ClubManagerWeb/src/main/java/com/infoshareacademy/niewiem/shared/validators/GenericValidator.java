@@ -11,17 +11,17 @@ import java.util.List;
 public abstract class GenericValidator {
     private static final Logger LOG = LoggerFactory.getLogger(GenericValidator.class);
 
-    public boolean validateParamIdIsNumeric(String param, List<String> errors) {
+    public boolean validateNumeric(String param, String requestName, List<String> errors) {
         if (StringUtils.isNumeric(param)) {
-            LOG.debug("Requested id ({}) is numeric", param);
+            LOG.debug("Requested {} ({}) is numeric", requestName, param);
             return true;
         }
-        errors.add("Bad Request. Requested ID should be a number.");
-        LOG.warn("Bad Request. Requested ID was not numeric.");
+        errors.add("Bad Request. Requested " + requestName + " should be a number.");
+        LOG.warn("Bad Request. Requested {} was not numeric.", requestName);
         return false;
     }
 
-    public boolean validateParamIdIsNotNumeric(String param, List<String> errors){
-        return !validateParamIdIsNumeric(param, errors);
+    public boolean validateIsNotNumeric(String param, String requestName, List<String> errors) {
+        return !validateNumeric(param, requestName, errors);
     }
 }
