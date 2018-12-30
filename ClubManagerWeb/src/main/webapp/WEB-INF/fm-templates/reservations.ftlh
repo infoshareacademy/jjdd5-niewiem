@@ -32,8 +32,8 @@
             <#items as r>
                 <tr>
                     <td>${r.table.name}</td>
-                    <td>${r.startTime}</td>
-                    <td>${r.endTime}</td>
+                    <td>${r.startMillis}</td>
+                    <td>${r.endMillis}</td>
                     <td>${r.customer ! ""}</td>
                     <td><a href="/reservation?id=${r.id}">EDIT</a></td>
                 </tr>

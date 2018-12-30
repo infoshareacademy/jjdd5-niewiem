@@ -1,6 +1,5 @@
 package com.infoshareacademy.niewiem.reservations.dao;
 
-import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.domain.Table;
 import org.slf4j.Logger;
@@ -94,34 +93,24 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllByHall(Hall hall) {
+    public List<Reservation> findAllByHallId(Integer hid) {
         final Query query = entityManager
-                .createQuery("SELECT r FROM Reservation r WHERE r.table.hall = :hall");
-        query.setParameter("hall", hall);
+                .createQuery("SELECT r FROM Reservation r WHERE r.table.hall.id = :hid");
+        query.setParameter("hid", hid);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations in hall: {}.", resultList.size(), hall);
+        LOG.info("Found {} reservations in hall with id: {}.", resultList.size(), hid);
         return resultList;
     }
 
-    public List<Reservation> findAllActiveByHall(Hall hall) {
+    public List<Reservation> findAllActiveByHall(Integer hid) {
         final Query query = entityManager
-                .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall = :hall AND r.startTime < :now AND r.endTime > :now)");
-        query.setParameter("hall", hall);
+                .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall.id = :hid AND r.startTime < :now AND r.endTime > :now)");
+        query.setParameter("hid", hid);
         query.setParameter("now", LocalDateTime.now());
 
         List resultList = query.getResultList();
-        LOG.info("Found {} active reservations in hall: {}.", resultList.size(), hall);
-        return resultList;
-    }
-
-    public List<Reservation> findAllByTable(Table table) {
-        final Query query = entityManager
-                .createQuery("SELECT r FROM Reservation r WHERE r.table = :table");
-        query.setParameter("table", table);
-
-        List resultList = query.getResultList();
-        LOG.info("Found {} reservations for table: {}.", resultList.size(), table);
+        LOG.info("Found {} active reservations in hall with id: {}.", resultList.size(), hid);
         return resultList;
     }
 
