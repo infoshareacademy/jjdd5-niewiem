@@ -60,7 +60,6 @@ public class ActiveHallFilter implements Filter {
         if(hallObj == null){
             LOG.warn("There was no active hall in session. Redirected to hall chooser.");
             resp.sendRedirect("/choose-hall");
-            filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
@@ -69,7 +68,6 @@ public class ActiveHallFilter implements Filter {
         if(hallValidator.validateHallIdDoesNotExists(hallDTO.getId())){
             LOG.info("Active hall does not exist in database. Redirected to hall chooser.");
             resp.sendRedirect("/choose-hall");
-            filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
