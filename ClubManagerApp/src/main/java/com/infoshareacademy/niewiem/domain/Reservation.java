@@ -96,6 +96,17 @@ public class Reservation {
         return Objects.hash(getId(), getStartTime(), getEndTime(), getCustomer(), getTable());
     }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", customer='" + customer + '\'' +
+                ", table=" + table +
+                '}';
+    }
+
     // Business logic for Console UI -----------------------------------------------------------------------------------
 
     public boolean isInProgress() {

@@ -2,6 +2,8 @@ package com.infoshareacademy.niewiem.tables.dao;
 
 import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Table;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Stateless
 public class TableDao {
+    private static final Logger LOG = LoggerFactory.getLogger(TableDao.class);
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -18,18 +22,23 @@ public class TableDao {
     // SAVE, UPDATE, DELETE --------------------------------------------------------------------------------------------
 
     public Integer save(Table table) {
+        LOG.info("Saving table: {}", table);
         entityManager.persist(table);
         return table.getId();
     }
 
     public Table update(Table table) {
+        LOG.info("Updating table: {}", table);
         return entityManager.merge(table);
     }
 
     public void delete(Integer id) {
         final Table table = entityManager.find(Table.class, id);
         if (table != null) {
+            LOG.info("Deleting table: {}", table);
             entityManager.remove(table);
+        }else{
+            LOG.warn("Could not find table with id: {} to delete.", id);
         }
     }
 
@@ -39,7 +48,9 @@ public class TableDao {
         final Query query = entityManager.createQuery("SELECT t FROM Table t WHERE t.id = :tid");
         query.setParameter("tid", tid);
 
-        return query.getResultList().size() > 0;
+        int foundTables = query.getResultList().size();
+        LOG.info("Found {} tables with ID: {} in database.", foundTables, tid);
+        return foundTables > 0;
     }
 
     // QUERIES RETURNING SINGLE RESULT ---------------------------------------------------------------------------------
@@ -52,7 +63,10 @@ public class TableDao {
 
     public List<Table> findAll() {
         final Query query = entityManager.createQuery("SELECT table FROM Table table");
-        return query.getResultList();
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} total tables.", resultList.size());
+        return resultList;
     }
 
     public List<Table> findAllInHall(Hall hall) {
@@ -60,6 +74,8 @@ public class TableDao {
                 .createQuery("SELECT t FROM Table t WHERE t.hall = :hall");
         query.setParameter("hall", hall);
 
-        return query.getResultList();
+        List resultList = query.getResultList();
+        LOG.info("Found {} tables in hall: {}.", resultList.size(), hall);
+        return resultList;
     }
 }

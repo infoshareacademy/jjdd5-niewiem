@@ -23,19 +23,23 @@ public class ReservationDao {
     // SAVE, UPDATE, DELETE --------------------------------------------------------------------------------------------
 
     public Long save(Reservation reservation) {
+        LOG.info("Saving reservation: {}", reservation);
         entityManager.persist(reservation);
         return reservation.getId();
     }
 
     public Reservation update(Reservation reservation) {
-        LOG.info("Updating: ");
+        LOG.info("Updating reservation: {}", reservation);
         return entityManager.merge(reservation);
     }
 
     public void delete(Long id) {
         final Reservation reservation = entityManager.find(Reservation.class, id);
         if (reservation != null) {
+            LOG.info("Deleting reservation: {}", reservation);
             entityManager.remove(reservation);
+        }else{
+            LOG.warn("Could not find reservation with ID: {} to delete.", id);
         }
     }
 
@@ -43,8 +47,9 @@ public class ReservationDao {
 
     public boolean isInConflict(Reservation reservation) {
         final Query query = conflictReservations(reservation);
+
         int conflictsFound = query.getResultList().size();
-        LOG.warn("Found {} conflicts with provided reservation.", conflictsFound);
+        LOG.info("Found {} conflicts with provided reservation.", conflictsFound);
         return conflictsFound > 0;
     }
 
@@ -56,8 +61,11 @@ public class ReservationDao {
 
     public Reservation getConflictingReservation(Reservation reservation) {
         final Query query = conflictReservations(reservation);
+        Reservation conflictingReservation = (Reservation) query.getSingleResult();
 
-        return (Reservation) query.getSingleResult();
+        LOG.info("Reservation in conflict: {}", conflictingReservation);
+
+        return conflictingReservation;
     }
 
     public Reservation findActiveForTable(Table table) {
@@ -65,17 +73,22 @@ public class ReservationDao {
                 .createQuery("SELECT r FROM Reservation r WHERE (r.table = :table AND r.startTime < :now AND r.endTime > :now)");
         query.setParameter("table", table);
         query.setParameter("now", LocalDateTime.now());
+
         List resultList = query.getResultList();
         if (resultList == null || resultList.isEmpty()) {
+            LOG.info("Found no active reservation for table: {}", table);
             return null;
         }
-        return (Reservation) resultList.get(0);
+        Reservation reservation = (Reservation) resultList.get(0);
+        LOG.info("Found an active reservation: {}", reservation);
+        return reservation;
     }
 
     // QUERIES RETURNING LISTS -----------------------------------------------------------------------------------------
 
     public List<Reservation> findAll() {
         final Query query = entityManager.createQuery("SELECT r FROM Reservation r");
+
         List resultList = query.getResultList();
         LOG.info("Found {} total reservations.", resultList.size());
         return resultList;
@@ -85,8 +98,9 @@ public class ReservationDao {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE r.table.hall = :hall");
         query.setParameter("hall", hall);
+
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations meeting in hall: {}.", resultList.size(), hall);
+        LOG.info("Found {} reservations in hall: {}.", resultList.size(), hall);
         return resultList;
     }
 
@@ -95,6 +109,7 @@ public class ReservationDao {
                 .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall = :hall AND r.startTime < :now AND r.endTime > :now)");
         query.setParameter("hall", hall);
         query.setParameter("now", LocalDateTime.now());
+
         List resultList = query.getResultList();
         LOG.info("Found {} active reservations in hall: {}.", resultList.size(), hall);
         return resultList;
@@ -104,6 +119,7 @@ public class ReservationDao {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE r.table = :table");
         query.setParameter("table", table);
+
         List resultList = query.getResultList();
         LOG.info("Found {} reservations for table: {}.", resultList.size(), table);
         return resultList;
@@ -112,6 +128,7 @@ public class ReservationDao {
     public List<Reservation> findAllByTableId(Integer tid) {
         final Query query = entityManager.createQuery("SELECT r FROM Reservation r WHERE r.table.id = :tid");
         query.setParameter("tid", tid);
+
         List resultList = query.getResultList();
         LOG.info("Found {} reservations for table with ID: {}", resultList.size(), tid);
         return resultList;
