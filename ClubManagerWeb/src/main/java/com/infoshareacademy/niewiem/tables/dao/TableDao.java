@@ -15,6 +15,8 @@ public class TableDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    // SAVE, UPDATE, DELETE --------------------------------------------------------------------------------------------
+
     public Integer save(Table table) {
         entityManager.persist(table);
         return table.getId();
@@ -31,9 +33,22 @@ public class TableDao {
         }
     }
 
+    // QUERIES RETURNING BOOLEAN ---------------------------------------------------------------------------------------
+
+    public boolean doesExist(Integer tid) {
+        final Query query = entityManager.createQuery("SELECT t FROM Table t WHERE t.id = :tid");
+        query.setParameter("tid", tid);
+
+        return query.getResultList().size() > 0;
+    }
+
+    // QUERIES RETURNING SINGLE RESULT ---------------------------------------------------------------------------------
+
     public Table findById(Integer id) {
         return entityManager.find(Table.class, id);
     }
+
+    // QUERIES RETURNING LISTS -----------------------------------------------------------------------------------------
 
     public List<Table> findAll() {
         final Query query = entityManager.createQuery("SELECT table FROM Table table");
@@ -46,19 +61,5 @@ public class TableDao {
         query.setParameter("hall", hall);
 
         return query.getResultList();
-    }
-
-    public boolean contains(Table table) {
-        final Query query = entityManager.createQuery("SELECT t FROM Table t WHERE t = :table");
-        query.setParameter("table", table);
-
-        return query.getResultList().size() > 0;
-    }
-
-    public boolean contains(Integer tid) {
-        final Query query = entityManager.createQuery("SELECT t FROM Table t WHERE t.id = :tid");
-        query.setParameter("tid", tid);
-
-        return query.getResultList().size() > 0;
     }
 }

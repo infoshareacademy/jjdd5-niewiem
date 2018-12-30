@@ -1,14 +1,14 @@
 package com.infoshareacademy.niewiem.reservations.servlets;
 
-import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationDeleteService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class ReservationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        Hall hall = activeHallService.getActiveHall(req.getSession());
+        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
 
         String idParam = req.getParameter("id");
         if(idParam == null || idParam.isEmpty()){
@@ -65,7 +65,7 @@ public class ReservationServlet extends HttpServlet {
             model.put("reservation", reservation);
         }
 
-        List<Table> tables = tableQueryService.findAllInHall(hall);
+        List<Table> tables = tableQueryService.findAllInHall(hallDTO);
         model.put("tables", tables);
 
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);

@@ -2,9 +2,10 @@ package com.infoshareacademy.niewiem.reservations.servlets;
 
 import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Reservation;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.tables.validators.TableValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,18 +46,18 @@ public class ReservationsServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         model.put("errors", errors);
 
-        Hall hall = activeHallService.getActiveHall(req.getSession());
-        if(tidParamExists(req, errors, hall)){
+        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
+        if(tidParamExists(req, errors, hallDTO)){
             Integer tid = Integer.parseInt(req.getParameter("tid"));
             printResrvationsByTable(model, tid);
         }else{
-            printReservationsByHall(model, hall);
+            printReservationsByHall(model, hallDTO);
         }
 
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
 
-    private boolean tidParamExists(HttpServletRequest req, List<String> errors, Hall hall) {
+    private boolean tidParamExists(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
 
         String tidParam = req.getParameter("tid");
         if (StringUtils.isEmpty(tidParam)) {
@@ -71,16 +72,16 @@ public class ReservationsServlet extends HttpServlet {
         if (tableValidator.validateTableIdDoesNotExists(tid, errors)) {
             return false;
         }
-        if (tableValidator.validateTableIdDoesNotExistInActiveHallId(tid, hall.getId(), errors)) {
+        if (tableValidator.validateTableIdDoesNotExistInActiveHallId(tid, hallDTO.getId(), errors)) {
             return false;
         }
 
         return true;
     }
 
-    private void printReservationsByHall(Map<String, Object> model, Hall hall) {
+    private void printReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
         // todo: this should not be reservations, but views!
-        List<Reservation> reservations = reservationQueryService.findAllByHall(hall);
+        List<Reservation> reservations = reservationQueryService.findAllByHall(hallDTO);
         model.put("reservations", reservations);
     }
 

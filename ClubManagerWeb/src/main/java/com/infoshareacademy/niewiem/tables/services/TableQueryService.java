@@ -3,9 +3,11 @@ package com.infoshareacademy.niewiem.tables.services;
 import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.halls.dao.HallDao;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
-import com.infoshareacademy.niewiem.tables.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.tables.dao.TableDao;
+import com.infoshareacademy.niewiem.tables.dto.TableEndTimeInMillis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +25,9 @@ public class TableQueryService {
     private TableDao tableDao;
 
     @Inject
+    private HallDao hallDao;
+
+    @Inject
     private ReservationQueryService reservationQueryService;
 
     public Table findById(Integer id) {
@@ -33,36 +38,22 @@ public class TableQueryService {
         return tableDao.findAll();
     }
 
-    public List<Table> findAllInHall(Hall hall) {
+    public List<Table> findAllInHall(HallDTO hallDTO) {
+        Hall hall = hallDao.findById(hallDTO.getId());
         return tableDao.findAllInHall(hall);
 
     }
 
-    public boolean doesExist(Table table) {
-        boolean doesExist = tableDao.contains(table);
-        LOG.info("Checking for existence of the table. Result: {} for table: {}.", doesExist, table);
-        return doesExist;
-    }
-
     public boolean doesExist(Integer tid) {
-        boolean doesExist = tableDao.contains(tid);
+        boolean doesExist = tableDao.doesExist(tid);
         LOG.info("Checking for existence of the table ID. Result: {} for table ID: {}.", doesExist, tid);
         return doesExist;
     }
 
-    public boolean doesNotExist(Table table) {
-        return !doesExist(table);
-    }
 
-    public boolean doesNotExist(Integer tid) {
-        return !doesExist(tid);
-    }
-
-
-
-    public List<TableEndTimeInMillis> findAllTablesInHallWithEndTimeInMillis(Hall hall) {
-        List<Table> tables = findAllInHall(hall);
-        List<Reservation> reservations = reservationQueryService.findAllActiveByHall(hall);
+    public List<TableEndTimeInMillis> findAllTablesInHallWithEndTimeInMillis(HallDTO hallDTO) {
+        List<Table> tables = findAllInHall(hallDTO);
+        List<Reservation> reservations = reservationQueryService.findAllActiveByHall(hallDTO);
 
         return tables.stream()
                 .map(t -> {

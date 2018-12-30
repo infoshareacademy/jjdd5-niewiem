@@ -1,9 +1,9 @@
 package com.infoshareacademy.niewiem.tables.servlets;
 
 import com.infoshareacademy.niewiem.enums.TableType;
-import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.shared.filters.ActiveHallService;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class TableNewServlet extends HttpServlet {
     private TableSaveService tableSaveService;
 
     @Inject
-    private ActiveHallService activeHallService;
+    private ActiveHallService ahService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -45,11 +45,11 @@ public class TableNewServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        Hall hall = activeHallService.getActiveHall(req.getSession());
+        HallDTO hallDTO = ahService.getActiveHall(req.getSession());
         String name = req.getParameter("name");
         String type = req.getParameter("type");
-        tableSaveService.addTableToHall(hall, name, type);
+        tableSaveService.addTableToHall(hallDTO, name, type);
 
-        resp.sendRedirect("/tables-view?hallId=" + hall.getId());
+        resp.sendRedirect("/tables-view?hallId=" + hallDTO.getId());
     }
 }

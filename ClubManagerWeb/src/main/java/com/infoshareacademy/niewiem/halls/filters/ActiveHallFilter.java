@@ -1,7 +1,7 @@
-package com.infoshareacademy.niewiem.shared.filters;
+package com.infoshareacademy.niewiem.halls.filters;
 
-import com.infoshareacademy.niewiem.halls.services.HallQueryService;
-import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.halls.validators.HallValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +18,13 @@ import java.io.IOException;
 public class ActiveHallFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveHallFilter.class);
 
-    private static final String ROOT_PATH = "/";
-    private static final String[] EXCLUDED_PATHS = new String[]{
+    private static final String EXCLUDED_ROOT_PATH = "/";
+    private static final String[] EXCLUDED_PATH_BEGINNINGS = new String[]{
             "/choose-hall",
             "/dev-panel",
             "/images",
     };
-    private static final String[] EXCLUDED_EXTENSIONS = new String[]{
+    private static final String[] EXCLUDED_PATH_ENDINGS = new String[]{
             ".css",
             ".js",
             ".ico",
@@ -34,17 +34,14 @@ public class ActiveHallFilter implements Filter {
     };
 
     @Inject
-    private HallQueryService hallQueryService;
-
+    private HallValidator hallValidator;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
     public void destroy() {
-
     }
 
     @Override
@@ -54,25 +51,22 @@ public class ActiveHallFilter implements Filter {
         String reqUri = req.getRequestURI();
 
         if(isURIExcludedFromFilter(reqUri)){
-            LOG.info("Requested URI is excluded from active hall filter. ({})", reqUri);
+            LOG.debug("Requested URI is excluded from active hall filter. ({})", reqUri);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
         Object hallObj = req.getSession().getAttribute("activeHall");
-
         if(hallObj == null){
-            LOG.info("There was no active hall in session. Redirected to hall chooser.");
+            LOG.warn("There was no active hall in session. Redirected to hall chooser.");
             resp.sendRedirect("/choose-hall");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        // todo: probably should not store the whole entity, just the DTO...
-        Hall hall = (Hall) hallObj;
+        HallDTO hallDTO = (HallDTO) hallObj;
 
-        // todo: validate by hallValidator
-        if(hallQueryService.doesNotExist(hall)){
+        if(hallValidator.validateHallIdDoesNotExists(hallDTO.getId())){
             LOG.info("Active hall does not exist in database. Redirected to hall chooser.");
             resp.sendRedirect("/choose-hall");
             filterChain.doFilter(servletRequest, servletResponse);
@@ -84,20 +78,19 @@ public class ActiveHallFilter implements Filter {
     }
 
     private boolean isURIExcludedFromFilter(String reqUri){
+        LOG.debug("Requested URI: {}", reqUri);
 
-        LOG.info("Requested URI: {}", reqUri);
-
-        if(reqUri.equals(ROOT_PATH)){
+        if(reqUri.equals(EXCLUDED_ROOT_PATH)){
             return true;
         }
 
-        for(String s : EXCLUDED_PATHS){
+        for(String s : EXCLUDED_PATH_BEGINNINGS){
             if(reqUri.startsWith(s)){
                 return true;
             }
         }
 
-        for(String s : EXCLUDED_EXTENSIONS){
+        for(String s : EXCLUDED_PATH_ENDINGS){
             if(reqUri.endsWith(s)){
                 return true;
             }

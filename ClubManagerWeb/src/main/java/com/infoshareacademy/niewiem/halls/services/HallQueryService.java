@@ -24,13 +24,4 @@ public class HallQueryService {
         return hallDao.findAll();
     }
 
-    public boolean doesExist(Hall hall) {
-        boolean doesExist = hallDao.contains(hall);
-        LOG.info("Checking for existence of the hall. Result: {} for hall: {}.", doesExist, hall);
-        return doesExist;
-    }
-
-    public boolean doesNotExist(Hall hall) {
-        return !doesExist(hall);
-    }
 }

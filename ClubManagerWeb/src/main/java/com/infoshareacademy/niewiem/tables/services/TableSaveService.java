@@ -1,9 +1,11 @@
 package com.infoshareacademy.niewiem.tables.services;
 
-import com.infoshareacademy.niewiem.enums.TableType;
-import com.infoshareacademy.niewiem.halls.services.HallQueryService;
 import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.halls.dao.HallDao;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.halls.services.HallQueryService;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import com.infoshareacademy.niewiem.tables.dao.TableDao;
 import org.slf4j.Logger;
@@ -21,6 +23,9 @@ public class TableSaveService {
 
     @Inject
     private HallQueryService hallQueryService;
+
+    @Inject
+    private HallDao hallDao;
 
     @Inject
     private InputValidator inputValidator;
@@ -47,14 +52,9 @@ public class TableSaveService {
         save(table);
     }
 
-    public void addTableToHall(String hid, String name, String type){
-        Integer hallId = inputValidator.reqIntegerValidator(hid);
-        Hall hall = hallQueryService.findById(hallId);
-        addTableToHall(hall, name, type);
-    }
-
-    public void addTableToHall(Hall hall, String name, String type) {
+    public void addTableToHall(HallDTO hallDTO, String name, String type) {
         TableType tableType = inputValidator.reqTableTypeValidator(type);
+        Hall hall = hallDao.findById(hallDTO.getId());
 
         Table table = new Table();
 

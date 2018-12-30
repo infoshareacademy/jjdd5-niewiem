@@ -1,9 +1,11 @@
 package com.infoshareacademy.niewiem.reservations.services;
 
-import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.halls.dao.HallDao;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,9 @@ public class ReservationQueryService {
 
     @Inject
     private ReservationDao reservationDao;
+
+    @Inject
+    private HallDao hallDao;
 
     @Inject
     private InputValidator inputValidator;
@@ -35,7 +40,8 @@ public class ReservationQueryService {
         return reservationDao.findAll();
     }
 
-    public List<Reservation> findAllByHall(Hall hall) {
+    public List<Reservation> findAllByHall(HallDTO hallDTO) {
+        Hall hall = hallDao.findById(hallDTO.getId());
         return reservationDao.findAllByHall(hall);
     }
 
@@ -49,7 +55,8 @@ public class ReservationQueryService {
         return reservationDao.findAllByTable(table);
     }
 
-    public List<Reservation> findAllActiveByHall(Hall hall) {
+    public List<Reservation> findAllActiveByHall(HallDTO hallDTO) {
+        Hall hall = hallDao.findById(hallDTO.getId());
         return reservationDao.findAllActiveByHall(hall);
     }
 
