@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.tables.validators;
 
-import com.infoshareacademy.niewiem.shared.Validators.GenericValidator;
+import com.infoshareacademy.niewiem.shared.validators.GenericValidator;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

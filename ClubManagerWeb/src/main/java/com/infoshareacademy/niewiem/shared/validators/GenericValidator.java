@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.shared.Validators;
+package com.infoshareacademy.niewiem.shared.validators;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

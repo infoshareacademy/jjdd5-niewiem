@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.reservations.validators;
 
-import com.infoshareacademy.niewiem.shared.Validators.GenericValidator;
+import com.infoshareacademy.niewiem.shared.validators.GenericValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

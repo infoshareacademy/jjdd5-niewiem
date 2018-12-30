@@ -18,9 +18,12 @@ import java.io.IOException;
 public class ActiveHallFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveHallFilter.class);
 
+    public static final String WELCOME_PAGE_TO_REDIRECT = "/choose-hall";
+    public static final String ACTIVE_HALL_PARAM = "activeHall";
+
     private static final String EXCLUDED_ROOT_PATH = "/";
     private static final String[] EXCLUDED_PATH_BEGINNINGS = new String[]{
-            "/choose-hall",
+            WELCOME_PAGE_TO_REDIRECT,
             "/dev-panel",
             "/images",
     };
@@ -50,24 +53,24 @@ public class ActiveHallFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String reqUri = req.getRequestURI();
 
-        if(isURIExcludedFromFilter(reqUri)){
+        if (isURIExcludedFromFilter(reqUri)) {
             LOG.debug("Requested URI is excluded from active hall filter. ({})", reqUri);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        Object hallObj = req.getSession().getAttribute("activeHall");
-        if(hallObj == null){
+        Object hallObj = req.getSession().getAttribute(ACTIVE_HALL_PARAM);
+        if (hallObj == null) {
             LOG.warn("There was no active hall in session. Redirected to hall chooser.");
-            resp.sendRedirect("/choose-hall");
+            resp.sendRedirect(WELCOME_PAGE_TO_REDIRECT);
             return;
         }
 
         HallDTO hallDTO = (HallDTO) hallObj;
 
-        if(hallValidator.validateHallIdDoesNotExists(hallDTO.getId())){
+        if (hallValidator.validateHallIdDoesNotExists(hallDTO.getId())) {
             LOG.info("Active hall does not exist in database. Redirected to hall chooser.");
-            resp.sendRedirect("/choose-hall");
+            resp.sendRedirect(WELCOME_PAGE_TO_REDIRECT);
             return;
         }
 
@@ -75,21 +78,21 @@ public class ActiveHallFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private boolean isURIExcludedFromFilter(String reqUri){
+    private boolean isURIExcludedFromFilter(String reqUri) {
         LOG.debug("Requested URI: {}", reqUri);
 
-        if(reqUri.equals(EXCLUDED_ROOT_PATH)){
+        if (reqUri.equals(EXCLUDED_ROOT_PATH)) {
             return true;
         }
 
-        for(String s : EXCLUDED_PATH_BEGINNINGS){
-            if(reqUri.startsWith(s)){
+        for (String s : EXCLUDED_PATH_BEGINNINGS) {
+            if (reqUri.startsWith(s)) {
                 return true;
             }
         }
 
-        for(String s : EXCLUDED_PATH_ENDINGS){
-            if(reqUri.endsWith(s)){
+        for (String s : EXCLUDED_PATH_ENDINGS) {
+            if (reqUri.endsWith(s)) {
                 return true;
             }
         }

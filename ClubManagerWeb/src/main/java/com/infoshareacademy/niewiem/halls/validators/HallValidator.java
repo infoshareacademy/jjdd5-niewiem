@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.halls.validators;
 
 import com.infoshareacademy.niewiem.halls.dao.HallDao;
-import com.infoshareacademy.niewiem.shared.Validators.GenericValidator;
+import com.infoshareacademy.niewiem.shared.validators.GenericValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +15,8 @@ public class HallValidator extends GenericValidator {
     @Inject
     private HallDao hallDao;
 
-    public boolean validateHallIdExists(Integer hid){
-        if(hallDao.doesExist(hid)){
+    public boolean validateHallIdExists(Integer hid) {
+        if (hallDao.doesExist(hid)) {
             LOG.debug("Hall ID was found in database. ({})", hid);
             return true;
         }

@@ -10,6 +10,7 @@ public class TableDTO {
     private HallDTO hall;
 
     public TableDTO() {
+        // empty constructor
     }
 
     public Integer getId() {

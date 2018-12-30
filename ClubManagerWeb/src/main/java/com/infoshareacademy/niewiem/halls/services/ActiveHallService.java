@@ -12,12 +12,13 @@ import javax.servlet.http.HttpSession;
 @Stateless
 public class ActiveHallService {
     private static final Logger LOG = LoggerFactory.getLogger(ActiveHallService.class);
+    public static final String ACTIVE_HALL_PARAM = "activeHall";
 
     @Inject
     private HallDTOMapper hallDTOMapper;
 
     public HallDTO getActiveHall(HttpSession session) {
-        return (HallDTO) session.getAttribute("activeHall");
+        return (HallDTO) session.getAttribute(ACTIVE_HALL_PARAM);
     }
 
     public boolean setActive(HttpSession session, String hidString) {
@@ -32,11 +33,11 @@ public class ActiveHallService {
             return false;
         }
 
-        session.setAttribute("activeHall", hallDTO);
+        session.setAttribute(ACTIVE_HALL_PARAM, hallDTO);
         return true;
     }
 
     public void setNull(HttpSession session){
-        session.setAttribute("activeHall", null);
+        session.setAttribute(ACTIVE_HALL_PARAM, null);
     }
 }

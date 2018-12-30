@@ -10,6 +10,7 @@ public class ReservationInMillisDTO {
     private String customer;
 
     public ReservationInMillisDTO() {
+        // empty constructor
     }
 
     public Long getId() {

@@ -6,6 +6,7 @@ public class HallDTO {
     private String imageURL;
 
     public HallDTO() {
+        // empty constructor
     }
 
     public Integer getId() {
