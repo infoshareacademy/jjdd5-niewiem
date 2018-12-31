@@ -38,7 +38,7 @@ public class ReservationsListPublisher {
         if (tidParamExists(req, errors, hallDTO)) {
             Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
             publishReservationsByTable(model, tid);
-        } else if (typeParamExists(req, errors, hallDTO)) {
+        } else if (typeParamExists(req, errors)) {
             TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
             publishReservationsByHallAndType(model, hallDTO, type);
         } else {
@@ -46,7 +46,7 @@ public class ReservationsListPublisher {
         }
     }
 
-    private boolean typeParamExists(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
+    private boolean typeParamExists(HttpServletRequest req, List<String> errors) {
         String typeParam = req.getParameter(TABLE_TYPE_PARAM);
         if(StringUtils.isEmpty(typeParam)){
             LOG.info("No table type parameter in request.");
