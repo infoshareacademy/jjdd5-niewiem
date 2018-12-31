@@ -52,6 +52,11 @@
             <a class="btn btn-light btn-lg btn-block" href="/reservation" role="button">Add new reservation</a>
         </div>
 
+        <#if reservations?size == 0>
+            <div class="alert alert-danger">
+                <p>No reservations found :(</p>
+            </div>
+        </#if>
         <#list reservations>
             <table class="table table-bordered table-hover table-striped">
 

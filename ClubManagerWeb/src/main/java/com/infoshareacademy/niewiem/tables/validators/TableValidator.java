@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.tables.validators;
 
+import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.shared.validators.GenericValidator;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
@@ -43,5 +44,17 @@ public class TableValidator extends GenericValidator {
 
     public boolean validateTableIdDoesNotExistInActiveHallId(Integer tid, Integer activeHid, List<String> errors){
         return !validateTableIdExistsInActiveHallId(tid, activeHid, errors);
+    }
+
+    public boolean validateTableTypeExists(String typeParam, List<String> errors) {
+        for(TableType t : TableType.values()){
+            if(t.name().equalsIgnoreCase(typeParam)){
+                LOG.debug("Table type exists. ({})", typeParam);
+                return true;
+            }
+        }
+        LOG.warn("Requested table type does not exist. ({})", typeParam);
+        errors.add("Requested table type does not exist.");
+        return false;
     }
 }
