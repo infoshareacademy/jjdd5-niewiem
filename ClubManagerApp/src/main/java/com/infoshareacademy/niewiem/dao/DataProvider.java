@@ -1,9 +1,9 @@
 package com.infoshareacademy.niewiem.dao;
 
 import com.infoshareacademy.niewiem.enums.TableType;
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Reservation;
+import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.repositories.Tables;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

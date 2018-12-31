@@ -1,7 +1,7 @@
 package com.infoshareacademy.niewiem.repositories;
 
 import com.infoshareacademy.niewiem.dao.DataProvider;
-import com.infoshareacademy.niewiem.pojo.Hall;
+import com.infoshareacademy.niewiem.domain.Hall;
 
 import java.util.OptionalInt;
 

@@ -5,9 +5,9 @@ import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.repositories.Halls;
 import com.infoshareacademy.niewiem.repositories.Reservations;
 import com.infoshareacademy.niewiem.repositories.Tables;
-import com.infoshareacademy.niewiem.pojo.Hall;
-import com.infoshareacademy.niewiem.pojo.Reservation;
-import com.infoshareacademy.niewiem.pojo.Table;
+import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.domain.Reservation;
+import com.infoshareacademy.niewiem.domain.Table;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
