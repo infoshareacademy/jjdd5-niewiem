@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-5">
         <#-- todo: when choosing specific table you should not be able to choose type -->
-        <#-- todo: you should only be able to use start/end times when using "custom" period -->
+        <#-- todo: you should only be able to use start/end times when using "custom" Period -->
         <form method="get" action="/reservations">
             <button type="submit" class="btn btn-primary">Filter</button>
             <#list tables>
@@ -34,11 +34,26 @@
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
                     <label form="chooseType">Select table type</label>
-                    <select name="type" class="form-control" id="chooseTable">
+                    <select name="type" class="form-control" id="chooseType">
                         <option value="" selected>---</option>
                         <#items as ty>
                             <option value="${ty}">
                                 ${ty}
+                            </option>
+                        </#items>
+                    </select>
+                </div>
+            </#list>
+            <#list periods>
+            <#-- todo: when selecting custom, start and end time should appear -->
+            <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
+                <div class="form-group">
+                    <label form="choosePeriod">Select time period</label>
+                    <select name="period" class="form-control" id="choosePeriod">
+                        <option value="" selected>---</option>
+                        <#items as p>
+                            <option value="${p}">
+                                ${p.text}
                             </option>
                         </#items>
                     </select>

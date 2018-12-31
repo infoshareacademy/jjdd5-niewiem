@@ -4,7 +4,9 @@ import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
+import com.infoshareacademy.niewiem.reservations.enums.Period;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
+import com.infoshareacademy.niewiem.reservations.validators.ReservationValidator;
 import com.infoshareacademy.niewiem.tables.validators.TableValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +25,16 @@ public class ReservationsListPublisher {
 
     private static final String TABLE_ID_PARAM = "tid";
     private static final String TABLE_TYPE_PARAM = "type";
+    private static final String PERIOD_PARAM = "period";
 
     @Inject
     private ActiveHallService activeHallService;
 
     @Inject
     private TableValidator tableValidator;
+
+    @Inject
+    private ReservationValidator reservationValidator;
 
     @Inject
     private ReservationQueryService reservationQueryService;
@@ -44,6 +51,18 @@ public class ReservationsListPublisher {
         } else {
             publishReservationsByHall(model, hallDTO);
         }
+
+        // todo: filter by period
+    }
+
+    private boolean periodParamExists(HttpServletRequest req, List<String> errors) {
+        String periodParam = req.getParameter(PERIOD_PARAM);
+        if(StringUtils.isEmpty(periodParam)){
+            LOG.info("No period parameter in request.");
+            return false;
+        }
+
+        return reservationValidator.validatePeriodExists(periodParam, errors);
     }
 
     private boolean typeParamExists(HttpServletRequest req, List<String> errors) {
@@ -90,5 +109,10 @@ public class ReservationsListPublisher {
     private void publishReservationsByHallAndType(Map<String, Object> model, HallDTO hallDTO, TableType type) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findAllByHallAndType(hallDTO, type);
         model.put("reservations", reservations);
+    }
+
+    public void publishPeriods(Map<String, Object> model){
+        EnumSet<Period> periods = EnumSet.allOf(Period.class);
+        model.put("periods", periods);
     }
 }

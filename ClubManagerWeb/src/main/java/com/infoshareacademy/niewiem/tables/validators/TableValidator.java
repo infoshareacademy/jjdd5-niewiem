@@ -17,8 +17,8 @@ public class TableValidator extends GenericValidator {
     @Inject
     private TableQueryService tableQueryService;
 
-    public boolean validateTableIdExists(Integer tid, List<String> errors){
-        if(tableQueryService.doesExist(tid)){
+    public boolean validateTableIdExists(Integer tid, List<String> errors) {
+        if (tableQueryService.doesExist(tid)) {
             LOG.debug("Table ID was found in database. ({})", tid);
             return true;
         }
@@ -33,7 +33,7 @@ public class TableValidator extends GenericValidator {
 
     public boolean validateTableIdExistsInActiveHallId(Integer tid, Integer activeHid, List<String> errors) {
         Integer tableHid = tableQueryService.findById(tid).getHall().getId();
-        if(tableHid.equals(activeHid)){
+        if (tableHid.equals(activeHid)) {
             LOG.debug("Table's hall matches active hall. Table hid: {}, Active hid: {}", tableHid, activeHid);
             return true;
         }
@@ -42,13 +42,13 @@ public class TableValidator extends GenericValidator {
         return false;
     }
 
-    public boolean validateTableIdDoesNotExistInActiveHallId(Integer tid, Integer activeHid, List<String> errors){
+    public boolean validateTableIdDoesNotExistInActiveHallId(Integer tid, Integer activeHid, List<String> errors) {
         return !validateTableIdExistsInActiveHallId(tid, activeHid, errors);
     }
 
     public boolean validateTableTypeExists(String typeParam, List<String> errors) {
-        for(TableType t : TableType.values()){
-            if(t.name().equalsIgnoreCase(typeParam)){
+        for (TableType t : TableType.values()) {
+            if (t.name().equalsIgnoreCase(typeParam)) {
                 LOG.debug("Table type exists. ({})", typeParam);
                 return true;
             }

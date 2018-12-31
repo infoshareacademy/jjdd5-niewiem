@@ -46,8 +46,10 @@ public class ReservationsServlet extends HttpServlet {
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
 
         reservationsListPublisher.publishRequestedReservations(model, errors, req);
+
         tablesListPublisher.publishTablesInHall(model, hallDTO);
         tablesListPublisher.publishTableTypes(model);
+        reservationsListPublisher.publishPeriods(model);
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
