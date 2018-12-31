@@ -1,12 +1,13 @@
 <div class="row">
-    <#list tablesEndTimeIneMillis as tetim>
+    <#list reservations as r>
         <div class="col table-in-hall">
-        <p>id: ${tetim.table.id} name: ${tetim.table.name} duration: </p>
-    <input id="end${tetim?index}" value="${tetim.endTimeInMillis}" hidden>
-    <p id="countdown${tetim?index}"></p>
+            <p>id: ${r.table.id} name: ${r.table.name} duration: </p>
+            <input id="end${r?index}" value="${r.endMillis}" hidden>
+            <p id="countdown${r?index}"></p>
         </div>
     </#list>
 </div>
+
 <div class="row">
     <a class="btn btn-light btn-lg btn-block" href="/table-new" role="button">Add table</a>
 </div>
