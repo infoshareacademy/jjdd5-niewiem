@@ -2,8 +2,8 @@ package com.infoshareacademy.niewiem.tables.servlets;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
+import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
 import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.tables.dto.TableEndTimeInMillis;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +37,10 @@ public class TablesViewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        // todo: should use reservation view or DTO, not tetim
+        // todo: this should be done in publisher, not in servlet
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
-        List<TableEndTimeInMillis> tetim = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hallDTO);
-        model.put("tablesEndTimeIneMillis", tetim);
+        List<ReservationInMillisDTO> reservations = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hallDTO);
+        model.put("reservations", reservations);
 
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }

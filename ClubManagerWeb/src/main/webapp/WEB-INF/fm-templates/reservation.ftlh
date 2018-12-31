@@ -28,7 +28,6 @@
         </#list>
 
         <#-- todo: Date and time span should be filled automatically -->
-        <#-- to make it easier maybe use data transfer object like res(id, stDate, stTime, timspan) -->
             <div class="form-group">
                 <label for="startDate">Start date</label>
                 <input id="startDate" name="startDate" type="date" class="form-control" required/>
@@ -41,7 +40,6 @@
                 <label for="timeSpan">Time span in minutes</label>
                 <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
             </div>
-        <#-- todo: delete the stuff above me when you implement the right stuff -->
 
         <div class="form-group">
             <label for="customerInfo">Customer</label>

@@ -44,8 +44,11 @@ public class ReservationQueryService {
                 .collect(Collectors.toList());
     }
 
-    public List<Reservation> findAllActiveByHall(HallDTO hallDTO) {
-        return reservationDao.findAllActiveByHall(hallDTO.getId());
+    public List<ReservationInMillisDTO> findAllActiveByHall(HallDTO hallDTO) {
+        List<Reservation> reservations = reservationDao.findAllActiveByHall(hallDTO.getId());
+        return reservations.stream()
+                .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
+                .collect(Collectors.toList());
     }
 
     public Reservation findActiveForTable(Table table) {

@@ -13,6 +13,12 @@ public class ReservationInMillisDTO {
         // empty constructor
     }
 
+    public ReservationInMillisDTO(TableDTO table, Long endMillis, String customer) {
+        this.table = table;
+        this.endMillis = endMillis;
+        this.customer = customer;
+    }
+
     public Long getId() {
         return id;
     }

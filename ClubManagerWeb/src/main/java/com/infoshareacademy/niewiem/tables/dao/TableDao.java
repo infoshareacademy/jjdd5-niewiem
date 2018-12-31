@@ -1,6 +1,5 @@
 package com.infoshareacademy.niewiem.tables.dao;
 
-import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,13 +68,13 @@ public class TableDao {
         return resultList;
     }
 
-    public List<Table> findAllInHall(Hall hall) {
+    public List<Table> findAllByHallId(Integer hid) {
         final Query query = entityManager
-                .createQuery("SELECT t FROM Table t WHERE t.hall = :hall");
-        query.setParameter("hall", hall);
+                .createQuery("SELECT t FROM Table t WHERE t.hall.id = :hid");
+        query.setParameter("hid", hid);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} tables in hall: {}.", resultList.size(), hall);
+        LOG.info("Found {} tables in hall with ID: {}.", resultList.size(), hid);
         return resultList;
     }
 }
