@@ -1,9 +1,9 @@
 package com.infoshareacademy.niewiem.tables.servlets;
 
-import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.tables.publishers.TablesListPublisher;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,14 +30,16 @@ public class TableNewServlet extends HttpServlet {
     private TableSaveService tableSaveService;
 
     @Inject
+    private TablesListPublisher tablesListPublisher;
+
+    @Inject
     private ActiveHallService ahService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
 
-        EnumSet<TableType> types = EnumSet.allOf(TableType.class);
-        model.put("types", types);
+        tablesListPublisher.publishTableTypes(model);
 
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
@@ -48,8 +49,9 @@ public class TableNewServlet extends HttpServlet {
         HallDTO hallDTO = ahService.getActiveHall(req.getSession());
         String name = req.getParameter("name");
         String type = req.getParameter("type");
+
         tableSaveService.addTableToHall(hallDTO, name, type);
 
-        resp.sendRedirect("/tables-view?hallId=" + hallDTO.getId());
+        resp.sendRedirect("/tables-view");
     }
 }
