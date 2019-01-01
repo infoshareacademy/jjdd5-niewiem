@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.reservations.servlets;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
+import com.infoshareacademy.niewiem.reservations.publishers.PeriodListPublisher;
 import com.infoshareacademy.niewiem.reservations.publishers.ReservationsListPublisher;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.publishers.TablesListPublisher;
@@ -36,6 +37,9 @@ public class ReservationsServlet extends HttpServlet {
     @Inject
     private TablesListPublisher tablesListPublisher;
 
+    @Inject
+    private PeriodListPublisher periodListPublisher;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -49,7 +53,7 @@ public class ReservationsServlet extends HttpServlet {
 
         tablesListPublisher.publishTablesInHall(model, hallDTO);
         tablesListPublisher.publishTableTypes(model);
-        reservationsListPublisher.publishPeriods(model);
+        periodListPublisher.publishPeriods(model);
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);

@@ -9,7 +9,6 @@ import com.infoshareacademy.niewiem.reservations.mappers.PeriodMapper;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.reservations.validators.ReservationValidator;
 import com.infoshareacademy.niewiem.tables.validators.TableValidator;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -47,13 +45,13 @@ public class ReservationsListPublisher {
     public void publishRequestedReservations(Map<String, Object> model, List<String> errors, HttpServletRequest req) {
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
 
-        if (periodParamExists(req, errors)) {
+        if (reservationValidator.validatePeriodParam(req.getParameter(PERIOD_PARAM), errors)) {
             publishOptionsWhenPeriodParamExists(model, errors, req, hallDTO);
         } else {
-            if (tidParamExists(req, errors, hallDTO)) {
+            if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
                 Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
                 publishReservationsByTable(model, tid);
-            } else if (typeParamExists(req, errors)) {
+            } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
                 TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
                 publishReservationsByHallAndType(model, hallDTO, type);
             } else {
@@ -88,7 +86,6 @@ public class ReservationsListPublisher {
                 publishExclusivePeriodOptions(model, errors, req, hallDTO, period);
                 break;
         }
-
     }
 
     private void publishActiveReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
@@ -97,10 +94,10 @@ public class ReservationsListPublisher {
     }
 
     private void publishInclusivePeriodOptions(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO, Period period) {
-        if (tidParamExists(req, errors, hallDTO)) {
+        if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
             Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
             publishReservationsByTableAndPeriodInclusive(model, tid, period);
-        } else if (typeParamExists(req, errors)) {
+        } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
             TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
             publishReservationsByHallAndTypeAndPeriodInclusive(model, hallDTO, type, period);
         } else {
@@ -109,10 +106,10 @@ public class ReservationsListPublisher {
     }
 
     private void publishExclusivePeriodOptions(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO, Period period) {
-        if (tidParamExists(req, errors, hallDTO)) {
+        if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
             Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
             publishReservationsByTableAndPeriodExclusive(model, tid, period);
-        } else if (typeParamExists(req, errors)) {
+        } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
             TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
             publishReservationsByHallAndTypeAndPeriodExclusive(model, hallDTO, type, period);
         } else {
@@ -175,51 +172,5 @@ public class ReservationsListPublisher {
         LocalDateTime end = periodMapper.getEndTime(period);
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTypeAndTimeSpanExclusive(hallDTO, type, start, end);
         model.put("reservations", reservations);
-    }
-
-    public void publishPeriods(Map<String, Object> model) {
-        EnumSet<Period> periods = EnumSet.allOf(Period.class);
-        model.put("periods", periods);
-    }
-
-    private boolean periodParamExists(HttpServletRequest req, List<String> errors) {
-        String periodParam = req.getParameter(PERIOD_PARAM);
-        if (StringUtils.isEmpty(periodParam)) {
-            LOG.info("No period parameter in request.");
-            return false;
-        }
-
-        return reservationValidator.validatePeriodExists(periodParam, errors);
-    }
-
-    private boolean tidParamExists(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
-        String tidParam = req.getParameter("tid");
-        if (StringUtils.isEmpty(tidParam)) {
-            LOG.info("No table id parameter in request.");
-            return false;
-        }
-        if (tableValidator.validateIsNotNumeric(tidParam, "table ID", errors)) {
-            return false;
-        }
-
-        Integer tid = Integer.parseInt(tidParam);
-        if (tableValidator.validateTableIdDoesNotExists(tid, errors)) {
-            return false;
-        }
-        if (tableValidator.validateTableIdDoesNotExistInActiveHallId(tid, hallDTO.getId(), errors)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean typeParamExists(HttpServletRequest req, List<String> errors) {
-        String typeParam = req.getParameter(TABLE_TYPE_PARAM);
-        if (StringUtils.isEmpty(typeParam)) {
-            LOG.info("No table type parameter in request.");
-            return false;
-        }
-
-        return tableValidator.validateTableTypeExists(typeParam, errors);
     }
 }
