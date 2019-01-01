@@ -52,7 +52,7 @@ public class TableQueryService {
 
     public List<ReservationInMillisDTO> findAllTablesInHallWithEndTimeInMillis(HallDTO hallDTO) {
         List<TableDTO> tables = findAllByHall(hallDTO);
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findAllActiveByHall(hallDTO);
+        List<ReservationInMillisDTO> reservations = reservationQueryService.findActiveByHall(hallDTO);
 
         return tables.stream()
                 .map(t ->
@@ -65,6 +65,6 @@ public class TableQueryService {
     }
 
     public boolean isActive(Table table) {
-        return reservationQueryService.findActiveForTable(table) != null;
+        return reservationQueryService.findActiveForTable(table.getId()) != null;
     }
 }

@@ -1,7 +1,6 @@
 package com.infoshareacademy.niewiem.reservations.dao;
 
 import com.infoshareacademy.niewiem.domain.Reservation;
-import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.enums.TableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,19 +67,19 @@ public class ReservationDao {
         return conflictingReservation;
     }
 
-    public Reservation findActiveForTable(Table table) {
+    public Reservation findActiveForTable(Integer tid) {
         final Query query = entityManager
-                .createQuery("SELECT r FROM Reservation r WHERE (r.table = :table AND r.startTime < :now AND r.endTime > :now)");
-        query.setParameter("table", table);
+                .createQuery("SELECT r FROM Reservation r WHERE (r.table.id = :tid AND r.startTime < :now AND r.endTime > :now)");
+        query.setParameter("tid", tid);
         query.setParameter("now", LocalDateTime.now());
 
         List resultList = query.getResultList();
         if (resultList == null || resultList.isEmpty()) {
-            LOG.info("Found no active reservation for table: {}", table);
+            LOG.info("Found no active reservation for table with id: {}", tid);
             return null;
         }
         Reservation reservation = (Reservation) resultList.get(0);
-        LOG.info("Found an active reservation: {}", reservation);
+        LOG.info("Found an active reservation: {} for table with id: {}", reservation, tid);
         return reservation;
     }
 
@@ -94,7 +93,7 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllByHallId(Integer hid) {
+    public List<Reservation> findByHallId(Integer hid) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE r.table.hall.id = :hid");
         query.setParameter("hid", hid);
@@ -104,7 +103,7 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllActiveByHall(Integer hid) {
+    public List<Reservation> findActiveByHall(Integer hid) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall.id = :hid AND r.startTime < :now AND r.endTime > :now)");
         query.setParameter("hid", hid);
@@ -115,23 +114,116 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllByHallAndType(Integer hid, TableType type) {
+    public List<Reservation> findByHallAndType(Integer hid, TableType type) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall.id = :hid AND r.table.type = :type)");
         query.setParameter("hid", hid);
         query.setParameter("type", type);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations in hall with id: {} and of type {}.", resultList.size(), hid, type);
+        LOG.info("Found {} reservations in hall with id: {} for table type {}.", resultList.size(), hid, type);
         return resultList;
     }
 
-    public List<Reservation> findAllByTableId(Integer tid) {
+    public List<Reservation> findByTableId(Integer tid) {
         final Query query = entityManager.createQuery("SELECT r FROM Reservation r WHERE r.table.id = :tid");
         query.setParameter("tid", tid);
 
         List resultList = query.getResultList();
         LOG.info("Found {} reservations for table with ID: {}", resultList.size(), tid);
+        return resultList;
+    }
+
+    public List<Reservation> findByHallIdAndTimeSpanExclusive(Integer hid, LocalDateTime start, LocalDateTime end) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.hall.id = :hid) AND " +
+                        "((r.startTime > :start AND r.startTime < :end) AND " +
+                        "(r.endTime > :start AND r.endTime < :end)))");
+        query.setParameter("hid", hid);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} that start and end between: {} and {}", resultList.size(), hid, start, end);
+        return resultList;
+    }
+
+    public List<Reservation> findByHallIdAndTimeSpanInclusive(Integer hid, LocalDateTime start, LocalDateTime end) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.hall.id = :hid) AND " +
+                        "((r.startTime > :start AND r.startTime < :end) OR " +
+                        "(r.endTime > :start AND r.endTime < :end)))");
+        query.setParameter("hid", hid);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} that start or end between: {} and {}", resultList.size(), hid, start, end);
+        return resultList;
+    }
+
+    public List<Reservation> findByTableIdAndTimeSpanExclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.id = :tid) AND " +
+                        "((r.startTime > :start AND r.startTime < :end) AND " +
+                        "(r.endTime > :start AND r.endTime < :end)))");
+        query.setParameter("tid", tid);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations for table with id: {} that start and end between: {} and {}", resultList.size(), tid, start, end);
+        return resultList;
+    }
+    public List<Reservation> findByTableIdAndTimeSpanInclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.id = :tid) AND " +
+                        "((r.startTime > :start AND r.startTime < :end) OR " +
+                        "(r.endTime > :start AND r.endTime < :end)))");
+        query.setParameter("tid", tid);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations for table with id: {} that start or end between: {} and {}", resultList.size(), tid, start, end);
+        return resultList;
+    }
+
+    public List<Reservation> findByHallIdAndTypeAndTimeSpanExclusive(Integer hid, TableType type, LocalDateTime start, LocalDateTime end) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.hall.id = :hid) AND " +
+                        "(r.table.type = :type) AND" +
+                        "((r.startTime > :start AND r.startTime < :end) AND " +
+                        "(r.endTime > :start AND r.endTime < :end)))");
+        query.setParameter("hid", hid);
+        query.setParameter("type", type);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} for table type: {} that start and end between: {} and {}", resultList.size(), hid, type, start, end);
+        return resultList;
+    }
+
+    public List<Reservation> findByHallIdAndTypeAndTimeSpanInclusive(Integer hid, TableType type, LocalDateTime start, LocalDateTime end) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.hall.id = :hid) AND " +
+                        "(r.table.type = :type) AND" +
+                        "((r.startTime > :start AND r.startTime < :end) OR " +
+                        "(r.endTime > :start AND r.endTime < :end)))");
+        query.setParameter("hid", hid);
+        query.setParameter("type", type);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} for table type: {} that start or end between: {} and {}", resultList.size(), hid, type, start, end);
         return resultList;
     }
 

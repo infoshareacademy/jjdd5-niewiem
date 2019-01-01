@@ -1,7 +1,6 @@
 package com.infoshareacademy.niewiem.reservations.services;
 
 import com.infoshareacademy.niewiem.domain.Reservation;
-import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +29,7 @@ public class ReservationQueryService {
     @Inject
     private InputValidator inputValidator;
 
-    public Reservation findById(String ridString){
+    public Reservation findById(String ridString) {
         Long rid = inputValidator.reqLongValidator(ridString);
         return findById(rid);
     }
@@ -38,33 +38,62 @@ public class ReservationQueryService {
         return reservationDao.findById(rid);
     }
 
-    public List<ReservationInMillisDTO> findAllByHall(HallDTO hallDTO) {
-        List<Reservation> reservations = reservationDao.findAllByHallId(hallDTO.getId());
-        return reservations.stream()
-                .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
-                .collect(Collectors.toList());
+    public List<ReservationInMillisDTO> findByHall(HallDTO hallDTO) {
+        List<Reservation> reservations = reservationDao.findByHallId(hallDTO.getId());
+        return convertToDTO(reservations);
     }
 
-    public List<ReservationInMillisDTO> findAllActiveByHall(HallDTO hallDTO) {
-        List<Reservation> reservations = reservationDao.findAllActiveByHall(hallDTO.getId());
-        return reservations.stream()
-                .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
-                .collect(Collectors.toList());
+    public List<ReservationInMillisDTO> findActiveByHall(HallDTO hallDTO) {
+        List<Reservation> reservations = reservationDao.findActiveByHall(hallDTO.getId());
+        return convertToDTO(reservations);
     }
 
-    public Reservation findActiveForTable(Table table) {
-        return reservationDao.findActiveForTable(table);
+    public ReservationInMillisDTO findActiveForTable(Integer tid) {
+        Reservation reservation = reservationDao.findActiveForTable(tid);
+        return reservationInMillisDTOMapper.convertResToDTO(reservation);
     }
 
-    public List<ReservationInMillisDTO> findAllByTableId(Integer tid) {
-        List<Reservation> reservations = reservationDao.findAllByTableId(tid);
-        return reservations.stream()
-                .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
-                .collect(Collectors.toList());
+    public List<ReservationInMillisDTO> findByTableId(Integer tid) {
+        List<Reservation> reservations = reservationDao.findByTableId(tid);
+        return convertToDTO(reservations);
     }
 
-    public List<ReservationInMillisDTO> findAllByHallAndType(HallDTO hallDTO, TableType type) {
-        List<Reservation> reservations = reservationDao.findAllByHallAndType(hallDTO.getId(), type);
+    public List<ReservationInMillisDTO> findByHallAndType(HallDTO hallDTO, TableType type) {
+        List<Reservation> reservations = reservationDao.findByHallAndType(hallDTO.getId(), type);
+        return convertToDTO(reservations);
+    }
+
+    public List<ReservationInMillisDTO> findByHallAndTimeSpanInclusive(HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
+        List<Reservation> reservations = reservationDao.findByHallIdAndTimeSpanInclusive(hallDTO.getId(), start, end);
+        return convertToDTO(reservations);
+    }
+
+    public List<ReservationInMillisDTO> findByTableIdAndTimeSpanInclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
+        List<Reservation> reservations = reservationDao.findByTableIdAndTimeSpanInclusive(tid, start, end);
+        return convertToDTO(reservations);
+    }
+
+    public List<ReservationInMillisDTO> findByHallAndTypeAndTimeSpanInclusive(HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end) {
+        List<Reservation> reservations = reservationDao.findByHallIdAndTypeAndTimeSpanInclusive(hallDTO.getId(), type, start, end);
+        return convertToDTO(reservations);
+    }
+
+    public List<ReservationInMillisDTO> findByHallAndTimeSpanExclusive(HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
+        List<Reservation> reservations = reservationDao.findByHallIdAndTimeSpanExclusive(hallDTO.getId(), start, end);
+        return convertToDTO(reservations);
+    }
+
+    public List<ReservationInMillisDTO> findByTableIdAndTimeSpanExclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
+        List<Reservation> reservations = reservationDao.findByTableIdAndTimeSpanExclusive(tid, start, end);
+        return convertToDTO(reservations);
+    }
+
+    public List<ReservationInMillisDTO> findByHallAndTypeAndTimeSpanExclusive(HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end) {
+        List<Reservation> reservations = reservationDao.findByHallIdAndTypeAndTimeSpanExclusive(hallDTO.getId(), type, start, end);
+        return convertToDTO(reservations);
+    }
+
+    private List<ReservationInMillisDTO> convertToDTO(List<Reservation> reservations) {
         return reservations.stream()
                 .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
                 .collect(Collectors.toList());

@@ -1,10 +1,14 @@
 package com.infoshareacademy.niewiem.reservations.enums;
 
 public enum Period {
-    CUSTOM("Custom period"),
+    // todo: implement use of those commented out:
+//    CUSTOM("Custom period"),
+    ACTIVE("Active"),
+    ALL("All"),
 
-    YESTERDAY("Yesterday"),
+
     TODAY("Today"),
+    YESTERDAY("Yesterday"),
     TOMORROW("Tomorrow"),
 
     LAST24H("Last 24 hours"),
@@ -12,8 +16,8 @@ public enum Period {
     THIS_MONTH("This month"),
 
     HISTORY("History"),
-    ACTIVE("Active"),
     UPCOMING("Upcoming");
+
 
     private String text;
 
