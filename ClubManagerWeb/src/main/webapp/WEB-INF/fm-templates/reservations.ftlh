@@ -17,6 +17,7 @@
         <form method="get" action="/reservations">
             <button type="submit" class="btn btn-primary">Filter</button>
             <#list tables>
+            <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
                     <label form="chooseTable">Select table</label>
                     <select name="tid" class="form-control" id="chooseTable">
@@ -24,6 +25,20 @@
                         <#items as t>
                             <option value="${t.id}">
                                 ${t.name}
+                            </option>
+                        </#items>
+                    </select>
+                </div>
+            </#list>
+            <#list types>
+            <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
+                <div class="form-group">
+                    <label form="chooseType">Select table type</label>
+                    <select name="type" class="form-control" id="chooseTable">
+                        <option value="" selected>---</option>
+                        <#items as ty>
+                            <option value="${ty}">
+                                ${ty}
                             </option>
                         </#items>
                     </select>
@@ -37,6 +52,11 @@
             <a class="btn btn-light btn-lg btn-block" href="/reservation" role="button">Add new reservation</a>
         </div>
 
+        <#if reservations?size == 0>
+            <div class="alert alert-danger">
+                <p>No reservations found :(</p>
+            </div>
+        </#if>
         <#list reservations>
             <table class="table table-bordered table-hover table-striped">
 

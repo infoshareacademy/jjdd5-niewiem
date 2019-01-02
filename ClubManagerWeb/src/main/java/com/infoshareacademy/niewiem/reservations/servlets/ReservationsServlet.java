@@ -47,6 +47,7 @@ public class ReservationsServlet extends HttpServlet {
 
         reservationsListPublisher.publishRequestedReservations(model, errors, req);
         tablesListPublisher.publishTablesInHall(model, hallDTO);
+        tablesListPublisher.publishTableTypes(model);
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);

@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.reservations.dao;
 
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.enums.TableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,6 +112,17 @@ public class ReservationDao {
 
         List resultList = query.getResultList();
         LOG.info("Found {} active reservations in hall with id: {}.", resultList.size(), hid);
+        return resultList;
+    }
+
+    public List<Reservation> findAllByHallAndType(Integer hid, TableType type) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall.id = :hid AND r.table.type = :type)");
+        query.setParameter("hid", hid);
+        query.setParameter("type", type);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} and of type {}.", resultList.size(), hid, type);
         return resultList;
     }
 

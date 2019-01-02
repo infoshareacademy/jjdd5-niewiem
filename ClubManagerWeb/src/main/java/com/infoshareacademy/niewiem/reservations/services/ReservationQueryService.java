@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.reservations.services;
 
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
@@ -57,6 +58,13 @@ public class ReservationQueryService {
 
     public List<ReservationInMillisDTO> findAllByTableId(Integer tid) {
         List<Reservation> reservations = reservationDao.findAllByTableId(tid);
+        return reservations.stream()
+                .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
+                .collect(Collectors.toList());
+    }
+
+    public List<ReservationInMillisDTO> findAllByHallAndType(HallDTO hallDTO, TableType type) {
+        List<Reservation> reservations = reservationDao.findAllByHallAndType(hallDTO.getId(), type);
         return reservations.stream()
                 .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
                 .collect(Collectors.toList());
