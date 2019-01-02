@@ -1,8 +1,6 @@
 package com.infoshareacademy.niewiem.reservations.enums;
 
 public enum Period {
-    // todo: implement use of those commented out:
-//    CUSTOM("Custom period"),
     ACTIVE("Active"),
     ALL("All"),
 
@@ -16,8 +14,9 @@ public enum Period {
     THIS_MONTH("This month"),
 
     HISTORY("History"),
-    UPCOMING("Upcoming");
+    UPCOMING("Upcoming"),
 
+    CUSTOM("Custom period");
 
     private String text;
 

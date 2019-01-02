@@ -9,13 +9,26 @@
         </div>
     </#list>
 </#if>
+<#if warnings??>
+    <#list warnings>
+        <div class="alert alert-warning">
+            <ul>
+                <#items as warning>
+                    <li>${warning}</li>
+                </#items>
+            </ul>
+        </div>
+    </#list>
+</#if>
 
 <div class="row">
     <div class="col-5">
         <#-- todo: when choosing specific table you should not be able to choose type -->
         <#-- todo: you should only be able to use start/end times when using "custom" Period -->
         <form method="get" action="/reservations">
+
             <button type="submit" class="btn btn-primary">Filter</button>
+
             <#list tables>
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
@@ -30,6 +43,7 @@
                     </select>
                 </div>
             </#list>
+
             <#list types>
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
@@ -44,6 +58,7 @@
                     </select>
                 </div>
             </#list>
+
             <#list periods>
             <#-- todo: when selecting custom, start and end time should appear -->
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
@@ -59,6 +74,26 @@
                     </select>
                 </div>
             </#list>
+
+            <#--todo: this should only be visible when CUSTOM period option is chosen-->
+            <div class="form-group">
+                <label for="startDate">Start date</label>
+                <input id="startDate" name="startDate" type="date" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="startTime">Start time</label>
+                <input id="startTime" name="startTime" type="time" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End date</label>
+                <input id="endDate" name="endDate" type="date" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="endTime">End time</label>
+                <input id="endTime" name="endTime" type="time" class="form-control"/>
+            </div>
+
         </form>
     </div>
     <div class="col-7">
