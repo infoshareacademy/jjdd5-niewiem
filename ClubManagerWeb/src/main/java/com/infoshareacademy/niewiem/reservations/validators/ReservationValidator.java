@@ -45,7 +45,7 @@ public class ReservationValidator extends GenericValidator {
 
     public LocalTime returnValidatedTimeOrDefault(String timeParam, List<String> warnings, LocalTime defaultTime) {
         if (validateTimeParam(timeParam)) {
-            return LocalTime.parse(timeParam, TIME_FORMAT);
+            return LocalTime.parse(timeParam, TIME_FORMAT).withSecond(defaultTime.getSecond()).withNano(defaultTime.getNano());
         } else {
             warnings.add("Invalid time parameter, showing results with default value.");
             LOG.warn("Returning default time parameter: {}. Original: {}", defaultTime, timeParam);
