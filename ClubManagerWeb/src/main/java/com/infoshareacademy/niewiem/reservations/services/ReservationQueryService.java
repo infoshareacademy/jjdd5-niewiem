@@ -5,6 +5,7 @@ import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
+import com.infoshareacademy.niewiem.reservations.enums.Exclusivity;
 import com.infoshareacademy.niewiem.reservations.mappers.ReservationInMillisDTOMapper;
 import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
@@ -63,33 +64,18 @@ public class ReservationQueryService {
         return convertToDTO(reservations);
     }
 
-    public List<ReservationInMillisDTO> findByHallAndTimeSpanInclusive(HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
-        List<Reservation> reservations = reservationDao.findByHallIdAndTimeSpanInclusive(hallDTO.getId(), start, end);
+    public List<ReservationInMillisDTO> findByHallAndTimeSpan(HallDTO hallDTO, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        List<Reservation> reservations = reservationDao.findByHallIdAndTimeSpanExclusivityOption(hallDTO.getId(), start, end, exclusivity);
         return convertToDTO(reservations);
     }
 
-    public List<ReservationInMillisDTO> findByTableIdAndTimeSpanInclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
-        List<Reservation> reservations = reservationDao.findByTableIdAndTimeSpanInclusive(tid, start, end);
+    public List<ReservationInMillisDTO> findByTableIdAndTimeSpan(Integer tid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        List<Reservation> reservations = reservationDao.findByTableIdAndTimeSpanExclusivityOption(tid, start, end, exclusivity);
         return convertToDTO(reservations);
     }
 
-    public List<ReservationInMillisDTO> findByHallAndTypeAndTimeSpanInclusive(HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end) {
-        List<Reservation> reservations = reservationDao.findByHallIdAndTypeAndTimeSpanInclusive(hallDTO.getId(), type, start, end);
-        return convertToDTO(reservations);
-    }
-
-    public List<ReservationInMillisDTO> findByHallAndTimeSpanExclusive(HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
-        List<Reservation> reservations = reservationDao.findByHallIdAndTimeSpanExclusive(hallDTO.getId(), start, end);
-        return convertToDTO(reservations);
-    }
-
-    public List<ReservationInMillisDTO> findByTableIdAndTimeSpanExclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
-        List<Reservation> reservations = reservationDao.findByTableIdAndTimeSpanExclusive(tid, start, end);
-        return convertToDTO(reservations);
-    }
-
-    public List<ReservationInMillisDTO> findByHallAndTypeAndTimeSpanExclusive(HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end) {
-        List<Reservation> reservations = reservationDao.findByHallIdAndTypeAndTimeSpanExclusive(hallDTO.getId(), type, start, end);
+    public List<ReservationInMillisDTO> findByHallAndTypeAndTimeSpan(HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        List<Reservation> reservations = reservationDao.findByHallIdAndTypeAndTimeSpanExclusivityOption(hallDTO.getId(), type, start, end, exclusivity);
         return convertToDTO(reservations);
     }
 

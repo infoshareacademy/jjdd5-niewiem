@@ -4,6 +4,7 @@ import com.infoshareacademy.niewiem.enums.TableType;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
+import com.infoshareacademy.niewiem.reservations.enums.Exclusivity;
 import com.infoshareacademy.niewiem.reservations.enums.Period;
 import com.infoshareacademy.niewiem.reservations.mappers.PeriodMapper;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
@@ -18,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
+import static com.infoshareacademy.niewiem.reservations.enums.Exclusivity.EXCLUSIVE;
+import static com.infoshareacademy.niewiem.reservations.enums.Exclusivity.INCLUSIVE;
 
 @Stateless
 public class ReservationsListPublisher {
@@ -63,7 +67,7 @@ public class ReservationsListPublisher {
                 Period period = Period.TODAY;
                 LocalDateTime start = periodMapper.getStartTime(period);
                 LocalDateTime end = periodMapper.getEndTime(period);
-                publishReservationsByHallAndPeriodInclusive(model, hallDTO, start, end);
+                publishReservationsByHallAndPeriod(model, hallDTO, start, end, INCLUSIVE);
             }
         }
     }
@@ -88,7 +92,7 @@ public class ReservationsListPublisher {
                 );
                 reservationValidator.validateEndIsAfterStartOrReturnMax(start, end, warnings);
 
-                publishInclusivePeriodOptions(model, errors, req, hallDTO, start, end);
+                publishReservationsByTimeSpan(model, errors, req, hallDTO, start, end, INCLUSIVE);
                 break;
             case ALL:
                 publishReservationsByHall(model, hallDTO);
@@ -103,13 +107,13 @@ public class ReservationsListPublisher {
             case THIS_MONTH:
                 start = periodMapper.getStartTime(period);
                 end = periodMapper.getEndTime(period);
-                publishInclusivePeriodOptions(model, errors, req, hallDTO, start, end);
+                publishReservationsByTimeSpan(model, errors, req, hallDTO, start, end, INCLUSIVE);
                 break;
             case HISTORY:
             case UPCOMING:
                 start = periodMapper.getStartTime(period);
                 end = periodMapper.getEndTime(period);
-                publishExclusivePeriodOptions(model, errors, req, hallDTO, start, end);
+                publishReservationsByTimeSpan(model, errors, req, hallDTO, start, end, EXCLUSIVE);
                 break;
         }
     }
@@ -119,27 +123,15 @@ public class ReservationsListPublisher {
         model.put("reservations", reservations);
     }
 
-    private void publishInclusivePeriodOptions(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
+    private void publishReservationsByTimeSpan(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
             Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
-            publishReservationsByTableAndPeriodInclusive(model, tid, start, end);
+            publishReservationsByTableAndPeriod(model, tid, start, end, exclusivity);
         } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
             TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
-            publishReservationsByHallAndTypeAndPeriodInclusive(model, hallDTO, type, start, end);
+            publishReservationsByHallAndTypeAndPeriod(model, hallDTO, type, start, end, exclusivity);
         } else {
-            publishReservationsByHallAndPeriodInclusive(model, hallDTO, start, end);
-        }
-    }
-
-    private void publishExclusivePeriodOptions(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
-        if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
-            Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
-            publishReservationsByTableAndPeriodExclusive(model, tid, start, end);
-        } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
-            TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
-            publishReservationsByHallAndTypeAndPeriodExclusive(model, hallDTO, type, start, end);
-        } else {
-            publishReservationsByHallAndPeriodExclusive(model, hallDTO, start, end);
+            publishReservationsByHallAndPeriod(model, hallDTO, start, end, exclusivity);
         }
     }
 
@@ -158,33 +150,18 @@ public class ReservationsListPublisher {
         model.put("reservations", reservations);
     }
 
-    private void publishReservationsByHallAndPeriodInclusive(Map<String, Object> model, HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTimeSpanInclusive(hallDTO, start, end);
+    private void publishReservationsByHallAndPeriod(Map<String, Object> model, HallDTO hallDTO, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTimeSpan(hallDTO, start, end, exclusivity);
         model.put("reservations", reservations);
     }
 
-    private void publishReservationsByTableAndPeriodInclusive(Map<String, Object> model, Integer tid, LocalDateTime start, LocalDateTime end) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findByTableIdAndTimeSpanInclusive(tid, start, end);
+    private void publishReservationsByTableAndPeriod(Map<String, Object> model, Integer tid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        List<ReservationInMillisDTO> reservations = reservationQueryService.findByTableIdAndTimeSpan(tid, start, end, exclusivity);
         model.put("reservations", reservations);
     }
 
-    private void publishReservationsByHallAndTypeAndPeriodInclusive(Map<String, Object> model, HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTypeAndTimeSpanInclusive(hallDTO, type, start, end);
-        model.put("reservations", reservations);
-    }
-
-    private void publishReservationsByHallAndPeriodExclusive(Map<String, Object> model, HallDTO hallDTO, LocalDateTime start, LocalDateTime end) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTimeSpanExclusive(hallDTO, start, end);
-        model.put("reservations", reservations);
-    }
-
-    private void publishReservationsByTableAndPeriodExclusive(Map<String, Object> model, Integer tid, LocalDateTime start, LocalDateTime end) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findByTableIdAndTimeSpanExclusive(tid, start, end);
-        model.put("reservations", reservations);
-    }
-
-    private void publishReservationsByHallAndTypeAndPeriodExclusive(Map<String, Object> model, HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTypeAndTimeSpanExclusive(hallDTO, type, start, end);
+    private void publishReservationsByHallAndTypeAndPeriod(Map<String, Object> model, HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTypeAndTimeSpan(hallDTO, type, start, end, exclusivity);
         model.put("reservations", reservations);
     }
 }

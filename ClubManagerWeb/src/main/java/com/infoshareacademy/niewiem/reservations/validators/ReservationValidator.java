@@ -76,9 +76,9 @@ public class ReservationValidator extends GenericValidator {
     public LocalDateTime validateEndIsAfterStartOrReturnMax(LocalDateTime start, LocalDateTime end, List<String> warnings) {
         if (end.isBefore(start)) {
             warnings.add("The end of requested period was before the start. Showing results with no end date.");
-            LOG.info("Requested end was before start, setting it to MAX value.");
-            LOG.info("Requested start: {}", start);
-            LOG.info("Requested end: {}", end);
+            LOG.warn("Requested end was before start, setting it to MAX value.");
+            LOG.warn("Requested start: {}", start);
+            LOG.warn("Requested end: {}", end);
             return LocalDateTime.MAX;
         } else {
             LOG.debug("Requsted end was after start.");

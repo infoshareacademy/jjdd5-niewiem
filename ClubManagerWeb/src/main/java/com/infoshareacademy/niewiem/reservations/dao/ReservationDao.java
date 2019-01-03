@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.reservations.dao;
 
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.reservations.enums.Exclusivity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -142,72 +143,47 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findByHallIdAndTimeSpanExclusive(Integer hid, LocalDateTime start, LocalDateTime end) {
-        return findByHallIdAndTimeSpanExclusivityOption(hid, start, end, EXCLUSIVE_TIME_QUERY, "exclusive");
-    }
-
-    public List<Reservation> findByHallIdAndTimeSpanInclusive(Integer hid, LocalDateTime start, LocalDateTime end) {
-        return findByHallIdAndTimeSpanExclusivityOption(hid, start, end, INCLUSIVE_TIME_QUERY, "inclusive");
-    }
-
-    public List<Reservation> findByHallIdAndTimeSpanExclusivityOption(Integer hid, LocalDateTime start, LocalDateTime end, String exclusivity, String exclusivityLog) {
+    public List<Reservation> findByHallIdAndTimeSpanExclusivityOption(Integer hid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (" +
                         "(r.table.hall.id = :hid) AND " +
-                        exclusivity + ")");
+                        exclusivity.getQuery() + ")");
         query.setParameter("hid", hid);
         query.setParameter("start", start);
         query.setParameter("end", end);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations in hall with id: {} in time span: {} -> {} ({})", resultList.size(), hid, start, end, exclusivityLog);
+        LOG.info("Found {} reservations in hall with id: {} in time span: {} -> {} ({})", resultList.size(), hid, start, end, exclusivity.getMessage());
         return resultList;
     }
 
-    public List<Reservation> findByTableIdAndTimeSpanExclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
-        return findByTableIdAndTimeSpanExclusivityOption(tid, start, end, EXCLUSIVE_TIME_QUERY, "exclusive");
-    }
-
-    public List<Reservation> findByTableIdAndTimeSpanInclusive(Integer tid, LocalDateTime start, LocalDateTime end) {
-        return findByTableIdAndTimeSpanExclusivityOption(tid, start, end, INCLUSIVE_TIME_QUERY, "inclusive");
-    }
-
-    public List<Reservation> findByTableIdAndTimeSpanExclusivityOption(Integer tid, LocalDateTime start, LocalDateTime end, String exclusivity, String exclusivityLog) {
+    public List<Reservation> findByTableIdAndTimeSpanExclusivityOption(Integer tid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (" +
                         "(r.table.id = :tid) AND " +
-                        exclusivity + ")");
+                        exclusivity.getQuery() + ")");
         query.setParameter("tid", tid);
         query.setParameter("start", start);
         query.setParameter("end", end);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations for table with id: {} in time span: {} -> {} ({})", resultList.size(), tid, start, end, exclusivityLog);
+        LOG.info("Found {} reservations for table with id: {} in time span: {} -> {} ({})", resultList.size(), tid, start, end, exclusivity.getMessage());
         return resultList;
     }
 
-    public List<Reservation> findByHallIdAndTypeAndTimeSpanExclusive(Integer hid, TableType type, LocalDateTime start, LocalDateTime end) {
-        return findByHallIdAndTypeAndTimeSpanExclusivityOption(hid, type, start, end, EXCLUSIVE_TIME_QUERY, "exclusive");
-    }
-
-    public List<Reservation> findByHallIdAndTypeAndTimeSpanInclusive(Integer hid, TableType type, LocalDateTime start, LocalDateTime end) {
-        return findByHallIdAndTypeAndTimeSpanExclusivityOption(hid, type, start, end, INCLUSIVE_TIME_QUERY, "inclusive");
-
-    }
-
-    public List<Reservation> findByHallIdAndTypeAndTimeSpanExclusivityOption(Integer hid, TableType type, LocalDateTime start, LocalDateTime end, String exclusivity, String exclusivityLog) {
+    public List<Reservation> findByHallIdAndTypeAndTimeSpanExclusivityOption(Integer hid, TableType type, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (" +
                         "(r.table.hall.id = :hid) AND " +
                         "(r.table.type = :type) AND " +
-                        exclusivity + ")");
+                        exclusivity.getQuery() + ")");
         query.setParameter("hid", hid);
         query.setParameter("type", type);
         query.setParameter("start", start);
         query.setParameter("end", end);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations in hall with id: {} for table type: {} in time span: {} -> {} ({})", resultList.size(), hid, type, start, end, exclusivityLog);
+        LOG.info("Found {} reservations in hall with id: {} for table type: {} in time span: {} -> {} ({})", resultList.size(), hid, type, start, end, exclusivity.getMessage());
         return resultList;
     }
 
