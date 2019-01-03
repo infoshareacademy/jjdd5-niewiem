@@ -27,6 +27,8 @@ import static com.infoshareacademy.niewiem.reservations.enums.Exclusivity.INCLUS
 public class ReservationsListPublisher {
     private static final Logger LOG = LoggerFactory.getLogger(ReservationsListPublisher.class);
 
+    public static final String RESERVATIONS_IN_MODEL = "reservations";
+
     private static final String TABLE_ID_PARAM = "tid";
     private static final String TABLE_TYPE_PARAM = "type";
     private static final String PERIOD_PARAM = "period";
@@ -103,10 +105,15 @@ public class ReservationsListPublisher {
                 end = periodMapper.getEndTime(period);
                 publishReservationsByTimeSpan(model, errors, req, hallDTO, start, end, EXCLUSIVE);
                 break;
+            default:
+                start = periodMapper.getStartTime(Period.TODAY);
+                end = periodMapper.getEndTime(Period.TODAY);
+                publishReservationsByTimeSpan(model, errors, req, hallDTO, start, end, INCLUSIVE);
+                break;
         }
     }
 
-    private void publishOptionsWhenPeriodParamDoesNotExist(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO){
+    private void publishOptionsWhenPeriodParamDoesNotExist(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO) {
         if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
             Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
             publishReservationsByTable(model, tid);
@@ -136,36 +143,36 @@ public class ReservationsListPublisher {
 
     private void publishReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByHall(hallDTO);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 
     private void publishActiveReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findActiveByHall(hallDTO);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 
     private void publishReservationsByTable(Map<String, Object> model, Integer tid) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByTableId(tid);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 
     private void publishReservationsByHallAndType(Map<String, Object> model, HallDTO hallDTO, TableType type) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndType(hallDTO, type);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 
     private void publishReservationsByHallAndPeriod(Map<String, Object> model, HallDTO hallDTO, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTimeSpan(hallDTO, start, end, exclusivity);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 
     private void publishReservationsByTableAndPeriod(Map<String, Object> model, Integer tid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByTableIdAndTimeSpan(tid, start, end, exclusivity);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 
     private void publishReservationsByHallAndTypeAndPeriod(Map<String, Object> model, HallDTO hallDTO, TableType type, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByHallAndTypeAndTimeSpan(hallDTO, type, start, end, exclusivity);
-        model.put("reservations", reservations);
+        model.put(RESERVATIONS_IN_MODEL, reservations);
     }
 }
