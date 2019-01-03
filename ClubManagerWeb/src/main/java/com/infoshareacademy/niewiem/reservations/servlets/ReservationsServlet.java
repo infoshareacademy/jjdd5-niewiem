@@ -44,9 +44,10 @@ public class ReservationsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
+
         List<String> errors = new ArrayList<>();
-        List<String> warnings = new ArrayList<>();
         model.put("errors", errors);
+        List<String> warnings = new ArrayList<>();
         model.put("warnings", warnings);
 
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());

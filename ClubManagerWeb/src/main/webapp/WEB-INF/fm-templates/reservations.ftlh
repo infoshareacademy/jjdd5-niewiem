@@ -9,6 +9,7 @@
         </div>
     </#list>
 </#if>
+
 <#if warnings??>
     <#list warnings>
         <div class="alert alert-warning">

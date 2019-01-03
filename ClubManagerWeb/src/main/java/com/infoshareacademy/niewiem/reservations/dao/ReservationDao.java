@@ -17,14 +17,6 @@ import java.util.List;
 public class ReservationDao {
     private static final Logger LOG = LoggerFactory.getLogger(ReservationDao.class);
 
-    private static final String EXCLUSIVE_TIME_QUERY =
-            "((r.startTime > :start AND r.startTime < :end) AND " +
-                    "(r.endTime > :start AND r.endTime < :end))";
-    private static final String INCLUSIVE_TIME_QUERY =
-            "((r.startTime > :start AND r.startTime < :end) OR " +
-                    "(r.endTime > :start AND r.endTime < :end) OR " +
-                    "(r.startTime < :start AND r.startTime < :end AND r.endTime > :start AND r.endTime > :end))";
-
     @PersistenceContext
     private EntityManager entityManager;
 
