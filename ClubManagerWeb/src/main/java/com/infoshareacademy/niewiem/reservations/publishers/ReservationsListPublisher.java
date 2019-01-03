@@ -56,19 +56,7 @@ public class ReservationsListPublisher {
         if (reservationValidator.validatePeriodParam(req.getParameter(PERIOD_PARAM), errors)) {
             publishOptionsWhenPeriodParamExists(model, errors, warnings, req, hallDTO);
         } else {
-            if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
-                Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
-                publishReservationsByTable(model, tid);
-            } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
-                TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
-                publishReservationsByHallAndType(model, hallDTO, type);
-            } else {
-                // todo: the default could be set in settings in admin panel - should it be ALL? Should it be TODAY?.
-                Period period = Period.TODAY;
-                LocalDateTime start = periodMapper.getStartTime(period);
-                LocalDateTime end = periodMapper.getEndTime(period);
-                publishReservationsByHallAndPeriod(model, hallDTO, start, end, INCLUSIVE);
-            }
+            publishOptionsWhenPeriodParamDoesNotExist(model, errors, req, hallDTO);
         }
     }
 
@@ -118,9 +106,20 @@ public class ReservationsListPublisher {
         }
     }
 
-    private void publishActiveReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
-        List<ReservationInMillisDTO> reservations = reservationQueryService.findActiveByHall(hallDTO);
-        model.put("reservations", reservations);
+    private void publishOptionsWhenPeriodParamDoesNotExist(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO){
+        if (tableValidator.validateTidParam(req.getParameter(TABLE_ID_PARAM), errors, hallDTO)) {
+            Integer tid = Integer.parseInt(req.getParameter(TABLE_ID_PARAM));
+            publishReservationsByTable(model, tid);
+        } else if (tableValidator.validateTypeParam(req.getParameter(TABLE_TYPE_PARAM), errors)) {
+            TableType type = TableType.valueOf(req.getParameter(TABLE_TYPE_PARAM).toUpperCase());
+            publishReservationsByHallAndType(model, hallDTO, type);
+        } else {
+            // todo: the default could be set in settings in admin panel - should it be ALL? Should it be TODAY?.
+            Period period = Period.TODAY;
+            LocalDateTime start = periodMapper.getStartTime(period);
+            LocalDateTime end = periodMapper.getEndTime(period);
+            publishReservationsByHallAndPeriod(model, hallDTO, start, end, INCLUSIVE);
+        }
     }
 
     private void publishReservationsByTimeSpan(Map<String, Object> model, List<String> errors, HttpServletRequest req, HallDTO hallDTO, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
@@ -137,6 +136,11 @@ public class ReservationsListPublisher {
 
     private void publishReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
         List<ReservationInMillisDTO> reservations = reservationQueryService.findByHall(hallDTO);
+        model.put("reservations", reservations);
+    }
+
+    private void publishActiveReservationsByHall(Map<String, Object> model, HallDTO hallDTO) {
+        List<ReservationInMillisDTO> reservations = reservationQueryService.findActiveByHall(hallDTO);
         model.put("reservations", reservations);
     }
 

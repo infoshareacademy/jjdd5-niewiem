@@ -16,11 +16,11 @@ import java.util.List;
 @Stateless
 public class ReservationValidator extends GenericValidator {
     private static final Logger LOG = LoggerFactory.getLogger(ReservationValidator.class);
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
-    public static final String DATE_REGEX_PATTERN = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
-    public static final String TIME_REGEX_PATTERN = "[0-9]{2}:[0-9]{2}";
-    public static final String TIME_ENCODED_REGEX_PATTERN = "[0-9]{2}%3A[0-9]{2}";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
+    private static final String DATE_REGEX_PATTERN = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+    private static final String TIME_REGEX_PATTERN = "[0-9]{2}:[0-9]{2}";
+    private static final String TIME_ENCODED_REGEX_PATTERN = "[0-9]{2}%3A[0-9]{2}";
 
     public boolean validatePeriodParam(String periodParam, List<String> errors) {
         if (StringUtils.isEmpty(periodParam)) {
@@ -45,6 +45,7 @@ public class ReservationValidator extends GenericValidator {
 
     public LocalTime returnValidatedTimeOrDefault(String timeParam, List<String> warnings, LocalTime defaultTime) {
         if (validateTimeParam(timeParam)) {
+            timeParam = returnDecodedTimeParam(timeParam);
             return LocalTime.parse(timeParam, TIME_FORMAT).withSecond(defaultTime.getSecond()).withNano(defaultTime.getNano());
         } else {
             warnings.add("Invalid time parameter, showing results with default value.");
@@ -53,7 +54,7 @@ public class ReservationValidator extends GenericValidator {
         }
     }
 
-    private boolean validateDateParam(String dateParam) {
+    public boolean validateDateParam(String dateParam) {
         if (StringUtils.isEmpty(dateParam)) {
             LOG.warn("No date parameter in request.");
             return false;
@@ -61,16 +62,20 @@ public class ReservationValidator extends GenericValidator {
         return dateParam.matches(DATE_REGEX_PATTERN);
     }
 
-    private boolean validateTimeParam(String timeParam) {
+    public String returnDecodedTimeParam(String timeParam) {
+        if (timeParam.matches(TIME_ENCODED_REGEX_PATTERN)) {
+            LOG.info("Found encoded character in time pattern, replacing with decoded character. From {}", timeParam);
+            return timeParam.replace("%3A", ":");
+        }
+        return timeParam;
+    }
+
+    public boolean validateTimeParam(String timeParam) {
         if (StringUtils.isEmpty(timeParam)) {
             LOG.warn("No time parameter in request.");
             return false;
         }
-        if (timeParam.matches(TIME_ENCODED_REGEX_PATTERN)) {
-            LOG.info("Found encoded characters in time patters, replacing with unicode. From {}", timeParam);
-            timeParam = timeParam.replace("%3A", ":");
-        }
-        return timeParam.matches(TIME_REGEX_PATTERN);
+        return timeParam.matches(TIME_REGEX_PATTERN) || timeParam.matches(TIME_ENCODED_REGEX_PATTERN);
     }
 
     public LocalDateTime validateEndIsAfterStartOrReturnMax(LocalDateTime start, LocalDateTime end, List<String> warnings) {
