@@ -1,8 +1,10 @@
 package com.infoshareacademy.niewiem.tables.validators;
 
 import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.shared.validators.GenericValidator;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +19,37 @@ public class TableValidator extends GenericValidator {
     @Inject
     private TableQueryService tableQueryService;
 
-    public boolean validateTableIdExists(Integer tid, List<String> errors){
-        if(tableQueryService.doesExist(tid)){
+    public boolean validateTypeParam(String typeParam, List<String> errors) {
+        if (StringUtils.isEmpty(typeParam)) {
+            LOG.info("No table type parameter in request.");
+            return false;
+        }
+
+        return validateTableTypeExists(typeParam, errors);
+    }
+
+    public boolean validateTidParam(String tidParam, List<String> errors, HallDTO hallDTO) {
+        if (StringUtils.isEmpty(tidParam)) {
+            LOG.info("No table id parameter in request.");
+            return false;
+        }
+        if (validateIsNotNumeric(tidParam, "table ID", errors)) {
+            return false;
+        }
+
+        Integer tid = Integer.parseInt(tidParam);
+        if (validateTableIdDoesNotExists(tid, errors)) {
+            return false;
+        }
+        if (validateTableIdDoesNotExistInActiveHallId(tid, hallDTO.getId(), errors)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validateTableIdExists(Integer tid, List<String> errors) {
+        if (tableQueryService.doesExist(tid)) {
             LOG.debug("Table ID was found in database. ({})", tid);
             return true;
         }
@@ -27,13 +58,13 @@ public class TableValidator extends GenericValidator {
         return false;
     }
 
-    public boolean validateTableIdDoesNotExists(Integer tid, List<String> errors) {
+    private boolean validateTableIdDoesNotExists(Integer tid, List<String> errors) {
         return !validateTableIdExists(tid, errors);
     }
 
-    public boolean validateTableIdExistsInActiveHallId(Integer tid, Integer activeHid, List<String> errors) {
+    private boolean validateTableIdExistsInActiveHallId(Integer tid, Integer activeHid, List<String> errors) {
         Integer tableHid = tableQueryService.findById(tid).getHall().getId();
-        if(tableHid.equals(activeHid)){
+        if (tableHid.equals(activeHid)) {
             LOG.debug("Table's hall matches active hall. Table hid: {}, Active hid: {}", tableHid, activeHid);
             return true;
         }
@@ -42,13 +73,13 @@ public class TableValidator extends GenericValidator {
         return false;
     }
 
-    public boolean validateTableIdDoesNotExistInActiveHallId(Integer tid, Integer activeHid, List<String> errors){
+    private boolean validateTableIdDoesNotExistInActiveHallId(Integer tid, Integer activeHid, List<String> errors) {
         return !validateTableIdExistsInActiveHallId(tid, activeHid, errors);
     }
 
-    public boolean validateTableTypeExists(String typeParam, List<String> errors) {
-        for(TableType t : TableType.values()){
-            if(t.name().equalsIgnoreCase(typeParam)){
+    private boolean validateTableTypeExists(String typeParam, List<String> errors) {
+        for (TableType t : TableType.values()) {
+            if (t.name().equalsIgnoreCase(typeParam)) {
                 LOG.debug("Table type exists. ({})", typeParam);
                 return true;
             }

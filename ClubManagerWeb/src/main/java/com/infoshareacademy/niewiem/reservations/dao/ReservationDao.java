@@ -1,8 +1,8 @@
 package com.infoshareacademy.niewiem.reservations.dao;
 
 import com.infoshareacademy.niewiem.domain.Reservation;
-import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.reservations.enums.Exclusivity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ public class ReservationDao {
         if (reservation != null) {
             LOG.info("Deleting reservation: {}", reservation);
             entityManager.remove(reservation);
-        }else{
+        } else {
             LOG.warn("Could not find reservation with ID: {} to delete.", id);
         }
     }
@@ -68,19 +68,19 @@ public class ReservationDao {
         return conflictingReservation;
     }
 
-    public Reservation findActiveForTable(Table table) {
+    public Reservation findActiveForTable(Integer tid) {
         final Query query = entityManager
-                .createQuery("SELECT r FROM Reservation r WHERE (r.table = :table AND r.startTime < :now AND r.endTime > :now)");
-        query.setParameter("table", table);
+                .createQuery("SELECT r FROM Reservation r WHERE (r.table.id = :tid AND r.startTime < :now AND r.endTime > :now)");
+        query.setParameter("tid", tid);
         query.setParameter("now", LocalDateTime.now());
 
         List resultList = query.getResultList();
         if (resultList == null || resultList.isEmpty()) {
-            LOG.info("Found no active reservation for table: {}", table);
+            LOG.info("Found no active reservation for table with id: {}", tid);
             return null;
         }
         Reservation reservation = (Reservation) resultList.get(0);
-        LOG.info("Found an active reservation: {}", reservation);
+        LOG.info("Found an active reservation: {} for table with id: {}", reservation, tid);
         return reservation;
     }
 
@@ -94,7 +94,7 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllByHallId(Integer hid) {
+    public List<Reservation> findByHallId(Integer hid) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE r.table.hall.id = :hid");
         query.setParameter("hid", hid);
@@ -104,7 +104,7 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllActiveByHall(Integer hid) {
+    public List<Reservation> findActiveByHall(Integer hid) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall.id = :hid AND r.startTime < :now AND r.endTime > :now)");
         query.setParameter("hid", hid);
@@ -115,23 +115,67 @@ public class ReservationDao {
         return resultList;
     }
 
-    public List<Reservation> findAllByHallAndType(Integer hid, TableType type) {
+    public List<Reservation> findByHallAndType(Integer hid, TableType type) {
         final Query query = entityManager
                 .createQuery("SELECT r FROM Reservation r WHERE (r.table.hall.id = :hid AND r.table.type = :type)");
         query.setParameter("hid", hid);
         query.setParameter("type", type);
 
         List resultList = query.getResultList();
-        LOG.info("Found {} reservations in hall with id: {} and of type {}.", resultList.size(), hid, type);
+        LOG.info("Found {} reservations in hall with id: {} for table type {}.", resultList.size(), hid, type);
         return resultList;
     }
 
-    public List<Reservation> findAllByTableId(Integer tid) {
+    public List<Reservation> findByTableId(Integer tid) {
         final Query query = entityManager.createQuery("SELECT r FROM Reservation r WHERE r.table.id = :tid");
         query.setParameter("tid", tid);
 
         List resultList = query.getResultList();
         LOG.info("Found {} reservations for table with ID: {}", resultList.size(), tid);
+        return resultList;
+    }
+
+    public List<Reservation> findByHallIdAndTimeSpanExclusivityOption(Integer hid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.hall.id = :hid) AND " +
+                        exclusivity.getQuery() + ")");
+        query.setParameter("hid", hid);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} in time span: {} -> {} ({})", resultList.size(), hid, start, end, exclusivity.getMessage());
+        return resultList;
+    }
+
+    public List<Reservation> findByTableIdAndTimeSpanExclusivityOption(Integer tid, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.id = :tid) AND " +
+                        exclusivity.getQuery() + ")");
+        query.setParameter("tid", tid);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations for table with id: {} in time span: {} -> {} ({})", resultList.size(), tid, start, end, exclusivity.getMessage());
+        return resultList;
+    }
+
+    public List<Reservation> findByHallIdAndTypeAndTimeSpanExclusivityOption(Integer hid, TableType type, LocalDateTime start, LocalDateTime end, Exclusivity exclusivity) {
+        final Query query = entityManager
+                .createQuery("SELECT r FROM Reservation r WHERE (" +
+                        "(r.table.hall.id = :hid) AND " +
+                        "(r.table.type = :type) AND " +
+                        exclusivity.getQuery() + ")");
+        query.setParameter("hid", hid);
+        query.setParameter("type", type);
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+
+        List resultList = query.getResultList();
+        LOG.info("Found {} reservations in hall with id: {} for table type: {} in time span: {} -> {} ({})", resultList.size(), hid, type, start, end, exclusivity.getMessage());
         return resultList;
     }
 
