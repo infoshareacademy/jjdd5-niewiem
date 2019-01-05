@@ -41,7 +41,7 @@
                         <a class="nav-link" href="#">Settings</a>
                         <a class="nav-link" href="/tables-view">Tables</a>
                         <a class="nav-link" href="/reservations">Reservations</a>
-                        <a class="btn btn-lg g-signin2 lead" data-onsuccess="onSignIn"></a>
+                        <a class="btn btn-lg g-signin2 lead" data-onsuccess="onSignIn">Sign In</a>
                     </nav>
                 </div>
             </div>
