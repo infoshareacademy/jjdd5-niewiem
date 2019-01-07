@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 @WebServlet(name = "errorHandlerServlet",
         urlPatterns = {"/errorHandler"},
         loadOnStartup = 1)
@@ -49,6 +48,3 @@ public class ErrorHandlerServlet extends HttpServlet {
 
     }
 }
-
-
-
