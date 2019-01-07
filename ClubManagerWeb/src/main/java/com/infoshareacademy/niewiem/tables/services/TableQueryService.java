@@ -28,8 +28,9 @@ public class TableQueryService {
     @Inject
     private TableDTOMapper tableDTOMapper;
 
-    public Table findById(Integer id) {
-        return tableDao.findById(id);
+    public TableDTO findById(Integer id) {
+         Table table = tableDao.findById(id);
+         return tableDTOMapper.convertTblToDTO(table);
     }
 
     public List<Table> findAll() {
