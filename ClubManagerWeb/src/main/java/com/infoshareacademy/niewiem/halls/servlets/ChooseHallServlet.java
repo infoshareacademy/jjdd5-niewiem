@@ -35,9 +35,9 @@ public class ChooseHallServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String hid = req.getParameter("hallId");
-        if(hid == null || hid.isEmpty()){
+        if (hid == null || hid.isEmpty()) {
             activeHallService.setNull(req.getSession());
-            printHallChoice(resp);
+            printHallChoice(req, resp);
             return;
         }
 
@@ -51,19 +51,19 @@ public class ChooseHallServlet extends HttpServlet {
 
     private void redirectToTablesInChosenHall(HttpServletRequest req, HttpServletResponse resp, String hid) throws IOException {
         boolean hallExists = activeHallService.setActive(req.getSession(), hid);
-        if(hallExists) {
+        if (hallExists) {
             resp.sendRedirect("/tables-view");
             return;
         }
-        printHallChoice(resp);
+        printHallChoice(req, resp);
     }
 
-    private void printHallChoice(HttpServletResponse resp) throws IOException {
+    private void printHallChoice(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
         List<Hall> halls = hallQueryService.findAll();
         LOG.info("Found {} halls in halls table", halls.size());
 
         model.put("halls", halls);
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
 }

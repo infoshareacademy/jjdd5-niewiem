@@ -41,7 +41,11 @@
                         <a class="nav-link" href="#">Settings</a>
                         <a class="nav-link" href="/tables-view">Tables</a>
                         <a class="nav-link" href="/reservations">Reservations</a>
-                        <a class="nav-link" href="/login">Log in</a>
+                        <#if userAuthenticated?? >
+                            <a class="nav-link" href="/logout">Log out</a>
+                        <#else>
+                            <a class="nav-link" href="/login">Log in</a>
+                        </#if>
                     </nav>
                 </div>
             </div>

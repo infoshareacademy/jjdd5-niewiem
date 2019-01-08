@@ -32,7 +32,7 @@ public class CreateHallServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
 
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
         }
 
     @Override
