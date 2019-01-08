@@ -20,6 +20,7 @@
                 googleUser.getAuthResponse().id_token + '" />' +
                 '</form>');
         $('body').append(form);
-        form.submit();
-    }
+        if(googleUser.getAuthResponse().id_token != null && profile.getId() != null){
+            form.submit();
+        }
 </script>
