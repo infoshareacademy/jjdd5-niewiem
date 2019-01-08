@@ -1,7 +1,6 @@
 package com.infoshareacademy.niewiem.google.servlets;
 
 import com.infoshareacademy.niewiem.services.ServletService;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

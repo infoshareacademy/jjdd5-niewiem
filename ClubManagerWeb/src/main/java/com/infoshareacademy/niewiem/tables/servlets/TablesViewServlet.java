@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("tables-view")
+@WebServlet("/tables-view")
 public class TablesViewServlet extends HttpServlet {
     private static final String VIEW_NAME = "/tables-view";
     private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);

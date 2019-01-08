@@ -1,6 +1,8 @@
 package com.infoshareacademy.niewiem.google.servlets;
 
 import com.infoshareacademy.niewiem.services.ServletService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -13,8 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+public class LogOutServlet extends HttpServlet {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LogOutServlet.class);
     private static final String VIEW_NAME = "/logout-page";
 
     @Inject
@@ -25,6 +28,7 @@ public class LogoutServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         req.getSession().removeAttribute("userName");
+        LOG.info("User logged out");
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }

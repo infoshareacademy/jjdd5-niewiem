@@ -2,6 +2,8 @@ package com.infoshareacademy.niewiem.google.servlets;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.infoshareacademy.niewiem.google.IdTokenVerifierAndParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +15,9 @@ import java.io.IOException;
 
 @WebServlet("/id-token")
 public class IdTokenServlet extends HttpServlet {
+
+    private static final Logger LOG = LoggerFactory.getLogger(IdTokenServlet.class);
+
     @Override
     protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -23,13 +28,17 @@ public class IdTokenServlet extends HttpServlet {
             GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
             String name = (String) payLoad.get("name");
 
+            LOG.info("User logged in");
+
             HttpSession session = req.getSession(true);
             session.setAttribute("userName", name);
             req.getServletContext()
                     .getRequestDispatcher("/choose-hall").forward(req, resp);
 
         } catch (Exception e) {
+            LOG.error("User can not be logged in");
             throw new RuntimeException(e);
+
         }
     }
 }
