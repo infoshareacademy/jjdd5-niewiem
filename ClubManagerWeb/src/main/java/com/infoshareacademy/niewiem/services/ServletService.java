@@ -31,6 +31,10 @@ public class ServletService {
         if (req.getSession().getAttribute("userName") != null) {
             model.put("userAuthenticated", true);
         }
+        if(req.getSession().getAttribute("activeHall") != null){
+            model.put("activeHall", req.getSession().getAttribute("activeHall"));
+        }
+
 
         Template template = templateProvider.getTemplate(context, LAYOUT_NAME);
 
