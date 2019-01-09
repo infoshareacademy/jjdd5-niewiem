@@ -6,47 +6,51 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Club Manager</title>
+    <link rel="icon" href="../../icon.png">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Custom styles for this template -->
-    <link href="../../css/cover.css" rel="stylesheet">
+    <link href="../../css/styles.css" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131299466-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
 
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
         gtag('config', 'UA-131299466-1');
     </script>
-
 </head>
 <body>
-<div class="site-wrapper">
-    <div class="site-wrapper-inner">
-        <div class="cover-container">
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h3 class="masthead-brand">ClubManager</h3>
-                    <nav class="nav nav-masthead">
-                        <a class="nav-link" href="/">Home</a>
-                        <a class="nav-link" href="#">Settings</a>
-                        <a class="nav-link" href="/tables-view">Tables</a>
-                        <a class="nav-link" href="/reservations">Reservations</a>
-                    </nav>
-                </div>
-            </div>
-            <#include bodyTemplate>
-            <div class="mastfoot">
-                <div class="inner">
-                    <p>nie-wiem <a href="https://github.com/orgs/infoshareacademy/teams/jjdd5-niewiem">GitHub</a></p>
-                </div>
-            </div>
+<div class="background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand zoomLink" href="/">Club Manager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
+                aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample05">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link zoomLink" href="/tables-view">Tables</a>
+                </li>
+                <li class="nav-item zoomLink">
+                    <a class="nav-link" href="/reservations">Reservations</a>
+                </li>
+            </ul>
         </div>
+    </nav>
+<div class="main">
+    <div class="container">
+        <div class="content"><#include bodyTemplate></div>
     </div>
 </div>
-
+</div>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

@@ -2,11 +2,11 @@
     <form method="post" action="/table-new">
             <div class="form-group">
                 <label for="tableName">Name</label>
-                <input id="tableName" name="name" type="text" class="form-control"/>
+                <input id="tableName" name="name" type="text" class="form-control" autofocus required/>
             </div>
         <#list types as t>
             <div class="form-check">
-            <input name="type" value="${t}" class="form-check-input" type="radio" id="${t}"/>
+            <input name="type" value="${t}" class="form-check-input" type="radio" id="${t}" required/>
         <label class="form-check-label" for="${t}">
             ${t}
             </label>
