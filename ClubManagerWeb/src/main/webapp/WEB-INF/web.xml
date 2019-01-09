@@ -19,9 +19,9 @@
         <password>pass123</password>
 
         <!--infoShare Academy-->
-        <!--<url>jdbc:mysql://localhost:6603/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>-->
-        <!--<user>root</user>-->
-        <!--<password>pass123</password>-->
+        <!--<url>jdbc:mysql://localhost:6603/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
+        <user>root</user>
+        <password>pass123</password>-->
 
         <!--Hubert-->
         <!--<url>jdbc:mysql://localhost:3306/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>-->

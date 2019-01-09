@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,30 +36,35 @@ public class ChooseHallServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String hid = req.getParameter("hallId");
-        if(hid == null || hid.isEmpty()){
+        if (hid == null || hid.isEmpty()) {
             activeHallService.setNull(req.getSession());
-            printHallChoice(resp);
+            printHallChoice(req, resp);
             return;
         }
 
         redirectToTablesInChosenHall(req, resp, hid);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+
     private void redirectToTablesInChosenHall(HttpServletRequest req, HttpServletResponse resp, String hid) throws IOException {
         boolean hallExists = activeHallService.setActive(req.getSession(), hid);
-        if(hallExists) {
+        if (hallExists) {
             resp.sendRedirect("/tables-view");
             return;
         }
-        printHallChoice(resp);
+        printHallChoice(req, resp);
     }
 
-    private void printHallChoice(HttpServletResponse resp) throws IOException {
+    private void printHallChoice(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
         List<Hall> halls = hallQueryService.findAll();
         LOG.info("Found {} halls in halls table", halls.size());
 
         model.put("halls", halls);
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
 }

@@ -21,6 +21,13 @@
         gtag('config', 'UA-131299466-1');
     </script>
 
+    <!-- Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="750662202912-ou3jtpmon6qaoagpfithrqmvpgj2i76o.apps.googleusercontent.com">
+
 </head>
 <body>
 <div class="site-wrapper">
@@ -34,6 +41,11 @@
                         <a class="nav-link" href="#">Settings</a>
                         <a class="nav-link" href="/tables-view">Tables</a>
                         <a class="nav-link" href="/reservations">Reservations</a>
+                        <#if userAuthenticated?? >
+                            <a class="nav-link" href="/logout">Log out</a>
+                        <#else>
+                            <a class="nav-link" href="/login">Log in</a>
+                        </#if>
                     </nav>
                 </div>
             </div>
