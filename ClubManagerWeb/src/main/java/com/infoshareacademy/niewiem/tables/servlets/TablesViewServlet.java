@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("tables-view")
+@WebServlet("/tables-view")
 public class TablesViewServlet extends HttpServlet {
     private static final String VIEW_NAME = "/tables-view";
     private static final Logger LOG = LoggerFactory.getLogger(TablesViewServlet.class);
@@ -42,6 +42,6 @@ public class TablesViewServlet extends HttpServlet {
         List<ReservationInMillisDTO> reservations = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hallDTO);
         model.put("reservations", reservations);
 
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
 }

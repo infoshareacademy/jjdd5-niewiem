@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -22,10 +23,14 @@ public class ServletService {
     @Inject
     private TemplateProvider templateProvider;
 
-    public void sendModelToTemplate(HttpServletResponse resp, ServletContext context, Map<String, Object> model, String VIEW_NAME) throws IOException {
+    public void sendModelToTemplate(HttpServletRequest req, HttpServletResponse resp, ServletContext context, Map<String, Object> model, String VIEW_NAME) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
         model.put("bodyTemplate", VIEW_NAME + ".ftlh");
+
+        if (req.getSession().getAttribute("userName") != null) {
+            model.put("userAuthenticated", true);
+        }
 
         Template template = templateProvider.getTemplate(context, LAYOUT_NAME);
 

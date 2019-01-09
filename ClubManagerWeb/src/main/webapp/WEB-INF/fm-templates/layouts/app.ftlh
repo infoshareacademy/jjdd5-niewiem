@@ -16,14 +16,19 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131299466-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
+        function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+
         gtag('config', 'UA-131299466-1');
     </script>
+
+    <!-- Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="750662202912-ou3jtpmon6qaoagpfithrqmvpgj2i76o.apps.googleusercontent.com">
+
 </head>
 <body>
 <div class="background">
@@ -41,6 +46,13 @@
                 </li>
                 <li class="nav-item zoomLink">
                     <a class="nav-link" href="/reservations">Reservations</a>
+                </li>
+                <li class="nav-item zoomLink">
+                    <#if userAuthenticated?? >
+                        <a class="nav-link" href="/logout">Log out</a>
+                    <#else>
+                            <a class="nav-link" href="/login">Log in</a>
+                    </#if>
                 </li>
             </ul>
         </div>

@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.shared.sevlets;
+package com.infoshareacademy.niewiem.google.servlets;
 
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/test")
-public class TestServlet extends HttpServlet {
-    private static final String VIEW_NAME = "/test";
-    private static final Logger LOG = LoggerFactory.getLogger(TestServlet.class);
+@WebServlet("/logout")
+public class LogOutServlet extends HttpServlet {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LogOutServlet.class);
+    private static final String VIEW_NAME = "/logout-page";
 
     @Inject
     private ServletService servletService;
@@ -27,7 +27,8 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        model.put("date", LocalDateTime.now());
+        req.getSession().removeAttribute("userName");
+        LOG.info("User logged out");
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
