@@ -13,15 +13,15 @@
 
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
 
-        <!--&lt;!&ndash; DOCKER DB &ndash;&gt;
+        <!-- DOCKER DB -->
         <url>jdbc:mysql://db:3306/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
         <user>root</user>
-        <password>pass123</password>-->
+        <password>pass123</password>
 
         <!--infoShare Academy-->
-        <url>jdbc:mysql://localhost:6603/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
+        <!--<url>jdbc:mysql://localhost:6603/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>
         <user>root</user>
-        <password>pass123</password>
+        <password>pass123</password>-->
 
         <!--Hubert-->
         <!--<url>jdbc:mysql://localhost:3306/club?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw</url>-->
