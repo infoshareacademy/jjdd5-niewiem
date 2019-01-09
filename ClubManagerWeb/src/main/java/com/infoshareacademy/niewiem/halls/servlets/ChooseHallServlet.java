@@ -34,6 +34,7 @@ public class ChooseHallServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
         String hid = req.getParameter("hallId");
         if (hid == null || hid.isEmpty()) {
             activeHallService.setNull(req.getSession());

@@ -30,4 +30,75 @@
 
     </data-source>
 
+    <!--errors-->
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/error-handlers/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>408</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>429</error-code>
+        <location>/error-handler</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>501</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>502</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>503</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>504</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>505</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>508</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>509</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>511</error-code>
+        <location>/error-handler</location>
+    </error-page>
+    <error-page>
+        <error-code>512</error-code>
+        <location>/error-handler</location>
+    </error-page>
+
 </web-app>
