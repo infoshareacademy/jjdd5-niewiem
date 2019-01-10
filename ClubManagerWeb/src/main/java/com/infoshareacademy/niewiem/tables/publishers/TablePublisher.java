@@ -23,9 +23,10 @@ public class TablePublisher extends TableGenericPublisher{
     private TableQueryService tableQueryService;
 
     public void publishRequestedTable(Map<String, Object> model, List<String> errors, List<String> warnings, String tidParam, HallDTO hallDTO) {
-        if(tableValidator.validateTidParam(tidParam, errors, hallDTO)){
-            TableDTO tableDTO = tableQueryService.findById(Integer.parseInt(tidParam));
-            model.put("table",tableDTO);
-        }
+//        TODO: First fix reservation servlet, so reqService is not used
+//        if(tableValidator.validateTidParam(tidParam, errors, hallDTO)){
+//            TableDTO tableDTO = tableQueryService.findById(Integer.parseInt(tidParam));
+//            model.put("table",tableDTO);
+//        }
     }
 }

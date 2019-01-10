@@ -3,6 +3,7 @@ package com.infoshareacademy.niewiem.reservations.servlets;
 import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
+import com.infoshareacademy.niewiem.reservations.publishers.ReservationPublisher;
 import com.infoshareacademy.niewiem.reservations.services.ReservationDeleteService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
@@ -19,7 +20,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/reservation")
@@ -34,6 +37,10 @@ public class ReservationServlet extends HttpServlet {
     private ActiveHallService activeHallService;
 
     @Inject
+    private ReservationPublisher reservationPublisher;
+
+
+    @Inject
     private TablesListPublisher tablesListPublisher;
 
     @Inject
@@ -45,26 +52,32 @@ public class ReservationServlet extends HttpServlet {
     @Inject
     private ReservationDeleteService reservationDeleteService;
 
-    @Inject
-    private ReservationQueryService reservationQueryService;
+//    @Inject
+//    private ReservationQueryService reservationQueryService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
+        List<String> errors = new ArrayList<>();
+        model.put("errors", errors);
 
-        // todo: this logic should go to publisher
-        String idParam = req.getParameter("id");
-        if(idParam == null || idParam.isEmpty()){
-            LOG.info("Recieved no reservation id. Creating a new one.");
-        }else{
-            LOG.info("Recieved reservation id: " + idParam);
-            Reservation reservation = reservationQueryService.findById(idParam);
-            model.put("reservation", reservation);
-        }
+//        // todo: this logic should go to publisher
+//        String idParam = req.getParameter("id");
+//        if(idParam == null || idParam.isEmpty()){
+//            LOG.info("Recieved no reservation id. Creating a new one.");
+//        }else{
+//            LOG.info("Recieved reservation id: " + idParam);
+//            Reservation reservation = reservationQueryService.findById(idParam);
+//            model.put("reservation", reservation);
+//        }
 
-        tablesListPublisher.publishTablesInHall(model, hallDTO);
+        String ridParam = req.getParameter("rid");
+        HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
+
+        reservationPublisher.publishReservationById(model, errors, ridParam, activeHall);
+
+        tablesListPublisher.publishTablesInHall(model, activeHall);
 
         servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
     }
