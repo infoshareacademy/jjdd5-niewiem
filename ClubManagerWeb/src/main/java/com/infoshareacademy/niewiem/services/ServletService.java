@@ -34,6 +34,12 @@ public class ServletService {
         if(req.getSession().getAttribute("activeHall") != null){
             model.put("activeHall", req.getSession().getAttribute("activeHall"));
         }
+        if(req.getSession().getAttribute("imageUrl") != null){
+            model.put("imageUrl", req.getSession().getAttribute("imageUrl"));
+        }
+        if(req.getSession().getAttribute("userName") != null){
+            model.put("name", req.getSession().getAttribute("userName"));
+        }
 
 
         Template template = templateProvider.getTemplate(context, LAYOUT_NAME);
