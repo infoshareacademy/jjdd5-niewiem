@@ -24,6 +24,6 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 }

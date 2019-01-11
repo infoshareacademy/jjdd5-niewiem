@@ -29,6 +29,6 @@ public class TestServlet extends HttpServlet {
 
         model.put("date", LocalDateTime.now());
 
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 }

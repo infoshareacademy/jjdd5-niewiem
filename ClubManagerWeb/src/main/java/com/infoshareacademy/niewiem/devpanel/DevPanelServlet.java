@@ -45,7 +45,7 @@ public class DevPanelServlet extends HttpServlet {
         addTablesToClubs();
         addActiveReservations();
 
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 
     private void addThreeNewClubs() {

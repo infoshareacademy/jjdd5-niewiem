@@ -42,6 +42,6 @@ public class TablesViewServlet extends HttpServlet {
         List<ReservationInMillisDTO> reservations = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hallDTO);
         model.put("reservations", reservations);
 
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 }

@@ -59,6 +59,6 @@ public class ReservationsServlet extends HttpServlet {
         periodListPublisher.publishPeriods(model);
 
         LOG.info("Servlet had: {} errors.", errors.size());
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 }

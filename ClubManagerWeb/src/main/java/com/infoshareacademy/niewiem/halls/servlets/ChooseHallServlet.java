@@ -65,6 +65,6 @@ public class ChooseHallServlet extends HttpServlet {
         LOG.info("Found {} halls in halls table", halls.size());
 
         model.put("halls", halls);
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 }

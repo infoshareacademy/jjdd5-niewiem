@@ -31,6 +31,6 @@ public class LogOutServlet extends HttpServlet {
         req.getSession().removeAttribute("imageUrl");
         LOG.info("User logged out");
 
-        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req.getSession(), resp, getServletContext(), model, VIEW_NAME);
     }
 }
