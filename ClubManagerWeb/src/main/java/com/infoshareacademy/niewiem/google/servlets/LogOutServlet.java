@@ -28,6 +28,7 @@ public class LogOutServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         req.getSession().removeAttribute("userName");
+        req.getSession().removeAttribute("imageUrl");
         LOG.info("User logged out");
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
