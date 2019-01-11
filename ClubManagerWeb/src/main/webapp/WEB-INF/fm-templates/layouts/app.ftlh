@@ -6,14 +6,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Club Manager</title>
-    <link rel="icon" href="../../icon.png">
+    <link rel="icon" href="/icon.png">
     <link href='https://fonts.googleapis.com/css?family=B612 Mono' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Custom styles for this template -->
-    <link href="../../css/styles.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131299466-1"></script>
 
