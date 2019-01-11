@@ -19,3 +19,6 @@
 <div class="row">
     <a class="btn btn-light btn-lg btn-block" href="/table-new" role="button">Add table</a>
 </div>
+<script>
+    runCountdown();
+</script>

@@ -1,7 +1,22 @@
 body, html {
     height: 100%;
+    margin: 0;
+    background-color: black;
+    font-family: 'B612 Mono';
+    font-size: 15px;
+}
+
+.background {
+    /* The image used */
+    background-image: url("../billiard-2603336_1920.jpg");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
-    background: url("../background.jpg") no-repeat fixed center;
 }
 
 .hallName {
@@ -18,12 +33,7 @@ body, html {
 
 .content {
     background-color: rgba(255, 255, 255, 0.85);
-}
-
-.navbar {
-    -webkit-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
-    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+    padding: 0;
 }
 
 .zoomLink {
@@ -55,4 +65,37 @@ body, html {
     padding-bottom: 0;
     padding-top: 0;
     border-radius: 1000px;
+}
+
+.inset {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.inset img {
+    border-radius: inherit;
+    width: inherit;
+    height: inherit;
+    position: relative;
+}
+
+.center {
+    max-width: 80%;
+}
+
+.nav-hall-name {
+    color: white;
+}
+
+.nav-user-name {
+    color: white;
+}
+
+.animated {
+    -webkit-animation-duration: 0.6s;
+    animation-duration: 0.6s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
 }
