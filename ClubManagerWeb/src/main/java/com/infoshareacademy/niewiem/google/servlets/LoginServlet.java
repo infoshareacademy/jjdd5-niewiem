@@ -17,6 +17,7 @@ public class LoginServlet extends HttpServlet {
 
     private static final String VIEW_NAME = "/login-page";
 
+
     @Inject
     private ServletService servletService;
 
