@@ -60,6 +60,6 @@ public class ReservationsServlet extends HttpServlet {
 
         LOG.info("Servlet had: {} errors.", errors.size());
         LOG.info("Servlet had: {} warnings.", warnings.size());
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
 }

@@ -68,3 +68,7 @@
         <button type="submit" class="btn btn-primary">Save!</button>
     </form>
 </div>
+<script>
+    document.getElementById('startTime').value = getCurrentTime();
+    document.getElementById('startDate').value = getCurrentDate();
+</script>

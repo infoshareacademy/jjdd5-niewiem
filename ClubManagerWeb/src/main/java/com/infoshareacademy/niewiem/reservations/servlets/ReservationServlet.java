@@ -79,7 +79,7 @@ public class ReservationServlet extends HttpServlet {
 
         tablesListPublisher.publishTablesInHall(model, activeHall);
 
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
 
     @Override

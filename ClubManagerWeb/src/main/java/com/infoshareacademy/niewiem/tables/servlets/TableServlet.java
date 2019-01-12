@@ -47,6 +47,6 @@ public class TableServlet extends HttpServlet {
         tablePublisher.publishRequestedTable(model, errors, warnings, req.getParameter("tid"), hallDTO);
 
         LOG.info("Servlet had: {} errors.", errors.size());
-        servletService.sendModelToTemplate(resp, getServletContext(), model, VIEW_NAME);
+        servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
 }
