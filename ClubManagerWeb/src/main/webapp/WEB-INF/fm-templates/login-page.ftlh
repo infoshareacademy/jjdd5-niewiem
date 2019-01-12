@@ -23,4 +23,5 @@
         if(googleUser.getAuthResponse().id_token != null && profile.getId() != null){
             form.submit();
         }
+    }
 </script>

@@ -27,17 +27,32 @@ public class IdTokenServlet extends HttpServlet {
             String idToken = req.getParameter("id_token");
             GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
             String name = (String) payLoad.get("name");
+            String email = (String) payLoad.get("email");
 
             LOG.info("User logged in");
 
             HttpSession session = req.getSession(true);
             session.setAttribute("userName", name);
-            req.getServletContext()
-                    .getRequestDispatcher("/choose-hall").forward(req, resp);
 
+            if (isAdmin(name)) {
+                req.getServletContext()
+                        .getRequestDispatcher("/admin-panel").forward(req, resp);
+            } else {
+                req.getServletContext()
+                        .getRequestDispatcher("/choose-hall").forward(req, resp);
+            }
         } catch (Exception e) {
             LOG.error("User can not be logged in");
             throw new RuntimeException(e);
+
+        }
+    }
+
+    private boolean isAdmin(String email) {
+        if (email.equals("clubmanager.niewiem@gmail.com")) {
+            return true;
+        } else {
+            return false;
 
         }
     }
