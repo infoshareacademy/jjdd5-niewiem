@@ -28,12 +28,11 @@ public class ReservationValidator extends GenericValidator {
     @Inject
     private ReservationQueryService reservationQueryService;
 
-
     // todo: test me mofo!!
     public boolean validateRidParam(String ridParam, List<String> errors, HallDTO hallDTO) {
 
         if(StringUtils.isEmpty(ridParam)){
-            LOG.info("Not reservation id parameter in request");
+            LOG.info("No reservation id parameter in request");
             return false;
         }
         if(validateIsNotNumeric(ridParam, "reservation ID", errors)){
@@ -64,7 +63,6 @@ public class ReservationValidator extends GenericValidator {
     private boolean validateTableIdDoesNotExistInActiveHallId(Long rid, Integer activeHid, List<String> errors) {
         return !validateTableIdExistsInActiveHallId(rid, activeHid, errors);
     }
-
 
     boolean validateResIdDoesNotExist(Long rid, List<String> errors) {
         return !validateResIdExists(rid, errors);
@@ -162,4 +160,5 @@ public class ReservationValidator extends GenericValidator {
         errors.add("Requested period option does not exist.");
         return false;
     }
+
 }

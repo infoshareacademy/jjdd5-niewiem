@@ -1,11 +1,9 @@
 package com.infoshareacademy.niewiem.reservations.servlets;
 
-import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.reservations.publishers.ReservationPublisher;
 import com.infoshareacademy.niewiem.reservations.services.ReservationDeleteService;
-import com.infoshareacademy.niewiem.reservations.services.ReservationQueryService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
@@ -52,25 +50,12 @@ public class ReservationServlet extends HttpServlet {
     @Inject
     private ReservationDeleteService reservationDeleteService;
 
-//    @Inject
-//    private ReservationQueryService reservationQueryService;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
         List<String> errors = new ArrayList<>();
         model.put("errors", errors);
-
-//        // todo: this logic should go to publisher
-//        String idParam = req.getParameter("id");
-//        if(idParam == null || idParam.isEmpty()){
-//            LOG.info("Recieved no reservation id. Creating a new one.");
-//        }else{
-//            LOG.info("Recieved reservation id: " + idParam);
-//            Reservation reservation = reservationQueryService.findById(idParam);
-//            model.put("reservation", reservation);
-//        }
 
         String ridParam = req.getParameter("rid");
         HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
@@ -85,6 +70,9 @@ public class ReservationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String action = req.getParameter("action");
+        // todo: decide what to do with errors
+        List<String> errors = new ArrayList<>();
+        HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
 
         if ("new".equals(action)) {
             LOG.info("Adding new reservation.");
@@ -94,7 +82,8 @@ public class ReservationServlet extends HttpServlet {
             reservationUpdateService.updateReservation(req);
         }else if ("delete".equals(action)) {
             LOG.info("Deleting reservation.");
-            reservationDeleteService.delete(req);
+            String ridParam = req.getParameter("rid");
+            reservationDeleteService.delete(ridParam, errors, activeHall);
         }
         resp.sendRedirect("/tables-view");
     }
