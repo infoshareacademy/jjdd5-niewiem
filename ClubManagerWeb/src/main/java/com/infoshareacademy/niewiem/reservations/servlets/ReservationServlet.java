@@ -79,7 +79,7 @@ public class ReservationServlet extends HttpServlet {
             reservationSaveService.createNewReservation(req, errors, activeHall);
         } else if ("update".equals(action)) {
             LOG.info("Updating reservation.");
-            reservationUpdateService.updateReservation(req);
+            reservationUpdateService.updateReservation(req, errors, activeHall);
         }else if ("delete".equals(action)) {
             LOG.info("Deleting reservation.");
             String ridParam = req.getParameter("rid");

@@ -29,6 +29,22 @@ public class ReservationRequestMapper {
     @Inject
     private TableValidator tableValidator;
 
+    public Reservation getReservationWithId(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
+        String ridParam = req.getParameter("rid");
+        if(!reservationValidator.validateRidParam(ridParam, errors, hallDTO)){
+            return null;
+        }
+        Long rid = Long.parseLong(ridParam);
+
+        Reservation reservation = getReservationWithoutId(req, errors, hallDTO);
+        if(reservation == null){
+            return null;
+        }
+
+        reservation.setId(rid);
+        return reservation;
+    }
+
     public Reservation getReservationWithoutId(HttpServletRequest req, List<String> errors, HallDTO hallDTO){
         Reservation reservation = new Reservation();
 
@@ -37,7 +53,7 @@ public class ReservationRequestMapper {
         LOG.info("Requested startTime {}", req.getParameter("startTime"));
         LOG.info("Requested timeSpan {}", req.getParameter("timeSpan"));
         LOG.info("Requested customer {}", req.getParameter("customer"));
-        
+
         Table table = getTableFromTid(req.getParameter("tid"), errors, hallDTO);
         LocalDateTime start = getStartLDT(req.getParameter("startDate"), req.getParameter("startTime"), errors);
         LocalDateTime end = getEndLDT(start, req.getParameter("timeSpan"), errors);

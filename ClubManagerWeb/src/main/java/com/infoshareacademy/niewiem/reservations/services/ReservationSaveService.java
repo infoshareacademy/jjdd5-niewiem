@@ -41,7 +41,9 @@ public class ReservationSaveService {
 
     public void createNewReservation(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
         Reservation reservation = reservationRequestMapper.getReservationWithoutId(req, errors, hallDTO);
-
+        if(reservation == null){
+            return;
+        }
         save(reservation, errors);
     }
 

@@ -1,14 +1,16 @@
 package com.infoshareacademy.niewiem.reservations.services;
 
-import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.domain.Reservation;
-import com.infoshareacademy.niewiem.services.RequestService;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
+import com.infoshareacademy.niewiem.reservations.mappers.ReservationRequestMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Stateless
 public class ReservationUpdateService {
@@ -18,11 +20,9 @@ public class ReservationUpdateService {
     private ReservationDao reservationDao;
 
     @Inject
-    private RequestService requestService;
+    private ReservationRequestMapper reservationRequestMapper;
 
-    public Reservation update(Reservation reservation) {
-        // todo: validate me like you validate your French girls!
-
+    public Reservation update(Reservation reservation, List<String> errors) {
         if (reservationDao.isInConflict(reservation)) {
             Reservation conflict = reservationDao.getConflictingReservation(reservation);
 
@@ -33,6 +33,7 @@ public class ReservationUpdateService {
 
             if(isNotTheSameReservation) {
                 LOG.info("Reservation was in conflict with one already in database. Did not save or delete.");
+                errors.add("Reservation was in conflict with one already in database. Did not save or delete.");
                 return reservation;
             }
             LOG.info("Reservation was in conflict with itself. Silly reservation.");
@@ -41,7 +42,11 @@ public class ReservationUpdateService {
         return reservationDao.update(reservation);
     }
 
-    public void updateReservation(HttpServletRequest req) {
-        update(requestService.getReservationWithId(req));
+    public void updateReservation(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
+        Reservation reservation = reservationRequestMapper.getReservationWithId(req, errors, hallDTO);
+        if(reservation == null){
+            return;
+        }
+        update(reservation, errors);
     }
 }

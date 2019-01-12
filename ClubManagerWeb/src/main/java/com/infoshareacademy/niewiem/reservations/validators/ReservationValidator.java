@@ -43,13 +43,13 @@ public class ReservationValidator extends GenericValidator {
         if(validateResIdDoesNotExist(rid, errors)){
             return false;
         }
-        if(validateTableIdDoesNotExistInActiveHallId(rid, hallDTO.getId(), errors)){
+        if(validateResIdDoesNotExistInActiveHallId(rid, hallDTO.getId(), errors)){
             return false;
         }
         return true;
     }
 
-    private boolean validateTableIdExistsInActiveHallId(Long rid, Integer activeHid, List<String> errors) {
+    private boolean validateResIdExistsInActiveHallId(Long rid, Integer activeHid, List<String> errors) {
         Integer resHid = reservationQueryService.findById(rid).getTable().getHall().getId();
         if (resHid.equals(activeHid)) {
             LOG.debug("Reservations's hall matches active hall. Reservation hid: {}, Active hid: {}", resHid, activeHid);
@@ -60,8 +60,8 @@ public class ReservationValidator extends GenericValidator {
         return false;
     }
 
-    private boolean validateTableIdDoesNotExistInActiveHallId(Long rid, Integer activeHid, List<String> errors) {
-        return !validateTableIdExistsInActiveHallId(rid, activeHid, errors);
+    private boolean validateResIdDoesNotExistInActiveHallId(Long rid, Integer activeHid, List<String> errors) {
+        return !validateResIdExistsInActiveHallId(rid, activeHid, errors);
     }
 
     boolean validateResIdDoesNotExist(Long rid, List<String> errors) {
