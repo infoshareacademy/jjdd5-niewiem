@@ -19,6 +19,9 @@ public class LogOutServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogOutServlet.class);
     private static final String VIEW_NAME = "/logout-page";
+    private static final String SESSION_NAME = "userName";
+    private static final String SESSION_EMAIL = "userEmail";
+    private static final String SESSION_IMAGE_URL = "imageUrl";
 
     @Inject
     private ServletService servletService;
@@ -27,8 +30,9 @@ public class LogOutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
 
-        req.getSession().removeAttribute("userName");
-        req.getSession().removeAttribute("imageUrl");
+        req.getSession().removeAttribute(SESSION_NAME);
+        req.getSession().removeAttribute(SESSION_EMAIL);
+        req.getSession().removeAttribute(SESSION_IMAGE_URL);
         LOG.info("User logged out");
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);

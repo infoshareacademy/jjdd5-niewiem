@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.users;
+package com.infoshareacademy.niewiem.users.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,15 +9,19 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @Column(name = "userId")
     private int userId;
 
-    @Column(name = "USER_EMAIL")
+    @Column(name = "userEmail")
     @NotNull
     private String userEmail;
 
-    @Column(name = "ADMIN")
-    private boolean isAdmin;
+    @Column(name = "userName")
+    @NotNull
+    private String userName;
+
+    @Column(name = "userRole")
+    private Integer role;
 
     public User() {
     }
@@ -38,11 +42,19 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

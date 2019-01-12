@@ -1,4 +1,6 @@
-package com.infoshareacademy.niewiem.users;
+package com.infoshareacademy.niewiem.users.dao;
+
+import com.infoshareacademy.niewiem.users.domain.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
