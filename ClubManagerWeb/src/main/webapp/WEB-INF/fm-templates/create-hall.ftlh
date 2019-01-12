@@ -1,6 +1,8 @@
 <form method="post" action="create-hall" enctype="multipart/form-data">
-    Name: <input type="text" name="name"><br/><br/>
-    Image: <input type="file" name="image"/><br/><br/>
-    <input type="submit" name="save" value="save">
+    <div class="form-group">
+        <input type="text" class="form-control" id="inputName" placeholder="Enter name" name="name" autofocus required>
+    </div>
+    <input class="form-control-file" type="file" name="image"/>
+    <button class="btn" type="submit" name="save" value="save">Save</button>
     <input type="hidden" name="action" value="save-hall">
 </form>

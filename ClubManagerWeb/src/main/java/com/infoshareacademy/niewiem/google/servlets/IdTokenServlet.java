@@ -28,11 +28,17 @@ public class IdTokenServlet extends HttpServlet {
             GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
             String name = (String) payLoad.get("name");
             String email = (String) payLoad.get("email");
+            String imageUrl = (String) payLoad.get("picture");
+
 
             LOG.info("User logged in");
 
             HttpSession session = req.getSession(true);
             session.setAttribute("userName", name);
+            session.setAttribute("imageUrl", imageUrl);
+            req.getServletContext()
+                    .getRequestDispatcher("/choose-hall").forward(req, resp);
+
 
             if (isAdmin(name)) {
                 req.getServletContext()
