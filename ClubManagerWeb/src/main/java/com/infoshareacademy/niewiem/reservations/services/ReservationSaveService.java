@@ -1,8 +1,11 @@
 package com.infoshareacademy.niewiem.reservations.services;
 
-import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.domain.Reservation;
-import com.infoshareacademy.niewiem.services.RequestService;
+import com.infoshareacademy.niewiem.domain.Table;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
+import com.infoshareacademy.niewiem.reservations.mappers.ReservationRequestMapper;
+import com.infoshareacademy.niewiem.tables.dao.TableDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +13,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class ReservationSaveService {
@@ -19,34 +24,43 @@ public class ReservationSaveService {
     private ReservationDao reservationDao;
 
     @Inject
-    private RequestService requestService;
+    private TableDao tableDao;
 
-    public Long save(Reservation reservation) {
+    @Inject
+    private ReservationRequestMapper reservationRequestMapper;
 
-
-
-
-        // todo: validate me like you validate your French girls!
-        //  apart from usual
-        //  check if reservation has no conflict
-        //  check if end is after start
-        //  check if table exist
-        //  check if it exist in given hall
-        //  time between start and end should not exceed... 24h? Some validation is needed
+    public Long save(Reservation reservation, List<String> erorrs) {
         if (reservationDao.isInConflict(reservation)) {
             LOG.info("Reservation was in conflict with one already in database. Did not save.");
+            erorrs.add("Reservation was in conflict with one already in database. Did not save.");
             return -1L;
         }
 
         return reservationDao.save(reservation);
     }
 
-    public void addReservationFromServlet(HttpServletRequest req) {
-        save(requestService.getReservation(req));
+    public void createNewReservation(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
+        Reservation reservation = reservationRequestMapper.getReservationWithoutId(req, errors, hallDTO);
+
+        save(reservation, errors);
     }
 
-    public void addReservation(Integer tableId, LocalDateTime start, Integer timeSpanMinutes, String customer) {
-        Reservation reservation = requestService.getReservation(tableId, start, timeSpanMinutes, customer);
-        save(reservation);
+    public void createReservationWithoutValidation(Integer tableId, LocalDateTime start, Integer timeSpanMinutes, String customer) {
+        Reservation reservation = getReservationWithoutId(tableId, start, timeSpanMinutes, customer);
+        save(reservation, new ArrayList<>());
     }
+
+    private Reservation getReservationWithoutId(Integer tableId, LocalDateTime start, Integer timeSpanMinutes, String customer) {
+        Reservation reservation = new Reservation();
+        Table table = tableDao.findById(tableId);
+
+        reservation.setTable(table);
+        reservation.setStartTime(start);
+        reservation.setEndTime(start.plusMinutes(timeSpanMinutes));
+        reservation.setCustomer(customer);
+
+        return reservation;
+    }
+
+
 }

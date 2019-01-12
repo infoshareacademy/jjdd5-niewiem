@@ -70,13 +70,13 @@ public class ReservationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String action = req.getParameter("action");
-        // todo: decide what to do with errors
         List<String> errors = new ArrayList<>();
         HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
 
+        // todo: decide what to do with errors, where should I go?
         if ("new".equals(action)) {
             LOG.info("Adding new reservation.");
-            reservationSaveService.addReservationFromServlet(req);
+            reservationSaveService.createNewReservation(req, errors, activeHall);
         } else if ("update".equals(action)) {
             LOG.info("Updating reservation.");
             reservationUpdateService.updateReservation(req);
