@@ -7,7 +7,6 @@ import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
 import com.infoshareacademy.niewiem.reservations.enums.Exclusivity;
 import com.infoshareacademy.niewiem.reservations.mappers.ReservationInMillisDTOMapper;
-import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,17 +26,27 @@ public class ReservationQueryService {
     @Inject
     private ReservationInMillisDTOMapper reservationInMillisDTOMapper;
 
-    @Inject
-    private InputValidator inputValidator;
+    // boolean ---------------------------------------------------------------------------------------------------------
 
-    public Reservation findById(String ridString) {
-        Long rid = inputValidator.reqLongValidator(ridString);
-        return findById(rid);
+    public boolean doesExist(Long rid) {
+        boolean doesExist = reservationDao.doesExist(rid);
+        LOG.info("Checking for existence of the table ID. Result: {} for table ID: {}.", doesExist, rid);
+        return doesExist;
     }
 
-    public Reservation findById(Long rid) {
-        return reservationDao.findById(rid);
+    // find single objects ---------------------------------------------------------------------------------------------
+
+    public ReservationInMillisDTO findById(Long rid) {
+        Reservation reservation = reservationDao.findById(rid);
+        return reservationInMillisDTOMapper.convertResToDTO(reservation);
     }
+
+    public ReservationInMillisDTO findActiveForTable(Integer tid) {
+        Reservation reservation = reservationDao.findActiveForTable(tid);
+        return reservationInMillisDTOMapper.convertResToDTO(reservation);
+    }
+
+    // find lists ------------------------------------------------------------------------------------------------------
 
     public List<ReservationInMillisDTO> findByHall(HallDTO hallDTO) {
         List<Reservation> reservations = reservationDao.findByHallId(hallDTO.getId());
@@ -47,11 +56,6 @@ public class ReservationQueryService {
     public List<ReservationInMillisDTO> findActiveByHall(HallDTO hallDTO) {
         List<Reservation> reservations = reservationDao.findActiveByHall(hallDTO.getId());
         return convertToDTO(reservations);
-    }
-
-    public ReservationInMillisDTO findActiveForTable(Integer tid) {
-        Reservation reservation = reservationDao.findActiveForTable(tid);
-        return reservationInMillisDTOMapper.convertResToDTO(reservation);
     }
 
     public List<ReservationInMillisDTO> findByTableId(Integer tid) {
@@ -78,6 +82,8 @@ public class ReservationQueryService {
         List<Reservation> reservations = reservationDao.findByHallIdAndTypeAndTimeSpanExclusivityOption(hallDTO.getId(), type, start, end, exclusivity);
         return convertToDTO(reservations);
     }
+
+    // logic -----------------------------------------------------------------------------------------------------------
 
     private List<ReservationInMillisDTO> convertToDTO(List<Reservation> reservations) {
         return reservations.stream()

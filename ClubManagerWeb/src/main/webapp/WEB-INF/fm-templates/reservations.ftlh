@@ -128,7 +128,7 @@
                         <td>${r.startMillis}</td>
                         <td>${r.endMillis}</td>
                         <td>${r.customer ! ""}</td>
-                        <td><a href="/reservation?id=${r.id}">EDIT</a></td>
+                        <td><a href="/reservation?rid=${r.id}">EDIT</a></td>
                     </tr>
                 </#items>
                 </tbody>
