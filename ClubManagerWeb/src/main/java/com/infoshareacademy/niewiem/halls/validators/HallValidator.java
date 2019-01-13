@@ -26,6 +26,14 @@ public class HallValidator extends GenericValidator {
         return false;
     }
 
+    public boolean validateHallIdExistsWithErrors(Integer hid, List<String> errors){
+        if(validateHallIdExists(hid)){
+            return true;
+        }
+        errors.add("Requested hall was not found in database.");
+        return false;
+    }
+
     public boolean validateHallIdDoesNotExists(Integer hid) {
         return !validateHallIdExists(hid);
     }
@@ -40,6 +48,6 @@ public class HallValidator extends GenericValidator {
         }
 
         Integer hid = Integer.parseInt(hidParam);
-        return validateHallIdExists(hid);
+        return validateHallIdExistsWithErrors(hid, errors);
     }
 }

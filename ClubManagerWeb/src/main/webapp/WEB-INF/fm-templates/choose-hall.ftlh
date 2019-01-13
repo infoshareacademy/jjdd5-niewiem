@@ -30,8 +30,9 @@
                             </div>
                         </div>
                     </a>
-
-
+                    <a class="btn btn-light btn-lg btn-block" href="hall?hid=${h.id}" role="button">
+                        EDIT
+                    </a>
                 </#items>
             </div>
         </#list>
