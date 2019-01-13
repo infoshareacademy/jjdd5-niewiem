@@ -3,7 +3,7 @@ package com.infoshareacademy.niewiem.tables.servlets;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
-import com.infoshareacademy.niewiem.tables.publishers.TablesListPublisher;
+import com.infoshareacademy.niewiem.tables.publishers.TablePublisher;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class TableNewServlet extends HttpServlet {
     private TableSaveService tableSaveService;
 
     @Inject
-    private TablesListPublisher tablesListPublisher;
+    private TablePublisher tablePublisher;
 
     @Inject
     private ActiveHallService ahService;
@@ -39,7 +39,7 @@ public class TableNewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> model = new HashMap<>();
 
-        tablesListPublisher.publishTableTypes(model);
+        tablePublisher.publishTableTypes(model);
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
