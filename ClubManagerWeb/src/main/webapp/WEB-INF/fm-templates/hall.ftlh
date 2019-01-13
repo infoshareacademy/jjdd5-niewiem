@@ -30,7 +30,7 @@
 
         <#if hall??>
             <#if hall.imageURL??>
-                <img class="float-right hallImage" src="${h.imageURL}"/>
+                <img class="float-right hallImage" src="${hall.imageURL}"/>
             <#else>
                 <p>Currently using default picture below:</p>
                 <img class="float-right hallImage" src="/default.jpeg"/>
