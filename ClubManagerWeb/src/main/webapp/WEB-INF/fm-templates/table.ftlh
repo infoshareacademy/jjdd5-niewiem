@@ -93,3 +93,10 @@
         </div>
     </div>
 </#if>
+<#if table??>
+    <div class="row">
+        <div class="row">
+            <a class="btn btn-light btn-lg btn-block" href="/reservations?tid=${table.id}" role="button">See all reservations</a>
+        </div>
+    </div>
+</#if>
