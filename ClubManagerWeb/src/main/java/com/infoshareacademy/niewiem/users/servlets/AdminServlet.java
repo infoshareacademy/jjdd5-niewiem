@@ -1,10 +1,6 @@
 package com.infoshareacademy.niewiem.users.servlets;
 
-import com.infoshareacademy.niewiem.google.servlets.LogInServlet;
 import com.infoshareacademy.niewiem.services.ServletService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

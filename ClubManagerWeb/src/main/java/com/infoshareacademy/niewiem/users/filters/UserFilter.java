@@ -31,7 +31,6 @@ public class UserFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        String reqUri = req.getRequestURI();
 
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
