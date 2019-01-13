@@ -1,7 +1,6 @@
-package com.infoshareacademy.niewiem.google.servlets;
+package com.infoshareacademy.niewiem.users.servlets;
 
 import com.infoshareacademy.niewiem.services.ServletService;
-
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +11,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/admin-panel")
+public class AdminServlet extends HttpServlet {
 
-    private static final String VIEW_NAME = "/login-page";
+    private static final String VIEW_NAME = "/admin-panel";
 
     @Inject
     private ServletService servletService;
@@ -26,4 +25,5 @@ public class LoginServlet extends HttpServlet {
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }
+
 }
