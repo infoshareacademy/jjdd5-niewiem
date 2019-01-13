@@ -1,3 +1,15 @@
+<#if errors??>
+    <#list errors>
+        <div class="alert alert-danger">
+            <ul>
+                <#items as error>
+                    <li>${error}</li>
+                </#items>
+            </ul>
+        </div>
+    </#list>
+</#if>
+
 <#if reservation??>
     <div class="row">
     <form method="post" action="/reservation?action=delete">
@@ -38,6 +50,7 @@
             </div>
             <div class="form-group">
                 <label for="timeSpan">Time span in minutes</label>
+        <#--todo: 'value' field below should also be filled automatically-->
                 <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
             </div>
 

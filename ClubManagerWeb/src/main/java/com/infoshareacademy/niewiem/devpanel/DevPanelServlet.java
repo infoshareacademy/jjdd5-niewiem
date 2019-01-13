@@ -62,25 +62,25 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addActiveReservations() {
 //      Tables in Hall 1 -----------------------------------------------------------------------------------------------
-        reservationSaveService.addReservation(1, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
-        reservationSaveService.addReservation(2, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
-        reservationSaveService.addReservation(3, LocalDateTime.now().minusMinutes(0), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(1, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(2, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(3, LocalDateTime.now().minusMinutes(0), 60, DEV_PANEL);
 //      Tables in Hall 2 -----------------------------------------------------------------------------------------------
-        reservationSaveService.addReservation(5, LocalDateTime.now().minusMinutes(25), 60, DEV_PANEL);
-        reservationSaveService.addReservation(6, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
-        reservationSaveService.addReservation(7, LocalDateTime.now().minusMinutes(15), 60, DEV_PANEL);
-        reservationSaveService.addReservation(8, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
-        reservationSaveService.addReservation(9, LocalDateTime.now().minusMinutes(5), 60, DEV_PANEL);
-        reservationSaveService.addReservation(10, LocalDateTime.now().minusMinutes(0), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(5, LocalDateTime.now().minusMinutes(25), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(6, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(7, LocalDateTime.now().minusMinutes(15), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(8, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(9, LocalDateTime.now().minusMinutes(5), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(10, LocalDateTime.now().minusMinutes(0), 60, DEV_PANEL);
 //      Tables in Hall 3 -----------------------------------------------------------------------------------------------
-        reservationSaveService.addReservation(13, LocalDateTime.now().minusMinutes(40), 60, DEV_PANEL);
-        reservationSaveService.addReservation(14, LocalDateTime.now().minusMinutes(35), 60, DEV_PANEL);
-        reservationSaveService.addReservation(15, LocalDateTime.now().minusMinutes(30), 60, DEV_PANEL);
-        reservationSaveService.addReservation(16, LocalDateTime.now().minusMinutes(25), 60, DEV_PANEL);
-        reservationSaveService.addReservation(17, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
-        reservationSaveService.addReservation(18, LocalDateTime.now().minusMinutes(15), 60, DEV_PANEL);
-        reservationSaveService.addReservation(19, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
-        reservationSaveService.addReservation(20, LocalDateTime.now().minusMinutes(5), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(13, LocalDateTime.now().minusMinutes(40), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(14, LocalDateTime.now().minusMinutes(35), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(15, LocalDateTime.now().minusMinutes(30), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(16, LocalDateTime.now().minusMinutes(25), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(17, LocalDateTime.now().minusMinutes(20), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(18, LocalDateTime.now().minusMinutes(15), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(19, LocalDateTime.now().minusMinutes(10), 60, DEV_PANEL);
+        reservationSaveService.createReservationWithoutValidation(20, LocalDateTime.now().minusMinutes(5), 60, DEV_PANEL);
     }
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {

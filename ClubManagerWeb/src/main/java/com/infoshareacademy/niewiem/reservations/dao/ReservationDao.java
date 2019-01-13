@@ -53,6 +53,15 @@ public class ReservationDao {
         return conflictsFound > 0;
     }
 
+    public boolean doesExist(Long rid) {
+        final Query query = entityManager.createQuery("SELECT r FROM Reservation r WHERE r.id = :rid");
+        query.setParameter("rid", rid);
+
+        int foundReservations = query.getResultList().size();
+        LOG.info("Found {} reservations with ID: {} in database.", foundReservations, rid);
+        return foundReservations > 0;
+    }
+
     // QUERIES RETURNING SINGLE RESULT ---------------------------------------------------------------------------------
 
     public Reservation findById(Long id) {

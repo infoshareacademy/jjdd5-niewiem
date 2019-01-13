@@ -29,11 +29,7 @@ public class TableQueryService {
     private TableDTOMapper tableDTOMapper;
 
     public Table findById(Integer id) {
-        return tableDao.findById(id);
-    }
-
-    public List<Table> findAll() {
-        return tableDao.findAll();
+         return tableDao.findById(id);
     }
 
     public List<TableDTO> findAllByHall(HallDTO hallDTO) {

@@ -7,7 +7,6 @@ import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
 import com.infoshareacademy.niewiem.reservations.enums.Exclusivity;
 import com.infoshareacademy.niewiem.reservations.mappers.ReservationInMillisDTOMapper;
-import com.infoshareacademy.niewiem.services.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,16 +26,9 @@ public class ReservationQueryService {
     @Inject
     private ReservationInMillisDTOMapper reservationInMillisDTOMapper;
 
-    @Inject
-    private InputValidator inputValidator;
-
-    public Reservation findById(String ridString) {
-        Long rid = inputValidator.reqLongValidator(ridString);
-        return findById(rid);
-    }
-
-    public Reservation findById(Long rid) {
-        return reservationDao.findById(rid);
+    public ReservationInMillisDTO findById(Long rid) {
+        Reservation reservation = reservationDao.findById(rid);
+        return reservationInMillisDTOMapper.convertResToDTO(reservation);
     }
 
     public List<ReservationInMillisDTO> findByHall(HallDTO hallDTO) {
@@ -83,5 +75,11 @@ public class ReservationQueryService {
         return reservations.stream()
                 .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
                 .collect(Collectors.toList());
+    }
+
+    public boolean doesExist(Long rid) {
+        boolean doesExist = reservationDao.doesExist(rid);
+        LOG.info("Checking for existence of the table ID. Result: {} for table ID: {}.", doesExist, rid);
+        return doesExist;
     }
 }
