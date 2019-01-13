@@ -54,8 +54,13 @@ public class TableServlet extends HttpServlet {
 
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
 
-        tablePublisher.publishRequestedTable(model, errors, req.getParameter("tid"), hallDTO);
-        tablePublisher.publishTableTypes(model);
+        String tidParam = req.getParameter("tid");
+        if (tablePublisher.publishRequestedTable(model, errors, tidParam, hallDTO)) {
+            int tid = Integer.parseInt(tidParam);
+            tablePublisher.publishIsActive(tid, model);
+        } else {
+            tablePublisher.publishTableTypes(model);
+        }
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);

@@ -61,7 +61,7 @@ public class TableQueryService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isActive(TableDTO tableDTO) {
-        return reservationQueryService.findActiveForTable(tableDTO.getId()) != null;
+    public boolean isActive(Integer tid) {
+        return reservationQueryService.findActiveForTable(tid) != null;
     }
 }

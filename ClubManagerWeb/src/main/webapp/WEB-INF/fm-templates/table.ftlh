@@ -10,16 +10,6 @@
     </#list>
 </#if>
 
-
-<#if table??>
-    <div class="row">
-        <form method="post" action="/table?action=delete">
-            <input type="hidden" name="tid" value="${table.id}">
-            <button type="submit" class="btn btn-danger">Delete table</button>
-        </form>
-    </div>
-</#if>
-
 <div class="row">
     <form method="post" action="/table?action=<#if table??>update-name<#else>new</#if>">
 
@@ -64,4 +54,41 @@
         </#if>
 
     </form>
+
+
 </div>
+<#if table??>
+    <div class="row">
+        <form method="post" action="/table?action=delete">
+            <input type="hidden" name="tid" value="${table.id}">
+            <button type="submit" class="btn btn-danger">Delete table</button>
+        </form>
+    </div>
+</#if>
+<#if table??>
+    <div class="row">
+        <#if isActive>
+            <form method="post" action="/table?action=stopGame">
+                <input type="hidden" name="tid" value="${table.id}">
+                <button type="submit" class="btn btn-secondary">Stop game</button>
+            </form>
+        <#else>
+            <h2>Start new game:</h2>
+            <form method="post" action="/table?action=startGame">
+                <input type="hidden" name="tid" value="${table.id}">
+                <div class="form-group">
+                    <label for="timeSpan">Time span in minutes</label>
+                    <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
+                </div>
+                <button type="submit" class="btn btn-secondary">Start game</button>
+            </form>
+        </#if>
+    </div>
+</#if>
+<#if table??>
+    <div class="row">
+        <div class="row">
+            <a class="btn btn-light btn-lg btn-block" href="/reservation?tid=${table.id}" role="button">Add new reservation</a>
+        </div>
+    </div>
+</#if>
