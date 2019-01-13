@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.tables.servlets;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
+import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.publishers.TablePublisher;
@@ -49,6 +50,9 @@ public class TableServlet extends HttpServlet {
     @Inject
     private ReservationUpdateService reservationUpdateService;
 
+    @Inject
+    private ReservationSaveService reservationSaveService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
@@ -88,9 +92,9 @@ public class TableServlet extends HttpServlet {
             LOG.info("Deleting table.");
             tableDeleteService.delete(tidParam, errors, activeHall);
         } else if ("startGame".equals(action)) {
-            // todo: do me!!
             LOG.info("Requested starting new game on table with id: {}.", tidParam);
-//            tableDeleteService.;
+            String timeSpan = req.getParameter("timeSpan");
+            reservationSaveService.startGame(tidParam, timeSpan, errors, activeHall);
         } else if ("stopGame".equals(action)) {
             LOG.info("Requesting stopping of current game on table with id: {}", tidParam);
             reservationUpdateService.stopGame(tidParam, errors, activeHall);
