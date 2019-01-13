@@ -1,5 +1,6 @@
 package com.infoshareacademy.niewiem.halls.servlets;
 
+import com.infoshareacademy.niewiem.halls.publishers.HallPublisher;
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ public class HallServlet extends HttpServlet {
     @Inject
     private ServletService servletService;
 
+    @Inject
+    private HallPublisher hallPublisher;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
@@ -32,7 +36,7 @@ public class HallServlet extends HttpServlet {
         model.put("errors", errors);
 
         String hidParam = req.getParameter("hid");
-
+        hallPublisher.publishRequestedHall(model, errors, hidParam);
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);

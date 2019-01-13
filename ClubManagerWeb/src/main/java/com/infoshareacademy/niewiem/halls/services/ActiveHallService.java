@@ -1,7 +1,6 @@
 package com.infoshareacademy.niewiem.halls.services;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
-import com.infoshareacademy.niewiem.halls.mappers.HallDTOMapper;
 import com.infoshareacademy.niewiem.halls.validators.HallValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ public class ActiveHallService {
     public static final String ACTIVE_HALL_PARAM = "activeHall";
 
     @Inject
-    private HallDTOMapper hallDTOMapper;
+    private HallQueryService hallQueryService;
 
     @Inject
     private HallValidator hallValidator;
@@ -31,7 +30,7 @@ public class ActiveHallService {
             return false;
         }
         Integer hid = Integer.valueOf(hidString);
-        HallDTO hallDTO = hallDTOMapper.getHallDTOById(hid);
+        HallDTO hallDTO = hallQueryService.findById(hid);
 
         if (hallDTO == null) {
             LOG.warn("Failed to retrieve requested hall by id: {}", hid);

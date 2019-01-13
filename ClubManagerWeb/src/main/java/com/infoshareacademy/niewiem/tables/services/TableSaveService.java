@@ -3,8 +3,8 @@ package com.infoshareacademy.niewiem.tables.services;
 import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.domain.Table;
 import com.infoshareacademy.niewiem.enums.TableType;
+import com.infoshareacademy.niewiem.halls.dao.HallDao;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
-import com.infoshareacademy.niewiem.halls.services.HallQueryService;
 import com.infoshareacademy.niewiem.tables.dao.TableDao;
 import com.infoshareacademy.niewiem.tables.mappers.TableRequestMapper;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class TableSaveService {
     private TableDao tableDao;
 
     @Inject
-    private HallQueryService hallQueryService;
+    private HallDao hallDao;
 
     @Inject
     private TableRequestMapper tableRequestMapper;
@@ -38,7 +38,7 @@ public class TableSaveService {
 
     public void addTablePoolToHallAutoNameNoValidation(Integer hallId, int i) {
         Table table = new Table();
-        Hall hall = hallQueryService.findById(hallId);
+        Hall hall = hallDao.findById(hallId);
 
         table.setHall(hall);
         table.setType(TableType.POOL);

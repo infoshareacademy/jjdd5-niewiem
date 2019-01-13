@@ -1,6 +1,6 @@
 package com.infoshareacademy.niewiem.halls.publishers;
 
-import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.HallQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class HallListPublisher {
     private HallQueryService hallQueryService;
 
     public void publishHallList(Map<String, Object> model ) {
-        List<Hall> halls = hallQueryService.findAll();
+        List<HallDTO> halls = hallQueryService.findAll();
         model.put("halls", halls);
     }
 }

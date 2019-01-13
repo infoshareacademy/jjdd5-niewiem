@@ -30,6 +30,7 @@ public class ActiveHallFilter implements Filter {
             "/dev-panel",
             "/images",
             "/create-hall",
+            "/hall",
             "/error-handler"
     };
     private static final String[] EXCLUDED_PATH_ENDINGS = new String[]{
