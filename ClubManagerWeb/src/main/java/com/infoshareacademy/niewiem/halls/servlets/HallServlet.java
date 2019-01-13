@@ -1,12 +1,14 @@
 package com.infoshareacademy.niewiem.halls.servlets;
 
 import com.infoshareacademy.niewiem.halls.publishers.HallPublisher;
+import com.infoshareacademy.niewiem.halls.services.HallSaveService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@MultipartConfig
 @WebServlet("/hall")
 public class HallServlet extends HttpServlet {
     private static final String VIEW_NAME = "/hall";
@@ -27,6 +30,12 @@ public class HallServlet extends HttpServlet {
 
     @Inject
     private HallPublisher hallPublisher;
+
+    @Inject
+    private HallSaveService hallSaveService;
+
+//    @Inject
+//    private HallUpdateService hallUpdateService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,5 +49,22 @@ public class HallServlet extends HttpServlet {
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        List<String> errors = new ArrayList<>();
+
+        if ("new".equals(action)) {
+            LOG.info("Saving new hall.");
+            hallSaveService.createNewHall(req, errors);
+
+        }
+//        else if ("update".equals(action)) {
+//            LOG.info("Saving new hall.");
+//            hallUpdateService.update();
+//        }
+        resp.sendRedirect("/choose-hall");
     }
 }

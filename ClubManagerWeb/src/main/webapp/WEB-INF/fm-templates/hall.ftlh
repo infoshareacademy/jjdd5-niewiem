@@ -11,7 +11,7 @@
 </#if>
 
 <div class="row">
-    <form method="post" action="/table?action=<#if hall??>update<#else>new</#if>" enctype="multipart/form-data">
+    <form method="post" action="/hall?action=<#if hall??>update<#else>new</#if>" enctype="multipart/form-data">
 
         <#if hall??>
             <input type="hidden" name="hid" value="${hall.id}">

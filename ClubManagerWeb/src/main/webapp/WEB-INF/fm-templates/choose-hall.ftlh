@@ -44,7 +44,7 @@
 <div class="row justify-content-md-center">
     <div id="create-new-hall">
         <button class="btn btn-dark" type="button"
-                onclick="window.location.href='create-hall'">Create hall
+                onclick="window.location.href='hall'">Create hall
         </button>
     </div>
 </div>

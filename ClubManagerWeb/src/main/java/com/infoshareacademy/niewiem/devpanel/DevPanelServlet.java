@@ -49,9 +49,9 @@ public class DevPanelServlet extends HttpServlet {
     }
 
     private void addThreeNewClubs() {
-        hallSaveService.save(new Hall("DEMO 1"));
-        hallSaveService.save(new Hall("DEMO 2"));
-        hallSaveService.save(new Hall("DEMO 3"));
+        hallSaveService.saveWithoutValidation(new Hall("DEMO 1"));
+        hallSaveService.saveWithoutValidation(new Hall("DEMO 2"));
+        hallSaveService.saveWithoutValidation(new Hall("DEMO 3"));
     }
 
     private void addTablesToClubs() {

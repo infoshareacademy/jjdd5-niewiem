@@ -30,27 +30,21 @@ public class HallSaveService {
     @Inject
     private HallValidator hallValidator;
 
-    public Integer save(Hall hall) {
-        // todo: validate me like you validate your French girls!
-        // id should be null, otherwise it's not save but update!
-        // name should not be null or empty
-        // if image null or empty- put in the default image
-        // check if image actually exist on disk
-        return hallDao.save(hall);
+    public void saveWithoutValidation(Hall hall) {
+        hallDao.save(hall);
     }
 
-    public Integer addNewHall(HttpServletRequest req, List<String> errors) throws IOException, ServletException {
-        Part part = req.getPart("image");
-        // todo: should we validate String in here whether it is null or not?
-        //  This would probably mean exceptions though...
-
+    public boolean createNewHall(HttpServletRequest req, List<String> errors) throws IOException, ServletException {
         String name = req.getParameter("name");
+        LOG.info("Got name: {}", name);
         if (hallValidator.validateStringIsEmpty(name, "Hall's name", errors)) {
-            return -1;
+            return false;
         }
 
         Hall hall = new Hall();
         hall.setName(name);
+
+        Part part = req.getPart("image");
 
         try {
             File image = fileUploadProcessor.uploadImageFile(part);
@@ -58,8 +52,9 @@ public class HallSaveService {
             hall.setImageURL("/images/" + imageName);
         } catch (HallImageNotFound userImageNotFound) {
             LOG.warn("Image not found");
+            errors.add("Image not found.");
         }
 
-        return save(hall);
+        return hallDao.save(hall) > -1;
     }
 }
