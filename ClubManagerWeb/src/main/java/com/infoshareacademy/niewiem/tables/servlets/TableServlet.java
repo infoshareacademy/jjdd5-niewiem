@@ -6,6 +6,7 @@ import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.publishers.TablePublisher;
 import com.infoshareacademy.niewiem.tables.services.TableDeleteService;
 import com.infoshareacademy.niewiem.tables.services.TableSaveService;
+import com.infoshareacademy.niewiem.tables.services.TableUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +36,11 @@ public class TableServlet extends HttpServlet {
     @Inject
     private TablePublisher tablePublisher;
 
+//    @Inject
+//    private TableSaveService tableSaveService;
+
     @Inject
-    private TableSaveService tableSaveService;
+    private TableUpdateService tableUpdateService;
 
     @Inject
     private TableDeleteService tableDeleteService;
@@ -62,9 +66,15 @@ public class TableServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
 
+//        if ("new".equals(action)) {
+//            LOG.info("Saving new table.");
+//            tableSaveService.createNewTable(req, errors, activeHall);
+//        } else
         if ("update-name".equals(action)) {
-//            LOG.info("Updating table name.");
-//            tableSaveService.createNewReservation(req, errors, activeHall);
+            LOG.info("Updating table name.");
+            String tidParam = req.getParameter("tid");
+            String name = req.getParameter("name");
+            tableUpdateService.updateName(tidParam, name, errors, activeHall);
         } else if ("delete".equals(action)) {
             LOG.info("Deleting table.");
             String tidParam = req.getParameter("tid");

@@ -26,10 +26,27 @@ public class ReservationQueryService {
     @Inject
     private ReservationInMillisDTOMapper reservationInMillisDTOMapper;
 
+    // boolean ---------------------------------------------------------------------------------------------------------
+
+    public boolean doesExist(Long rid) {
+        boolean doesExist = reservationDao.doesExist(rid);
+        LOG.info("Checking for existence of the table ID. Result: {} for table ID: {}.", doesExist, rid);
+        return doesExist;
+    }
+
+    // find single objects ---------------------------------------------------------------------------------------------
+
     public ReservationInMillisDTO findById(Long rid) {
         Reservation reservation = reservationDao.findById(rid);
         return reservationInMillisDTOMapper.convertResToDTO(reservation);
     }
+
+    public ReservationInMillisDTO findActiveForTable(Integer tid) {
+        Reservation reservation = reservationDao.findActiveForTable(tid);
+        return reservationInMillisDTOMapper.convertResToDTO(reservation);
+    }
+
+    // find lists ------------------------------------------------------------------------------------------------------
 
     public List<ReservationInMillisDTO> findByHall(HallDTO hallDTO) {
         List<Reservation> reservations = reservationDao.findByHallId(hallDTO.getId());
@@ -39,11 +56,6 @@ public class ReservationQueryService {
     public List<ReservationInMillisDTO> findActiveByHall(HallDTO hallDTO) {
         List<Reservation> reservations = reservationDao.findActiveByHall(hallDTO.getId());
         return convertToDTO(reservations);
-    }
-
-    public ReservationInMillisDTO findActiveForTable(Integer tid) {
-        Reservation reservation = reservationDao.findActiveForTable(tid);
-        return reservationInMillisDTOMapper.convertResToDTO(reservation);
     }
 
     public List<ReservationInMillisDTO> findByTableId(Integer tid) {
@@ -71,15 +83,11 @@ public class ReservationQueryService {
         return convertToDTO(reservations);
     }
 
+    // logic -----------------------------------------------------------------------------------------------------------
+
     private List<ReservationInMillisDTO> convertToDTO(List<Reservation> reservations) {
         return reservations.stream()
                 .map(r -> reservationInMillisDTOMapper.convertResToDTO(r))
                 .collect(Collectors.toList());
-    }
-
-    public boolean doesExist(Long rid) {
-        boolean doesExist = reservationDao.doesExist(rid);
-        LOG.info("Checking for existence of the table ID. Result: {} for table ID: {}.", doesExist, rid);
-        return doesExist;
     }
 }

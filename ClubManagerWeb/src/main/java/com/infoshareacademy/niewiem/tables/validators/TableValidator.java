@@ -19,15 +19,6 @@ public class TableValidator extends GenericValidator {
     @Inject
     private TableQueryService tableQueryService;
 
-    public boolean validateTypeParam(String typeParam, List<String> errors) {
-        if (StringUtils.isEmpty(typeParam)) {
-            LOG.info("No table type parameter in request.");
-            return false;
-        }
-
-        return validateTableTypeExists(typeParam, errors);
-    }
-
     public boolean validateTidParam(String tidParam, List<String> errors, HallDTO hallDTO) {
         if (StringUtils.isEmpty(tidParam)) {
             LOG.info("No table id parameter in request.");
@@ -75,6 +66,15 @@ public class TableValidator extends GenericValidator {
 
     private boolean validateTableIdDoesNotExistInActiveHallId(Integer tid, Integer activeHid, List<String> errors) {
         return !validateTableIdExistsInActiveHallId(tid, activeHid, errors);
+    }
+
+    public boolean validateTypeParam(String typeParam, List<String> errors) {
+        if (StringUtils.isEmpty(typeParam)) {
+            LOG.info("No table type parameter in request.");
+            return false;
+        }
+
+        return validateTableTypeExists(typeParam, errors);
     }
 
     private boolean validateTableTypeExists(String typeParam, List<String> errors) {

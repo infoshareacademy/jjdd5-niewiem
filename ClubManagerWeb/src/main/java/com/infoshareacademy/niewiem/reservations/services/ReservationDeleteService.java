@@ -21,6 +21,7 @@ public class ReservationDeleteService {
     private ReservationValidator reservationValidator;
 
     public void delete(String ridString, List<String> errors, HallDTO hallDTO) {
+        // todo: When reservation is being deleted, maybe it should send an email to customer, when there is one?
         if(reservationValidator.validateRidParam(ridString, errors, hallDTO)){
             Long rid = Long.parseLong(ridString);
 

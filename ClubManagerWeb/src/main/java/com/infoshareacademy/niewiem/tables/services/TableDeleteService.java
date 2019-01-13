@@ -21,8 +21,7 @@ public class TableDeleteService {
     private TableValidator tableValidator;
 
     public void delete(String tidString, List<String> errors, HallDTO hallDTO) {
-        // todo: Does deleting table also delete all table's reservation?
-        // todo: When reservation is being deleted, maybe it should send an email to customer?
+        // todo: Should deleting table also delete all table's reservations?
         if(tableValidator.validateTidParam(tidString, errors, hallDTO)){
             Integer tid = Integer.parseInt(tidString);
 
