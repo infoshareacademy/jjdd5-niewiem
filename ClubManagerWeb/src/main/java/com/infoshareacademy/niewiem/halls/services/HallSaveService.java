@@ -1,10 +1,10 @@
 package com.infoshareacademy.niewiem.halls.services;
 
-import com.infoshareacademy.niewiem.images.cdi.FileUploadProcessor;
+import com.infoshareacademy.niewiem.domain.Hall;
 import com.infoshareacademy.niewiem.halls.dao.HallDao;
 import com.infoshareacademy.niewiem.halls.exceptions.HallImageNotFound;
-import com.infoshareacademy.niewiem.domain.Hall;
-import com.infoshareacademy.niewiem.services.validators.InputValidator;
+import com.infoshareacademy.niewiem.halls.validators.HallValidator;
+import com.infoshareacademy.niewiem.images.cdi.FileUploadProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Stateless
 public class HallSaveService {
@@ -27,10 +28,9 @@ public class HallSaveService {
     private FileUploadProcessor fileUploadProcessor;
 
     @Inject
-    private InputValidator inputValidator;
+    private HallValidator hallValidator;
 
-
-    public Integer save(Hall hall){
+    public Integer save(Hall hall) {
         // todo: validate me like you validate your French girls!
         // id should be null, otherwise it's not save but update!
         // name should not be null or empty
@@ -39,12 +39,15 @@ public class HallSaveService {
         return hallDao.save(hall);
     }
 
-    public Integer addNewHall(HttpServletRequest req) throws IOException, ServletException {
-        // todo: catch Exceptions in input validator!
-        Part part = inputValidator.reqImageValidator(req);
+    public Integer addNewHall(HttpServletRequest req, List<String> errors) throws IOException, ServletException {
+        Part part = req.getPart("image");
         // todo: should we validate String in here whether it is null or not?
         //  This would probably mean exceptions though...
+
         String name = req.getParameter("name");
+        if (hallValidator.validateStringIsEmpty(name, "Hall's name", errors)) {
+            return -1;
+        }
 
         Hall hall = new Hall();
         hall.setName(name);

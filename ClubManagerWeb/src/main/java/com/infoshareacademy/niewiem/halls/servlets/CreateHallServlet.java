@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @MultipartConfig
@@ -37,7 +39,9 @@ public class CreateHallServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        hallSaveService.addNewHall(req);
+        List<String> errors = new ArrayList<>();
+        // todo: should display the errors somehow
+        hallSaveService.addNewHall(req, errors);
 
         resp.sendRedirect("/choose-hall");
     }

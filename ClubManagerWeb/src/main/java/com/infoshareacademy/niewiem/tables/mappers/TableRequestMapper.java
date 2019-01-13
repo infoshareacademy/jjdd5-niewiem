@@ -25,22 +25,6 @@ public class TableRequestMapper {
     @Inject
     private HallDao hallDao;
 
-    public Table getTableWithId(HttpServletRequest req, List<String> errors, HallDTO activeHall) {
-        String tidParam = req.getParameter("tid");
-        if (!tableValidator.validateTidParam(tidParam, errors, activeHall)) {
-            return null;
-        }
-        Integer tid = Integer.parseInt(tidParam);
-
-        Table table = getTableWithoutId(req, errors, activeHall);
-        if (table == null) {
-            return null;
-        }
-
-        table.setId(tid);
-        return table;
-    }
-
     public Table getTableWithoutId(HttpServletRequest req, List<String> errors, HallDTO activeHall) {
         Table table = new Table();
 
