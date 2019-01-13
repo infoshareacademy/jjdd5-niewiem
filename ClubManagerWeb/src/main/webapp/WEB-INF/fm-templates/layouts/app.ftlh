@@ -59,6 +59,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/reservations">Reservations</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-panel">Admin panel</a>
+                </li>
                 </#if>
                 <li class="nav-item">
                     <#if userAuthenticated?? >

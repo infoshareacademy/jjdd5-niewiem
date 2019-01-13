@@ -24,7 +24,6 @@ public class ActiveHallFilter implements Filter {
     private static final String EXCLUDED_ROOT_PATH = "/";
     private static final String[] EXCLUDED_PATH_BEGINNINGS = new String[]{
             WELCOME_PAGE_TO_REDIRECT,
-            "/id-token",
             "/logout",
             "/login",
             "/dev-panel",

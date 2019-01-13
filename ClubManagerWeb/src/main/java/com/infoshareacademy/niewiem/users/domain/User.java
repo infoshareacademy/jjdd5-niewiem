@@ -57,4 +57,14 @@ public class User {
     public void setRole(Integer role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("User{");
+        sb.append("userId=").append(userId);
+        sb.append(", userEmail='").append(userEmail).append('\'');
+        sb.append(", userName='").append(userName);
+        sb.append('}');
+        return sb.toString();
+    }
 }
