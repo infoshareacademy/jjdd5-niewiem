@@ -13,7 +13,7 @@
         console.log('Email: ' + profile.getEmail());
         console.log('id_token: ' + googleUser.getAuthResponse().id_token);
 
-        var redirectUrl = 'id-token';
+        var redirectUrl = 'login';
 
         var form = $('<form action="' + redirectUrl + '" method="post">' +
                 '<input type="text" name="id_token" value="' +
