@@ -85,7 +85,7 @@ public class DevPanelServlet extends HttpServlet {
 
     private void addNTablesToHall(Integer hallId, Integer numberOfTables) {
         for (int i = 1; i <= numberOfTables; i++) {
-            tableSaveService.addTablePoolToHallAutoName(hallId, i);
+            tableSaveService.addTablePoolToHallAutoNameNoValidation(hallId, i);
         }
     }
 }

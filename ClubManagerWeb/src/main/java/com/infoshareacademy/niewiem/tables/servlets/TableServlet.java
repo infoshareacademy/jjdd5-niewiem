@@ -36,8 +36,8 @@ public class TableServlet extends HttpServlet {
     @Inject
     private TablePublisher tablePublisher;
 
-//    @Inject
-//    private TableSaveService tableSaveService;
+    @Inject
+    private TableSaveService tableSaveService;
 
     @Inject
     private TableUpdateService tableUpdateService;
@@ -55,6 +55,7 @@ public class TableServlet extends HttpServlet {
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
 
         tablePublisher.publishRequestedTable(model, errors, req.getParameter("tid"), hallDTO);
+        tablePublisher.publishTableTypes(model);
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
@@ -66,11 +67,10 @@ public class TableServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
 
-//        if ("new".equals(action)) {
-//            LOG.info("Saving new table.");
-//            tableSaveService.createNewTable(req, errors, activeHall);
-//        } else
-        if ("update-name".equals(action)) {
+        if ("new".equals(action)) {
+            LOG.info("Saving new table.");
+            tableSaveService.createNewTable(req, errors, activeHall);
+        } else if ("update-name".equals(action)) {
             LOG.info("Updating table name.");
             String tidParam = req.getParameter("tid");
             String name = req.getParameter("name");

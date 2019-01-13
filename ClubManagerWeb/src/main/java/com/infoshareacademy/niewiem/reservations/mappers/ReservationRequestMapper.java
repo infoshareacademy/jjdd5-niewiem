@@ -48,11 +48,11 @@ public class ReservationRequestMapper {
     public Reservation getReservationWithoutId(HttpServletRequest req, List<String> errors, HallDTO hallDTO){
         Reservation reservation = new Reservation();
 
-        LOG.info("Requested tid {}", req.getParameter("tid"));
-        LOG.info("Requested startDate {}", req.getParameter("startDate"));
-        LOG.info("Requested startTime {}", req.getParameter("startTime"));
-        LOG.info("Requested timeSpan {}", req.getParameter("timeSpan"));
-        LOG.info("Requested customer {}", req.getParameter("customer"));
+        LOG.debug("Requested tid {}", req.getParameter("tid"));
+        LOG.debug("Requested startDate {}", req.getParameter("startDate"));
+        LOG.debug("Requested startTime {}", req.getParameter("startTime"));
+        LOG.debug("Requested timeSpan {}", req.getParameter("timeSpan"));
+        LOG.debug("Requested customer {}", req.getParameter("customer"));
 
         Table table = getTableFromTid(req.getParameter("tid"), errors, hallDTO);
         LocalDateTime start = getStartLDT(req.getParameter("startDate"), req.getParameter("startTime"), errors);
