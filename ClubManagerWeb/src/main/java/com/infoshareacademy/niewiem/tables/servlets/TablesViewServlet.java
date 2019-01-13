@@ -34,7 +34,7 @@ public class TablesViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
-        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
+        HallDTO hallDTO = activeHallService.getActive(req.getSession());
 
         tablesListPublisher.publishForAllTablesInHallActiveReservationOrTempZeroEndReservation(model, hallDTO);
 

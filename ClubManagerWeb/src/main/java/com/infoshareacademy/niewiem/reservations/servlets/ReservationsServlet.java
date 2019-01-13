@@ -50,7 +50,7 @@ public class ReservationsServlet extends HttpServlet {
         List<String> warnings = new ArrayList<>();
         model.put("warnings", warnings);
 
-        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
+        HallDTO hallDTO = activeHallService.getActive(req.getSession());
 
         reservationsListPublisher.publishRequestedReservations(model, errors, warnings, req);
 

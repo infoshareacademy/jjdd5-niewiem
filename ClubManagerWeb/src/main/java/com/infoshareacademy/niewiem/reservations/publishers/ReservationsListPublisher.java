@@ -53,7 +53,7 @@ public class ReservationsListPublisher {
     private ReservationQueryService reservationQueryService;
 
     public void publishRequestedReservations(Map<String, Object> model, List<String> errors, List<String> warnings, HttpServletRequest req) {
-        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
+        HallDTO hallDTO = activeHallService.getActive(req.getSession());
 
         if (reservationValidator.validatePeriodParam(req.getParameter(PERIOD_PARAM), errors)) {
             publishOptionsWhenPeriodParamExists(model, errors, warnings, req, hallDTO);

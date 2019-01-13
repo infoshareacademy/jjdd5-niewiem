@@ -3,7 +3,7 @@
         <#list halls>
             <div class="list-group">
                 <#items as h>
-                    <a href="choose-hall?hallId=${h.id}">
+                    <a href="choose-hall?hid=${h.id}">
                         <div class="cardContainer list-group-item list-group-item-action clearfix">
                             <div class="col-sm">
                                 <p class="hallName">${h.name}</p>
@@ -18,6 +18,8 @@
                             </div>
                         </div>
                     </a>
+
+
                 </#items>
             </div>
         </#list>

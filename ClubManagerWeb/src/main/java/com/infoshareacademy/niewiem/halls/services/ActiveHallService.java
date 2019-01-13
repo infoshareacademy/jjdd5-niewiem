@@ -2,12 +2,14 @@ package com.infoshareacademy.niewiem.halls.services;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.mappers.HallDTOMapper;
+import com.infoshareacademy.niewiem.halls.validators.HallValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Stateless
 public class ActiveHallService {
@@ -17,14 +19,17 @@ public class ActiveHallService {
     @Inject
     private HallDTOMapper hallDTOMapper;
 
-    public HallDTO getActiveHall(HttpSession session) {
+    @Inject
+    private HallValidator hallValidator;
+
+    public HallDTO getActive(HttpSession session) {
         return (HallDTO) session.getAttribute(ACTIVE_HALL_PARAM);
     }
 
-    public boolean setActive(HttpSession session, String hidString) {
-        // todo: here be validation
-        // todo: add errors like - could not find chosen hall etc.
-        LOG.info("Requested hall id to set as an active hall: {}", hidString);
+    public boolean setActive(HttpSession session, String hidString, List<String> errors) {
+        if(!hallValidator.validateHidParam(hidString, errors)){
+            return false;
+        }
         Integer hid = Integer.valueOf(hidString);
         HallDTO hallDTO = hallDTOMapper.getHallDTOById(hid);
 
