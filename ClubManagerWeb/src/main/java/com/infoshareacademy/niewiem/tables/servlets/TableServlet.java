@@ -4,6 +4,8 @@ import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.publishers.TablePublisher;
+import com.infoshareacademy.niewiem.tables.services.TableDeleteService;
+import com.infoshareacademy.niewiem.tables.services.TableSaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,13 +27,19 @@ public class TableServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(TableServlet.class);
 
     @Inject
-    private TablePublisher tablePublisher;
-
-    @Inject
     private ServletService servletService;
 
     @Inject
     private ActiveHallService activeHallService;
+
+    @Inject
+    private TablePublisher tablePublisher;
+
+    @Inject
+    private TableSaveService tableSaveService;
+
+    @Inject
+    private TableDeleteService tableDeleteService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,5 +54,22 @@ public class TableServlet extends HttpServlet {
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        List<String> errors = new ArrayList<>();
+        HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
+
+        if ("update-name".equals(action)) {
+//            LOG.info("Updating table name.");
+//            tableSaveService.createNewReservation(req, errors, activeHall);
+        } else if ("delete".equals(action)) {
+            LOG.info("Deleting table.");
+            String tidParam = req.getParameter("tid");
+            tableDeleteService.delete(tidParam, errors, activeHall);
+        }
+        resp.sendRedirect("/tables-view");
     }
 }
