@@ -1,4 +1,4 @@
-package com.infoshareacademy.niewiem.tables.servlets;
+package com.infoshareacademy.niewiem.errors.servlets;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
