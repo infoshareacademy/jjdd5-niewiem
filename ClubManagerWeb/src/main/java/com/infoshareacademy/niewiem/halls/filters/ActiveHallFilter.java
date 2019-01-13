@@ -85,7 +85,7 @@ public class ActiveHallFilter implements Filter {
     }
 
     private boolean isURIExcludedFromFilter(String reqUri) {
-        LOG.info("Requested URI: {}", reqUri);
+        LOG.warn("Requested URI: {}", reqUri);
 
         if (reqUri.equals(EXCLUDED_ROOT_PATH)) {
             return true;

@@ -1,12 +1,15 @@
 package com.infoshareacademy.niewiem.halls.services;
 
-import com.infoshareacademy.niewiem.halls.dao.HallDao;
 import com.infoshareacademy.niewiem.domain.Hall;
+import com.infoshareacademy.niewiem.halls.dao.HallDao;
+import com.infoshareacademy.niewiem.halls.mappers.HallMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Stateless
 public class HallUpdateService {
@@ -15,14 +18,11 @@ public class HallUpdateService {
     @Inject
     private HallDao hallDao;
 
-    public Hall update(Hall hall) {
-        // todo: validate me like you validate your French girls!
-        // id should NOT be null not empty!
-        // check if hall with that id already exist, it should since it's an update
-        // name should not be null or empty
-        // if image null or empty- put in the default image
-        // check if image actually exist on disk
-        // make sure only updated fields get changed! Maybe if null don't abort, just don't change?
-        return hallDao.update(hall);
+    @Inject
+    private HallMapper hallMapper;
+
+    public void update(HttpServletRequest req, List<String> errors) {
+        Hall hall = hallMapper.getHallWithId(req, errors);
+        hallDao.update(hall);
     }
 }

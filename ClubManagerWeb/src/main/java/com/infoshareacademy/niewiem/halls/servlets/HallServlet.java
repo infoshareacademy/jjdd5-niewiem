@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.halls.servlets;
 
 import com.infoshareacademy.niewiem.halls.publishers.HallPublisher;
 import com.infoshareacademy.niewiem.halls.services.HallSaveService;
+import com.infoshareacademy.niewiem.halls.services.HallUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,8 @@ public class HallServlet extends HttpServlet {
     @Inject
     private HallSaveService hallSaveService;
 
-//    @Inject
-//    private HallUpdateService hallUpdateService;
+    @Inject
+    private HallUpdateService hallUpdateService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,12 +60,10 @@ public class HallServlet extends HttpServlet {
         if ("new".equals(action)) {
             LOG.info("Saving new hall.");
             hallSaveService.createNewHall(req, errors);
-
+        } else if ("update".equals(action)) {
+            LOG.info("Saving new hall.");
+            hallUpdateService.update(req, errors);
         }
-//        else if ("update".equals(action)) {
-//            LOG.info("Saving new hall.");
-//            hallUpdateService.update();
-//        }
         resp.sendRedirect("/choose-hall");
     }
 }
