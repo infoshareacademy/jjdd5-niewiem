@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.halls.servlets;
 
 import com.infoshareacademy.niewiem.halls.publishers.HallPublisher;
+import com.infoshareacademy.niewiem.halls.services.HallDeleteService;
 import com.infoshareacademy.niewiem.halls.services.HallSaveService;
 import com.infoshareacademy.niewiem.halls.services.HallUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
@@ -38,6 +39,9 @@ public class HallServlet extends HttpServlet {
     @Inject
     private HallUpdateService hallUpdateService;
 
+    @Inject
+    private HallDeleteService hallDeleteService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
@@ -63,6 +67,10 @@ public class HallServlet extends HttpServlet {
         } else if ("update".equals(action)) {
             LOG.info("Saving new hall.");
             hallUpdateService.update(req, errors);
+        } else if ("delete".equals(action)) {
+            LOG.info("Delete hall.");
+            String hidParam = req.getParameter("hid");
+            hallDeleteService.delete(hidParam, errors);
         }
         resp.sendRedirect("/choose-hall");
     }

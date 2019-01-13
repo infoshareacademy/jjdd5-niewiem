@@ -42,4 +42,12 @@
         <button type="submit" class="btn btn-primary">Save</button>
 
     </form>
+    <#if hall??>
+        <div class="row">
+            <form method="post" action="/hall?action=delete">
+                <input type="hidden" name="hid" value="${hall.id}">
+                <button type="submit" class="btn btn-danger">Delete hall</button>
+            </form>
+        </div>
+    </#if>
 </div>
