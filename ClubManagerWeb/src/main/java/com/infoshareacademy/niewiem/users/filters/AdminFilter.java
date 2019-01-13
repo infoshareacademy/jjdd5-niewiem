@@ -20,7 +20,7 @@ public class AdminFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(AdminFilter.class);
 
     private static final String LOGIN_PAGE = "/login";
-    private static final String ADMIN_PAGE = "/no-access";
+    private static final String NO_ACCESS_PAGE = "/no-access";
     private static final Integer ADMIN = 1;
 
     @Inject
@@ -47,7 +47,7 @@ public class AdminFilter implements Filter {
                 filterChain.doFilter(servletRequest, servletResponse);
                 LOG.info("User {} got access to admin-panel", sessionEmail);
             }else {
-                resp.sendRedirect(ADMIN_PAGE);
+                resp.sendRedirect(NO_ACCESS_PAGE);
                 LOG.warn("User {} tried to get access to admin panel", sessionEmail);
             }
         } else {

@@ -86,11 +86,7 @@ public class LogInServlet extends HttpServlet {
                 userDao.save(user);
             }
 
-//            if (user != null && user.getRole() == ADMIN) {
-//                req.getServletContext().getRequestDispatcher("/admin-panel").forward(req, resp);
-//            } else {
-                req.getServletContext().getRequestDispatcher("/choose-hall").forward(req, resp);
-//            }
+            req.getServletContext().getRequestDispatcher("/choose-hall").forward(req, resp);
 
         } catch (Exception e) {
             LOG.error("User can not be logged in");
