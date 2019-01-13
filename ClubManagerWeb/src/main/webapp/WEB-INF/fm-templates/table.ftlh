@@ -70,10 +70,11 @@
         <#if isActive>
             <form method="post" action="/table?action=stopGame">
                 <input type="hidden" name="tid" value="${table.id}">
-                <button type="submit" class="btn btn-secondary">Stop game</button>
+                <button type="submit" class="btn btn-secondary">Stop current game</button>
             </form>
         <#else>
             <h2>Start new game:</h2>
+            <br/>
             <form method="post" action="/table?action=startGame">
                 <input type="hidden" name="tid" value="${table.id}">
                 <div class="form-group">

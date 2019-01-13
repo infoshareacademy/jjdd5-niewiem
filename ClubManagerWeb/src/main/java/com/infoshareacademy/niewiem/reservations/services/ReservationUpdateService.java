@@ -4,12 +4,14 @@ import com.infoshareacademy.niewiem.domain.Reservation;
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.reservations.dao.ReservationDao;
 import com.infoshareacademy.niewiem.reservations.mappers.ReservationRequestMapper;
+import com.infoshareacademy.niewiem.tables.validators.TableValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
@@ -21,6 +23,9 @@ public class ReservationUpdateService {
 
     @Inject
     private ReservationRequestMapper reservationRequestMapper;
+
+    @Inject
+    private TableValidator tableValidator;
 
     public Reservation update(Reservation reservation, List<String> errors) {
         if (reservationDao.isInConflict(reservation)) {
@@ -49,4 +54,15 @@ public class ReservationUpdateService {
         }
         update(reservation, errors);
     }
+
+    public void stopGame(String tidParam, List<String> errors, HallDTO hallDTO){
+        if(tableValidator.validateTidParam(tidParam, errors, hallDTO)){
+            Integer tid = Integer.parseInt(tidParam);
+            Reservation reservation = reservationDao.findActiveForTable(tid);
+            reservation.setEndTime(LocalDateTime.now());
+            reservationDao.update(reservation);
+        }
+    }
+
+
 }

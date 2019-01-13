@@ -2,6 +2,7 @@ package com.infoshareacademy.niewiem.tables.servlets;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.halls.services.ActiveHallService;
+import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
 import com.infoshareacademy.niewiem.tables.publishers.TablePublisher;
 import com.infoshareacademy.niewiem.tables.services.TableDeleteService;
@@ -45,6 +46,9 @@ public class TableServlet extends HttpServlet {
     @Inject
     private TableDeleteService tableDeleteService;
 
+    @Inject
+    private ReservationUpdateService reservationUpdateService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> model = new HashMap<>();
@@ -71,19 +75,25 @@ public class TableServlet extends HttpServlet {
         String action = req.getParameter("action");
         List<String> errors = new ArrayList<>();
         HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
+        String tidParam = req.getParameter("tid");
 
         if ("new".equals(action)) {
             LOG.info("Saving new table.");
             tableSaveService.createNewTable(req, errors, activeHall);
         } else if ("update-name".equals(action)) {
             LOG.info("Updating table name.");
-            String tidParam = req.getParameter("tid");
             String name = req.getParameter("name");
             tableUpdateService.updateName(tidParam, name, errors, activeHall);
         } else if ("delete".equals(action)) {
             LOG.info("Deleting table.");
-            String tidParam = req.getParameter("tid");
             tableDeleteService.delete(tidParam, errors, activeHall);
+        } else if ("startGame".equals(action)) {
+            // todo: do me!!
+            LOG.info("Requested starting new game on table with id: {}.", tidParam);
+//            tableDeleteService.;
+        } else if ("stopGame".equals(action)) {
+            LOG.info("Requesting stopping of current game on table with id: {}", tidParam);
+            reservationUpdateService.stopGame(tidParam, errors, activeHall);
         }
         resp.sendRedirect("/tables-view");
     }
