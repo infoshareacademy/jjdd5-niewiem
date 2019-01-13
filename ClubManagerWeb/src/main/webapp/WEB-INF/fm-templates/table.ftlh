@@ -32,7 +32,7 @@
             <div>
                 <p>${table.type}</p>
             </div>
-            <button type="submit" class="btn btn-danger">Change name</button>
+            <button type="submit" class="btn btn-primary">Change name</button>
         </form>
     </div>
 </#if>

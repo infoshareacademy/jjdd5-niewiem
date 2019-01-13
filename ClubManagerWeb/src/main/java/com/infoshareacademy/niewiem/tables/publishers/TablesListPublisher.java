@@ -1,6 +1,7 @@
 package com.infoshareacademy.niewiem.tables.publishers;
 
 import com.infoshareacademy.niewiem.halls.dto.HallDTO;
+import com.infoshareacademy.niewiem.reservations.dto.ReservationInMillisDTO;
 import com.infoshareacademy.niewiem.tables.dto.TableDTO;
 import com.infoshareacademy.niewiem.tables.services.TableQueryService;
 import org.slf4j.Logger;
@@ -21,5 +22,10 @@ public class TablesListPublisher extends TableGenericPublisher {
     public void publishTablesInHall(Map<String, Object> model, HallDTO hallDTO){
         List<TableDTO> tables = tableQueryService.findAllByHall(hallDTO);
         model.put("tables", tables);
+    }
+
+    public void publishForAllTablesInHallActiveReservationOrTempZeroEndReservation(Map<String, Object> model, HallDTO hallDTO){
+        List<ReservationInMillisDTO> reservations = tableQueryService.findAllTablesInHallWithEndTimeInMillis(hallDTO);
+        model.put("reservations", reservations);
     }
 }
