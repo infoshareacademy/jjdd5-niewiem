@@ -36,7 +36,7 @@ public class ReservationRequestMapper {
         }
         Long rid = Long.parseLong(ridParam);
 
-        Reservation reservation = getReservationWithoutId(req, errors, hallDTO);
+        Reservation reservation = getReqReservationWithoutId(req, errors, hallDTO);
         if(reservation == null){
             return null;
         }
@@ -45,14 +45,14 @@ public class ReservationRequestMapper {
         return reservation;
     }
 
-    public Reservation getReservationWithoutId(HttpServletRequest req, List<String> errors, HallDTO hallDTO){
+    public Reservation getReqReservationWithoutId(HttpServletRequest req, List<String> errors, HallDTO hallDTO){
         Reservation reservation = new Reservation();
 
-        LOG.info("Requested tid {}", req.getParameter("tid"));
-        LOG.info("Requested startDate {}", req.getParameter("startDate"));
-        LOG.info("Requested startTime {}", req.getParameter("startTime"));
-        LOG.info("Requested timeSpan {}", req.getParameter("timeSpan"));
-        LOG.info("Requested customer {}", req.getParameter("customer"));
+        LOG.debug("Requested tid {}", req.getParameter("tid"));
+        LOG.debug("Requested startDate {}", req.getParameter("startDate"));
+        LOG.debug("Requested startTime {}", req.getParameter("startTime"));
+        LOG.debug("Requested timeSpan {}", req.getParameter("timeSpan"));
+        LOG.debug("Requested customer {}", req.getParameter("customer"));
 
         Table table = getTableFromTid(req.getParameter("tid"), errors, hallDTO);
         LocalDateTime start = getStartLDT(req.getParameter("startDate"), req.getParameter("startTime"), errors);
@@ -96,5 +96,24 @@ public class ReservationRequestMapper {
             return tableDao.findById(tid);
         }
         return null;
+    }
+
+    public Reservation getStartReservation(String tidParam, String timeSpan, List<String> errors, HallDTO hallDTO) {
+        Table table = getTableFromTid(tidParam, errors, hallDTO);
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = getEndLDT(start, timeSpan, errors);
+
+        if(table == null || end == null){
+            return null;
+        }
+
+        Reservation reservation = new Reservation();
+
+        reservation.setStartTime(start);
+        reservation.setTable(table);
+        reservation.setEndTime(end);
+        reservation.setCustomer("");
+
+        return reservation;
     }
 }

@@ -17,6 +17,9 @@ public class ReservationInMillisDTOMapper {
     private TableDTOMapper tableDTOMapper;
 
     public ReservationInMillisDTO convertResToDTO(Reservation r){
+        if(r == null){
+            return null;
+        }
         ReservationInMillisDTO dto = new ReservationInMillisDTO();
         dto.setId(r.getId());
         TableDTO table = tableDTOMapper.convertTblToDTO(r.getTable());

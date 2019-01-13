@@ -27,7 +27,7 @@ public class ReservationSaveService {
     private TableDao tableDao;
 
     @Inject
-    private ReservationRequestMapper reservationRequestMapper;
+    private ReservationRequestMapper reservationMapper;
 
     public Long save(Reservation reservation, List<String> erorrs) {
         if (reservationDao.isInConflict(reservation)) {
@@ -40,7 +40,15 @@ public class ReservationSaveService {
     }
 
     public void createNewReservation(HttpServletRequest req, List<String> errors, HallDTO hallDTO) {
-        Reservation reservation = reservationRequestMapper.getReservationWithoutId(req, errors, hallDTO);
+        Reservation reservation = reservationMapper.getReqReservationWithoutId(req, errors, hallDTO);
+        if(reservation == null){
+            return;
+        }
+        save(reservation, errors);
+    }
+
+    public void startGame(String tidParam, String timeSpan, List<String> errors, HallDTO hallDTO) {
+        Reservation reservation = reservationMapper.getStartReservation(tidParam, timeSpan, errors, hallDTO);
         if(reservation == null){
             return;
         }
@@ -63,6 +71,4 @@ public class ReservationSaveService {
 
         return reservation;
     }
-
-
 }

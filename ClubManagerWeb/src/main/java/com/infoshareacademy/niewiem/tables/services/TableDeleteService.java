@@ -1,11 +1,14 @@
 package com.infoshareacademy.niewiem.tables.services;
 
+import com.infoshareacademy.niewiem.halls.dto.HallDTO;
 import com.infoshareacademy.niewiem.tables.dao.TableDao;
+import com.infoshareacademy.niewiem.tables.validators.TableValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class TableDeleteService {
@@ -14,10 +17,17 @@ public class TableDeleteService {
     @Inject
     private TableDao tableDao;
 
-    public void delete(Integer id) {
-        // todo: validate me like you validate your French girls!
-        // Should deleting table cancel all future reservations?
-        // Maybe it should send an email to admin with reservations and customer contact to inform about cancelation.
-        tableDao.delete(id);
+    @Inject
+    private TableValidator tableValidator;
+
+    public void delete(String tidString, List<String> errors, HallDTO hallDTO) {
+        // todo: Should deleting table also delete all table's reservations?
+        if(tableValidator.validateTidParam(tidString, errors, hallDTO)){
+            Integer tid = Integer.parseInt(tidString);
+
+            LOG.info("Got table id of: " + tid + "sending to delete.");
+
+            tableDao.delete(tid);
+        }
     }
 }

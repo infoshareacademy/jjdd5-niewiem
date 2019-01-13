@@ -7,6 +7,7 @@ import com.infoshareacademy.niewiem.reservations.services.ReservationDeleteServi
 import com.infoshareacademy.niewiem.reservations.services.ReservationSaveService;
 import com.infoshareacademy.niewiem.reservations.services.ReservationUpdateService;
 import com.infoshareacademy.niewiem.services.ServletService;
+import com.infoshareacademy.niewiem.tables.publishers.TablePublisher;
 import com.infoshareacademy.niewiem.tables.publishers.TablesListPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,8 @@ public class ReservationServlet extends HttpServlet {
     @Inject
     private ReservationPublisher reservationPublisher;
 
+    @Inject
+    private TablePublisher tablePublisher;
 
     @Inject
     private TablesListPublisher tablesListPublisher;
@@ -63,6 +66,9 @@ public class ReservationServlet extends HttpServlet {
         reservationPublisher.publishReservationById(model, errors, ridParam, activeHall);
 
         tablesListPublisher.publishTablesInHall(model, activeHall);
+
+        String tidParam = req.getParameter("tid");
+        tablePublisher.publishTid(model, errors, tidParam, activeHall);
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
     }

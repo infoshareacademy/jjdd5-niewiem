@@ -24,4 +24,18 @@ public abstract class GenericValidator {
     public boolean validateIsNotNumeric(String param, String requestName, List<String> errors) {
         return !validateNumeric(param, requestName, errors);
     }
+
+    public boolean validateStringIsNotEmpty(String nameParam, String requestName, List<String> errors) {
+        if (StringUtils.isEmpty(nameParam)) {
+            LOG.warn("Invalid requested. {} was empty.", requestName);
+            errors.add("Invalid request." + requestName + " cannot be empty.");
+            return false;
+        }
+        LOG.debug("{} was not empty.", requestName);
+        return true;
+    }
+
+    public boolean validateStringIsEmpty(String nameParam, String requestName, List<String> errors){
+        return !validateStringIsNotEmpty(nameParam, requestName, errors);
+    }
 }
