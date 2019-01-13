@@ -2,11 +2,13 @@ package com.infoshareacademy.niewiem.halls.validators;
 
 import com.infoshareacademy.niewiem.halls.dao.HallDao;
 import com.infoshareacademy.niewiem.shared.validators.GenericValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class HallValidator extends GenericValidator {
@@ -24,8 +26,28 @@ public class HallValidator extends GenericValidator {
         return false;
     }
 
+    public boolean validateHallIdExistsWithErrors(Integer hid, List<String> errors){
+        if(validateHallIdExists(hid)){
+            return true;
+        }
+        errors.add("Requested hall was not found in database.");
+        return false;
+    }
+
     public boolean validateHallIdDoesNotExists(Integer hid) {
         return !validateHallIdExists(hid);
     }
 
+    public boolean validateHidParam(String hidParam, List<String> errors) {
+        if(StringUtils.isEmpty(hidParam)){
+            LOG.info("No hall id parameter in request");
+            return false;
+        }
+        if(validateIsNotNumeric(hidParam, "hall ID", errors)){
+            return false;
+        }
+
+        Integer hid = Integer.parseInt(hidParam);
+        return validateHallIdExistsWithErrors(hid, errors);
+    }
 }

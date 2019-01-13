@@ -60,7 +60,7 @@ public class TableServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         model.put("errors", errors);
 
-        HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
+        HallDTO hallDTO = activeHallService.getActive(req.getSession());
 
         String tidParam = req.getParameter("tid");
         if (tablePublisher.publishRequestedTable(model, errors, tidParam, hallDTO)) {
@@ -78,7 +78,7 @@ public class TableServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         List<String> errors = new ArrayList<>();
-        HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
+        HallDTO activeHall = activeHallService.getActive(req.getSession());
         String tidParam = req.getParameter("tid");
 
         if ("new".equals(action)) {

@@ -61,7 +61,7 @@ public class ReservationServlet extends HttpServlet {
         model.put("errors", errors);
 
         String ridParam = req.getParameter("rid");
-        HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
+        HallDTO activeHall = activeHallService.getActive(req.getSession());
 
         reservationPublisher.publishReservationById(model, errors, ridParam, activeHall);
 
@@ -77,7 +77,7 @@ public class ReservationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String action = req.getParameter("action");
         List<String> errors = new ArrayList<>();
-        HallDTO activeHall = activeHallService.getActiveHall(req.getSession());
+        HallDTO activeHall = activeHallService.getActive(req.getSession());
 
         // todo: decide what to do with errors, where should I go?
         if ("new".equals(action)) {

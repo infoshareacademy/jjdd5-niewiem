@@ -30,6 +30,7 @@ public class ActiveHallFilter implements Filter {
             "/dev-panel",
             "/images",
             "/create-hall",
+            "/hall",
             "/error-handler"
     };
     private static final String[] EXCLUDED_PATH_ENDINGS = new String[]{
@@ -84,7 +85,7 @@ public class ActiveHallFilter implements Filter {
     }
 
     private boolean isURIExcludedFromFilter(String reqUri) {
-        LOG.debug("Requested URI: {}", reqUri);
+        LOG.warn("Requested URI: {}", reqUri);
 
         if (reqUri.equals(EXCLUDED_ROOT_PATH)) {
             return true;
