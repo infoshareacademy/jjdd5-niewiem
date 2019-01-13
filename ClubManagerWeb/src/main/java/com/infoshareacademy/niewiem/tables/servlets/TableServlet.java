@@ -39,12 +39,10 @@ public class TableServlet extends HttpServlet {
 
         List<String> errors = new ArrayList<>();
         model.put("errors", errors);
-        List<String> warnings = new ArrayList<>();
-        model.put("warnings", warnings);
 
         HallDTO hallDTO = activeHallService.getActiveHall(req.getSession());
 
-        tablePublisher.publishRequestedTable(model, errors, warnings, req.getParameter("tid"), hallDTO);
+        tablePublisher.publishRequestedTable(model, errors, req.getParameter("tid"), hallDTO);
 
         LOG.info("Servlet had: {} errors.", errors.size());
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);

@@ -28,8 +28,9 @@ public class TableQueryService {
     @Inject
     private TableDTOMapper tableDTOMapper;
 
-    public Table findById(Integer id) {
-         return tableDao.findById(id);
+    public TableDTO findById(Integer id) {
+        Table table = tableDao.findById(id);
+        return tableDTOMapper.convertTblToDTO(table);
     }
 
     public List<TableDTO> findAllByHall(HallDTO hallDTO) {
@@ -60,7 +61,7 @@ public class TableQueryService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isActive(Table table) {
-        return reservationQueryService.findActiveForTable(table.getId()) != null;
+    public boolean isActive(TableDTO tableDTO) {
+        return reservationQueryService.findActiveForTable(tableDTO.getId()) != null;
     }
 }
