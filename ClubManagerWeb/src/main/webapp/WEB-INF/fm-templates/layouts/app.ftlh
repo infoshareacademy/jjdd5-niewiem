@@ -37,6 +37,8 @@
     <meta name="google-signin-client_id"
           content="750662202912-ou3jtpmon6qaoagpfithrqmvpgj2i76o.apps.googleusercontent.com">
     <script src="js/app.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body class="">
 <div class="background animated fadeIn">
@@ -46,12 +48,11 @@
                 aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarsExample05">
             <ul class="navbar-nav ml-auto">
                 <#if activeHall??>
-                <li class="nav-item nav-hall-name">
-                    <h1>${activeHall.getName()}</h1>
+                <li class="nav-item nav-hall-name" data-toggle="tooltip" title="Active hall">
+                    <h4 class="label-white nav-link">${activeHall.getName()}</h4>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/tables-view">Tables</a>
@@ -84,11 +85,10 @@
                 </#if>
             </ul>
         </div>
-
     </nav>
-    <div class="main">
-        <div class="container">
-            <div class="content center">
+    <div class="main row justify-content-center">
+        <div class="container row justify-content-center">
+            <div class="content reservation-edit-content">
             <#include bodyTemplate>
             </div>
         </div>

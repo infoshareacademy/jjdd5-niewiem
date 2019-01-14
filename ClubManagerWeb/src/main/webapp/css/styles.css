@@ -12,7 +12,6 @@ body, html {
 
     /* Full height */
     height: 100%;
-
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
@@ -32,8 +31,11 @@ body, html {
 }
 
 .content {
-    background-color: rgba(255, 255, 255, 0.85);
+    /* background-color: rgba(255, 255, 255, 0.85); */
     padding: 0;
+    /*display: flex;*/
+    justify-content: center;
+    width: 600px;
 }
 
 .zoomLink {
@@ -72,6 +74,9 @@ body, html {
     height: 40px;
     border-radius: 50%;
     background-color: white;
+    -webkit-box-shadow: inset 0px 0px 14px 4px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: inset 0px 0px 14px 4px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 0px 0px 14px 4px rgba(0, 0, 0, 0.75);
 }
 
 .inset img {
@@ -98,4 +103,68 @@ body, html {
     animation-duration: 0.6s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
+}
+
+.navbar {
+    background-color: #0f2a44;
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.75);
+}
+
+.label-white {
+    color: white !important;
+    /* background-color: black; */
+    /* border-radius: 25px; */
+    padding-left: 8px;
+    /* padding-right: 8px; */
+}
+.reservation-edit-content {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.68);
+    -webkit-box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.51);
+    -moz-box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.51);
+    box-shadow: 0px 0px 7px 6px rgba(0, 0, 0, 0.67);
+}
+.button-row{
+    display:flex !important;
+ justify-content: center;
+}
+#create-new-hall{
+    padding:14px;
+    font-size:20px;
+}
+#no-halls-text{
+    color: white;
+    font-size: 20px;
+    padding-top: 30px;
+}
+.btn-margin-top{
+    margin-top: 10px;
+}
+.form-width{
+    max-width: 550px;
+    width: 100%;
+}
+ul{
+    padding-inline-start: 0px;
+}
+.main{
+    max-width: 100%;
+    margin-left: 0 !important;
+}
+.padding-zero{
+    padding: 0;
+}
+.hallName{
+    height: 100%;
+    padding-top: 17px;
+}
+.btn-blue{
+    background-color: #0e2943;
+    color: white;
+}
+.badge-brown{
+    background-color: #942639;
+    color: white;
 }

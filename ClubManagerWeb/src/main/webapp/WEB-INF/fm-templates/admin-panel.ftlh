@@ -1,10 +1,7 @@
-<h2>Admin panel</h2>
+<h2 class="label-white">Admin panel</h2>
 <br>
 <ul>
     <li>
-        <a href="/users">Users</a>
-    </li>
-    <li>
-        <p>Reports</p>
+        <button class="btn" onclick="window.location.href='users'"><i class="fas fa-user">Users</i></button>
     </li>
 </ul>

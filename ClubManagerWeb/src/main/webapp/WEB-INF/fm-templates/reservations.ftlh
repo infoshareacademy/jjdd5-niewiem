@@ -21,19 +21,25 @@
         </div>
     </#list>
 </#if>
+<div class="row justify-content-center">
+    <div id="create-new-hall">
+        <label class="label-white" for="create-hall">Add new reservation</label>
+        <button id="create-hall" class="btn btn-dark" type="button"
+                onclick="window.location.href='reservation'"><i class="fas fa-plus"></i>
+        </button>
+    </div>
+</div>
 
-<div class="row">
-    <div class="col-5">
-        <#-- todo: when choosing specific table you should not be able to choose type -->
-        <#-- todo: you should only be able to use start/end times when using "custom" Period -->
-        <form method="get" action="/reservations">
 
-            <button type="submit" class="btn btn-primary">Filter</button>
+<#-- todo: when choosing specific table you should not be able to choose type -->
+<#-- todo: you should only be able to use start/end times when using "custom" Period -->
 
+    <div class="">
+        <form class="row justify-content-center" method="get" action="/reservations">
             <#list tables>
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
-                    <label form="chooseTable">Select table</label>
+                    <label class="label-white" form="chooseTable">Select table</label>
                     <select name="tid" class="form-control" id="chooseTable">
                         <option value="" selected>---</option>
                         <#items as t>
@@ -44,11 +50,10 @@
                     </select>
                 </div>
             </#list>
-
             <#list types>
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
-                    <label form="chooseType">Select table type</label>
+                    <label class="label-white" form="chooseType">Select table type</label>
                     <select name="type" class="form-control" id="chooseType">
                         <option value="" selected>---</option>
                         <#items as ty>
@@ -59,12 +64,11 @@
                     </select>
                 </div>
             </#list>
-
             <#list periods>
             <#-- todo: when selecting custom, start and end time should appear -->
             <#-- todo: when no option selected should not put any parameter in request, now puts empty one -->
                 <div class="form-group">
-                    <label form="choosePeriod">Select time period</label>
+                    <label class="label-white" form="choosePeriod">Select time period</label>
                     <select name="period" class="form-control" id="choosePeriod">
                         <option value="" selected>---</option>
                         <#items as p>
@@ -75,41 +79,42 @@
                     </select>
                 </div>
             </#list>
-
-            <#--todo: this should only be visible when CUSTOM period option is chosen-->
-            <div class="form-group">
-                <label for="startDate">Start date</label>
-                <input id="startDate" name="startDate" type="date" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="startTime">Start time</label>
-                <input id="startTime" name="startTime" type="time" class="form-control"/>
-            </div>
-
-            <div class="form-group">
-                <label for="endDate">End date</label>
-                <input id="endDate" name="endDate" type="date" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label for="endTime">End time</label>
-                <input id="endTime" name="endTime" type="time" class="form-control"/>
-            </div>
-
+    </div>
+    <div class="row justify-content-center">
+    <#--todo: this should only be visible when CUSTOM period option is chosen-->
+        <div class="form-group">
+            <label class="label-white" for="startDate">Start date</label>
+            <input id="startDate" name="startDate" type="date" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label class="label-white" for="endDate">End date</label>
+            <input id="endDate" name="endDate" type="date" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label class="label-white" for="startTime">Start time</label>
+            <input id="startTime" name="startTime" type="time" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label class="label-white" for="endTime">End time</label>
+            <input id="endTime" name="endTime" type="time" class="form-control"/>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="submit" class="btn btn-blue">
+            Filter
+        </button>
         </form>
     </div>
-    <div class="col-7">
 
-        <div class="row">
-            <a class="btn btn-light btn-lg btn-block" href="/reservation" role="button">Add new reservation</a>
-        </div>
 
-        <#if reservations?size == 0>
-            <div class="alert alert-danger">
+<#if reservations?size == 0>
+            <div class="row justify-content-center alert alert-danger">
                 <p>No reservations found :(</p>
             </div>
-        </#if>
-        <#list reservations>
-            <table class="table table-bordered table-hover table-striped">
+</#if>
+<#list reservations>
+<div class="row justify-content-center btn-margin-top">
+            <table class="table table-dark">
 
                 <thead>
                 <tr>
@@ -123,17 +128,16 @@
 
                 <tbody>
                 <#items as r>
-                    <tr>
-                        <td>${r.table.name}</td>
-                        <td>${r.startMillis}</td>
-                        <td>${r.endMillis}</td>
-                        <td>${r.customer ! ""}</td>
-                        <td><a href="/reservation?rid=${r.id}">EDIT</a></td>
-                    </tr>
+                <tr>
+                    <td>${r.table.name}</td>
+                    <td>${r.startMillis}</td>
+                    <td>${r.endMillis}</td>
+                    <td>${r.customer ! ""}</td>
+                    <td><a href="/reservation?rid=${r.id}">EDIT</a></td>
+                </tr>
                 </#items>
                 </tbody>
-
             </table>
-        </#list>
-    </div>
 </div>
+</#list>
+    </div>
