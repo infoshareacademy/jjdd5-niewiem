@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("choose-hall")
+@WebServlet("/choose-hall")
 public class ChooseHallServlet extends HttpServlet {
     private static final String VIEW_NAME = "/choose-hall";
     private static final Logger LOG = LoggerFactory.getLogger(ChooseHallServlet.class);
@@ -51,5 +51,10 @@ public class ChooseHallServlet extends HttpServlet {
         hallListPublisher.publishHallList(model);
 
         servletService.sendModelToTemplate(req, resp, getServletContext(), model, VIEW_NAME);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
     }
 }

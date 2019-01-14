@@ -72,13 +72,13 @@ public class ReservationsListPublisher {
                         req.getParameter(START_DATE_PARAM),
                         req.getParameter(START_TIME_PARAM),
                         warnings,
-                        LocalDateTime.of(0,1,1,0,0)
+                        LocalDateTime.of(1980,1,1,0,0)
                 );
                 end = reservationValidator.returnValidatedDateTimeOrDefault(
                         req.getParameter(END_DATE_PARAM),
                         req.getParameter(END_TIME_PARAM),
                         warnings,
-                        LocalDateTime.of(9999,12,31,23,59,59,999999999)
+                        LocalDateTime.of(2999,12,31,23,59,59,999999999)
                 );
                 reservationValidator.validateEndIsAfterStartOrReturnMax(start, end, warnings);
 
