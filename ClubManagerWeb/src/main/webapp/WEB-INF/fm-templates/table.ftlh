@@ -9,16 +9,13 @@
         </div>
     </#list>
 </#if>
-
-<div class="row">
-    <form method="post" action="/table?action=<#if table??>update-name<#else>new</#if>">
-
+<div class="row justify-content-center">
+    <form class="form-width" method="post" action="/table?action=<#if table??>update-name<#else>new</#if>">
         <#if table??>
             <input type="hidden" name="tid" value="${table.id}">
         </#if>
-
         <div class="form-group">
-            <label for="tableName">Table Name</label>
+            <label class="label-white" for="tableName">Table Name</label>
             <input id="tableName" name="name" type="text" class="form-control"
                     <#if table??>
                         value="${table.name}"
@@ -27,10 +24,10 @@
                     </#if>
                    required/>
         </div>
-
         <div>
             <#if table??>
-                <p>${table.type}</p>
+                <label class="label-white" for="tableType">Table type</label>
+                <input id="tableType" type="text" class="form-control" value="${table.type}" disabled/>
             <#else>
                 <#list types as t>
                     <div class="form-check">
@@ -39,64 +36,66 @@
                                     checked="checked"
                                 </#if>
                         />
-                        <label class="form-check-label" for="${t}">
+                        <label class="label-white form-check-label" for="${t}">
                             ${t}
                         </label>
                     </div>
                 </#list>
             </#if>
         </div>
-
+        <div class="row justify-content-center">
         <#if table??>
-            <button type="submit" class="btn btn-primary">Change name</button>
+            <button type="submit" class="btn-margin-top btn btn-blue">Update</button>
         <#else>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn-margin-top btn btn-blue">Save</button>
         </#if>
-
+        </div>
     </form>
-
-
 </div>
 <#if table??>
-    <div class="row">
-        <form method="post" action="/table?action=delete">
+       <div class="row justify-content-center">
+           <form method="post" action="/table?action=delete">
+               <input type="hidden" name="tid" value="${table.id}">
+               <button type="submit" class="btn-margin-top btn btn-danger">Delete</button>
+           </form>
+       </div>
+</#if>
+
+
+<#if table??>
+    <#if isActive>
+    <div class="row justify-content-center">
+        <form method="post" action="/table?action=stopGame">
             <input type="hidden" name="tid" value="${table.id}">
-            <button type="submit" class="btn btn-danger">Delete table</button>
+            <button type="submit" class="btn-margin-top btn btn-secondary">Stop current game</button>
         </form>
     </div>
-</#if>
-<#if table??>
-    <div class="row">
-        <#if isActive>
-            <form method="post" action="/table?action=stopGame">
-                <input type="hidden" name="tid" value="${table.id}">
-                <button type="submit" class="btn btn-secondary">Stop current game</button>
-            </form>
-        <#else>
-            <h2>Start new game:</h2>
-            <br/>
-            <form method="post" action="/table?action=startGame">
+    <#else>
+        <div class="row justify-content-center">
+            <form class="form-width" method="post" action="/table?action=startGame">
                 <input type="hidden" name="tid" value="${table.id}">
                 <div class="form-group">
-                    <label for="timeSpan">Time span in minutes</label>
+                    <label class="label-white btn-margin-top" for="timeSpan">Time span in minutes</label>
                     <input id="timeSpan" name="timeSpan" type="number" class="form-control" value="60" required/>
                 </div>
-                <button type="submit" class="btn btn-secondary">Start game</button>
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-secondary">Start new game</button>
+                </div>
             </form>
-        </#if>
-    </div>
+        </div>
+    </#if>
 </#if>
 <#if table??>
-    <div class="row">
-        <div class="row">
-            <a class="btn btn-light btn-lg btn-block" href="/reservation?tid=${table.id}" role="button">Add new reservation</a>
-        </div>
+    <div class="row justify-content-center">
+        <button class="btn btn-light btn-margin-top" role="button"
+                onclick="window.location.href='/reservation?tid=${table.id}'">
+            Add new reservation
+        </button>
     </div>
-</#if>
-<#if table??>
-    <div class="row">
-        <div class="row">
-            <a class="btn btn-light btn-lg btn-block" href="/reservations?tid=${table.id}" role="button">See all reservations</a>
-        </div>
+    <div class="row justify-content-center">
+        <button class="btn btn-light btn-margin-top" role="button"
+                onclick="window.location.href='/reservations?tid=${table.id}'">
+            See all reservations
+        </button>
     </div>
 </#if>
