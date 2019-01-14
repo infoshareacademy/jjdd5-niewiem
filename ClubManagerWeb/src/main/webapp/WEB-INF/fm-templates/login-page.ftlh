@@ -1,5 +1,5 @@
 
-<h2>Sign in with Google for more functionality:</h2>
+<h1 class="label-white">Sign in with Google for more functionality:</h1>
 <br>
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
