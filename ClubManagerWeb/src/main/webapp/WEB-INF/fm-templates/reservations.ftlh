@@ -114,30 +114,34 @@
 </#if>
 <#list reservations>
 <div class="row justify-content-center btn-margin-top">
-            <table class="table table-dark">
+    <table class="table table-dark">
 
-                <thead>
-                <tr>
-                    <th>Table</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Customer</th>
-                    <th>Edit</th>
-                </tr>
-                </thead>
+        <thead>
+        <tr>
+            <th>Table</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Customer</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
 
-                <tbody>
+        <tbody>
                 <#items as r>
                 <tr>
                     <td>${r.table.name}</td>
-                    <td>${r.startMillis}</td>
-                    <td>${r.endMillis}</td>
+                    <td id="replaceStart${r?index}" class="countMillis"></td>
+                    <td id="replaceEnd${r?index}"></td>
                     <td>${r.customer ! ""}</td>
                     <td><a href="/reservation?rid=${r.id}">EDIT</a></td>
                 </tr>
+                <input id="startMillis${r?index}" value="${r.startMillis}" hidden>
+                <input id="endMillis${r?index}" value="${r.endMillis}" hidden>
                 </#items>
-                </tbody>
-            </table>
+        </tbody>
+    </table>
 </div>
 </#list>
-    </div>
+<script>
+    window.onload = replaceMillis();
+</script>

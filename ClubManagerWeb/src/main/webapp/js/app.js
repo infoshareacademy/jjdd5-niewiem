@@ -79,13 +79,12 @@ function millisToDateTime(millisStr) {
     return `${hours}:${minutes} ${day}.${month}.${year}`
 }
 
-function replaceMillis(classToReplace, countElements) {
-    let count = document.getElementsByClassName(countElements).length;
+function replaceMillis() {
+    let count = document.getElementsByClassName('countMillis').length;
     for (let i = 0; i < count; i++) {
-        let startMillis = document.getElementById('replace-start-millis' + i).value;
-        let endMillis = document.getElementById('replace-end-millis' + i).value;
-        console.log(classToReplace + i);
-        document.getElementById('replace-start-millis' + i).value = millisToDateTime(startMillis);
-        document.getElementById('replace-end-millis' + i).value = millisToDateTime(endMillis);
+        let startMillis = document.getElementById('startMillis' + i).value;
+        let endMillis = document.getElementById('endMillis' + i).value;
+        document.getElementById('replaceStart' + i).innerHTML = millisToDateTime(startMillis);
+        document.getElementById('replaceEnd' + i).innerHTML = millisToDateTime(endMillis);
     }
 }
